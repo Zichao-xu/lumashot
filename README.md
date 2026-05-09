@@ -2,63 +2,53 @@
 
 # Lumashot
 
-**A minimal yet powerful macOS screenshot tool for modern displays.**
+<p align="center">
+  <img src="assets/logo.png" alt="Lumashot logo" width="200"/>
+</p>
 
-Lumashot is a fork of [sw33tLie/macshot](https://github.com/sw33tLie/macshot) focused on **modern display capture** and **native macOS interaction polish**.
+<p align="center">
+  <b>Modern macOS screenshot tool with real HDR capture.</b><br>
+  <br>
+  Global hotkey, clean toolbar, native AppKit — plus HDR screenshot export with true HEIC gain map.<br>
+  Forked from macshot, focused on modern display capture.
+</p>
 
----
-
-## Features
-
-- **Native macOS screenshot experience** — global hotkey, clean toolbar, macOS-like motion, AppKit-native without Electron
-- **HDR screenshot export with HEIC gain map** — ScreenCaptureKit-based capture, genuine HDR output for HDR displays
-- **SDR/HDR compatible workflow** — both HDR and standard (PNG/JPEG/HEIC SDR) export in one workflow
-- **Clean toolbar interaction** — focused annotation tools, macOS-like motion and feel
-- **Lightweight annotation tools** — arrow, shape, text, pencil, marker, number, censor, and more
-- **Customizable capture and export behavior** — global hotkeys, file format, quality, clipboard behavior all configurable
-
----
-
-## Current Focus
-
-Lumashot is actively developing **HDR gain map capture** — making HEIC gain map output practical on macOS. This involves ScreenCaptureKit integration, HEIF gain map encoding, and ensuring compatibility across SDR and HDR displays. This work is experimental and still being finalized.
+<p align="center">
+  <a href="https://github.com/Zichao-xu/lumashot/releases/latest">Download</a> · <a href="https://github.com/Zichao-xu/lumashot/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://github.com/Zichao-xu/lumashot/blob/main/PRIVACY.md">Privacy</a>
+</p>
 
 ---
 
-## Upstream Attribution
+### Why Lumashot?
 
-This project is based on / forked from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). We keep full attribution and upstream history while developing Lumashot-specific HDR capture, UI polish, and customization features. All upstream history and GPLv3 license are preserved.
-
-> Lumashot is **not** a replacement for the upstream project. The upstream has a broader feature set (scroll capture, screen recording, video editor, OCR, upload integrations). Lumashot is a focused fork for modern display capture and HDR-specific development.
-
----
-
-## Development Status
-
-Experimental / work in progress. HDR gain map capture is still being finalized and tested.
+- **HDR screenshot with real HEIC gain map** — ScreenCaptureKit-based capture, true HDR output on HDR displays. No fake tone-mapping — genuine SDR base + HDR gain map.
+- **Native macOS experience** — global hotkey, clean toolbar, AppKit-native without Electron. ~8 MB memory at idle.
+- **SDR/HDR compatible workflow** — HDR and standard (PNG/JPEG/HEIC SDR) export in one seamless flow. Toggle HDR on the toolbar; Done gives you HEIC, off gives you PNG.
+- **Lightweight annotation tools** — arrow, shape, text, pencil, marker, number, pixelate, measure, loupe.
+- **Clean toolbar & polish** — macOS-style motion, continuous corner radius, Liquid Glass feel, animated transitions.
+- **Customizable** — global hotkeys, file format, quality, clipboard behavior all configurable.
 
 ---
 
-## Install
+## Install (from this fork)
 
-> **This is a development fork.** Official releases come from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). To install Lumashot from this fork, build from source or install the latest CI artifact from the `main` branch.
+> **Note:** The upstream macshot has broader features (scroll capture, screen recording, video editor, OCR, cloud upload). Lumashot is a focused fork for modern display and HDR capture.
 
-**From upstream (recommended for most users):**
-
-```bash
-brew install --cask macshot
-```
-
-Or download the latest `.dmg` from [sw33tLie/macshot Releases](https://github.com/sw33tLie/macshot/releases).
-
-**Build from this fork:**
-
+**Build from source:**
 ```bash
 git clone https://github.com/Zichao-xu/lumashot.git
 cd lumashot
 xcodebuild -scheme macshot -configuration Release
 # Result: build/macshot.app → copy to /Applications
 ```
+
+Or download the latest alpha from [Releases](https://github.com/Zichao-xu/lumashot/releases).
+
+**Upstream macshot (recommended for most users):**
+```bash
+brew install --cask macshot
+```
+Or download from [sw33tLie/macshot releases](https://github.com/sw33tLie/macshot/releases).
 
 ---
 
@@ -68,6 +58,8 @@ xcodebuild -scheme macshot -configuration Release
 2. Press `Cmd+Shift+X` to capture
 3. Drag to select, annotate with the toolbar, press `Cmd+C` to copy
 4. Press `Esc` to cancel
+
+**HDR mode:** Click the `HDR` button in the toolbar before clicking Done. The selection is captured as an HDR screenshot and saved as HEIC with gain map.
 
 ---
 
@@ -79,7 +71,7 @@ Lumashot requires **Screen Recording** permission. macOS will prompt you on firs
 
 ## Requirements
 
-macOS 12.3 (Monterey) or later.
+macOS 12.3 (Monterey) or later. HDR capture requires macOS 15 (Sequoia) or later and an HDR-capable display.
 
 ## License
 
