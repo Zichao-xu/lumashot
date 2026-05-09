@@ -98,7 +98,7 @@ enum TranslationService {
         set { UserDefaults.standard.set(newValue, forKey: "aiTranslationPrompt") }
     }
 
-    private static let keychainService = "com.zichao.lumashot.translation"
+    private static let keychainService = "com.sw33tlie.macshot.translation"
 
     static let availableLanguages: [(code: String, name: String)] = [
         ("en", "English"),

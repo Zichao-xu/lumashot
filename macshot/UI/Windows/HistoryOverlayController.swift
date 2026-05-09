@@ -196,7 +196,7 @@ final class HistoryOverlayController: NSObject, QLPreviewPanelDataSource, QLPrev
         guard let image = ScreenshotHistory.shared.loadImage(for: entries[index]) else { return }
         dismiss()
         // Post notification so AppDelegate handles pin creation (it owns pinControllers)
-        NotificationCenter.default.post(name: .init("com.zichao.lumashot.pinFromHistory"), object: image)
+        NotificationCenter.default.post(name: .init("macshot.pinFromHistory"), object: image)
     }
 
     func quickLook(index: Int) {

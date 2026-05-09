@@ -37,6 +37,69 @@ class PermissionOnboardingController: NSWindowController {
         pollTimer?.invalidate()
     }
 
+    // MARK: - Diagnostics
+
+    /// Write diagnostics to ~/Library/Logs/Lumashot/diagnostics.log
+    /// Called automatically when the onboarding window appears.
+    static func writeDiagnostics() {
+        let fm = FileManager.default
+        let logDir = fm.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Logs/Lumashot")
+        try? fm.createDirectory(at: logDir, withIntermediateDirectories: true)
+        let logFile = logDir.appendingPathComponent("diagnostics.log")
+
+        let b = Bundle.main
+        var lines: [String] = []
+        lines.append("=== Lumashot Screen Recording Diagnostics ===")
+        lines.append("Date: \(Date())")
+        lines.append("")
+        lines.append("[Bundle Identity]")
+        lines.append("  bundleIdentifier  = \(b.bundleIdentifier ?? "nil")")
+        lines.append("  bundlePath        = \(b.bundlePath)")
+        lines.append("  executablePath    = \(b.executablePath ?? "nil")")
+        lines.append("  CFBundleName      = \(b.object(forInfoDictionaryKey: "CFBundleName") ?? "nil")")
+        lines.append("  CFBundleDisplayName = \(b.object(forInfoDictionaryKey: "CFBundleDisplayName") ?? "nil")")
+        lines.append("  CFBundleExecutable = \(b.object(forInfoDictionaryKey: "CFBundleExecutable") ?? "nil")")
+        lines.append("  isInApplications  = \(b.bundlePath.hasPrefix("/Applications"))")
+        lines.append("")
+        lines.append("[Screen Recording Permission]")
+        let cgResult = CGPreflightScreenCaptureAccess()
+        lines.append("  CGPreflightScreenCaptureAccess() = \(cgResult)")
+        lines.append("  willShowOnboarding = \(!cgResult)")
+        lines.append("")
+        lines.append("[Code Signature]")
+        if let exe = b.executablePath {
+            let task = Process()
+            let pipe = Pipe()
+            task.executableURL = URL(fileURLWithPath: "/usr/bin/codesign")
+            task.arguments = ["-dv", "--verbose=4", exe]
+            task.standardError = pipe
+            task.standardOutput = pipe
+            try? task.run()
+            task.waitUntilExit()
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            let out = String(data: data, encoding: .utf8) ?? "(empty)"
+            for line in out.split(separator: "\n") {
+                lines.append("  \(line)")
+            }
+        }
+        lines.append("")
+        lines.append("--- end of entry ---\n")
+
+        let text = lines.joined(separator: "\n")
+        if let data = text.data(using: .utf8) {
+            if fm.fileExists(atPath: logFile.path) {
+                if let handle = try? FileHandle(forWritingAtPath: logFile.path) {
+                    handle.seekToEndOfFile()
+                    handle.write(data)
+                    handle.closeFile()
+                }
+            } else {
+                try? data.write(to: logFile)
+            }
+        }
+    }
+
     // MARK: - UI
 
     private weak var statusLabel: NSTextField?
@@ -199,6 +262,9 @@ class PermissionOnboardingController: NSWindowController {
         // we cannot rely on it after revocation. We reset here so polling starts fresh.
         permissionGranted = false
 
+        // Write diagnostics before showing the window.
+        Self.writeDiagnostics()
+
         // Reset UI back to initial state in case this controller is being reused
         spinner?.isHidden = false
         spinner?.startAnimation(nil)
@@ -239,12 +305,30 @@ class PermissionOnboardingController: NSWindowController {
     /// Uses CGPreflightScreenCaptureAccess() which is purely a status query.
     /// NOTE: This may return a stale cached value if permission was revoked since launch.
     static func hasScreenRecordingPermission() -> Bool {
-        return CGPreflightScreenCaptureAccess()
+        let result = CGPreflightScreenCaptureAccess()
+        NSLog("[Lumashot Diagnostics] CGPreflightScreenCaptureAccess() = \(result)")
+        return result
+    }
+
+    /// Log bundle identity info to diagnose TCC mismatch.
+    static func logBundleInfo() {
+        let b = Bundle.main
+        NSLog("[Lumashot Diagnostics] bundleIdentifier = \(b.bundleIdentifier ?? "nil")")
+        NSLog("[Lumashot Diagnostics] bundlePath = \(b.bundlePath)")
+        NSLog("[Lumashot Diagnostics] executablePath = \(b.executablePath ?? "nil")")
+        NSLog("[Lumashot Diagnostics] CFBundleName = \(b.object(forInfoDictionaryKey: "CFBundleName") ?? "nil")")
+        NSLog("[Lumashot Diagnostics] CFBundleDisplayName = \(b.object(forInfoDictionaryKey: "CFBundleDisplayName") ?? "nil")")
+        NSLog("[Lumashot Diagnostics] CFBundleExecutable = \(b.object(forInfoDictionaryKey: "CFBundleExecutable") ?? "nil")")
+        NSLog("[Lumashot Diagnostics] AXIsProcessTrusted() = \(AXIsProcessTrusted())")
     }
 
     /// Check at app launch — synchronous and dialog-free.
     static func checkPermissionSync(completion: @escaping (Bool) -> Void) {
-        completion(hasScreenRecordingPermission())
+        NSLog("[Lumashot Diagnostics] === STARTUP PERMISSION CHECK ===")
+        logBundleInfo()
+        let result = hasScreenRecordingPermission()
+        NSLog("[Lumashot Diagnostics] checkPermissionSync result: \(result), will show onboarding if false")
+        completion(result)
     }
 
     private func showGranted() {

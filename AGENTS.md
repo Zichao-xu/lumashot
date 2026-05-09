@@ -1,6 +1,39 @@
 # AGENTS.md
 
-This repository is Lumashot. Any AI agent, automation, or contributor touching this project must follow these release rules.
+This repository is Lumashot. Any AI agent, automation, or contributor touching this project must follow these rules.
+
+## Project Identity (MUST READ before any work)
+
+- **Product name (user-visible):** Lumashot
+- **Upstream:** forked from `sw33tLie/macshot`
+- **Bundle ID:** `com.sw33tlie.macshot.macshot` (matches upstream for TCC stability)
+- **.app bundle name:** `macshot.app` (matches upstream for TCC stability)
+- **Xcode target name:** `macshot` (matches upstream, do not rename)
+- **Upstream attribution** (`sw33tLie/macshot`) must be preserved in license, history comments, and upstream-referencing code
+
+### Identity Split Rule
+
+To maintain Screen Recording / TCC permission stability, the app uses a **dual identity**:
+
+| Layer | Name | Reason |
+|---|---|---|
+| **Internal / TCC identity** | `com.sw33tlie.macshot.macshot` / `macshot.app` | Must match upstream so TCC recognizes the app consistently |
+| **User-visible branding** | Lumashot | README, GitHub repo, Release titles, DMG filenames, About text, menu strings |
+
+**Do NOT change the internal identity fields** (Bundle ID, PRODUCT_NAME, .app bundle name) unless the user explicitly requests it. Changing them breaks TCC permission grants.
+
+Fields that use `macshot` (internal identity, do not change):
+- `PRODUCT_BUNDLE_IDENTIFIER` in pbxproj
+- `PRODUCT_NAME` / target name in pbxproj
+- `CFBundleURLSchemes` in Info.plist
+- Notification names, pasteboard types, keychain service names, data directory paths
+
+Fields that use `Lumashot` (user-visible branding):
+- README, GitHub repo name, Release titles
+- DMG filename (e.g. `Lumashot-darwin-arm64-0.1.6-alpha.dmg`)
+- `NSScreenCaptureUsageDescription` and other usage descriptions in Info.plist
+- About window, Settings window text
+- GitHub release checker URL (`Zichao-xu/lumashot`)
 
 ## Hard Release Rule
 
@@ -18,7 +51,7 @@ This means:
 - Do not edit old release notes to describe new behavior.
 - Treat a pushed tag as immutable even if the GitHub Release has not been created yet.
 
-If a release needs a fix after `v0.1.2-alpha`, the next distributed fix must be a new version, for example `v0.1.3-alpha`. Never recycle `v0.1.2-alpha` for new commits.
+If a release needs a fix after `v0.1.6-alpha`, the next distributed fix must be a new version, for example `v0.1.7-alpha`. Never recycle an existing version tag.
 
 ## Required Release Flow
 
@@ -41,23 +74,38 @@ Lumashot does not use Sparkle hot updates or appcast releases.
 
 Current update behavior:
 
-- The app checks GitHub Releases.
+- The app checks GitHub Releases (`Zichao-xu/lumashot`).
 - When a newer release with a matching DMG asset exists, the app opens that DMG download URL for manual installation.
 - The app must not silently download, install, or replace itself.
 - Do not reintroduce Sparkle, `SUFeedURL`, appcast signing, or automatic installers unless the user explicitly requests that architecture again.
 
 ## Product Identity Rules
 
-- Current product name: Lumashot.
+- Current user-visible product name: Lumashot.
+- Internal identity (Bundle ID, .app name, target name): matches upstream `macshot` for TCC stability.
 - GPLv3 must be preserved.
 - Upstream attribution to `sw33tLie/macshot` must be preserved where appropriate.
-- The old name `macshot` may appear only in upstream attribution, license/history notes, legacy source paths, or historical changelog context.
 - User-visible app names, menus, prompts, release titles, and new distribution assets should use Lumashot.
+- The `macshot` name in internal identity fields (Bundle ID, target name, notification names, data paths) is intentional and must not be "cleaned up" to Lumashot.
 
 ## Baseline
 
-As of `v0.1.2-alpha`, the release asset is:
+As of `v0.1.6-alpha`, the release asset is:
 
-`Lumashot-darwin-arm64-0.1.2-alpha.dmg`
+`Lumashot-darwin-arm64-0.1.6-alpha.dmg`
+
+The app inside is `macshot.app` with Bundle ID `com.sw33tlie.macshot.macshot`.
 
 Any later distributed change must use a later version.
+
+## For AI Agents (How to pick up this project)
+
+1. **Read this file first.** It defines what you must not break.
+2. **Read `CLAUDE.md`** for architecture, coding conventions, and the full file structure.
+3. **Read `CONTRIBUTING.md`** for how to build, test, and release.
+4. **Check git tags** (`git tag -l`) before creating a new version — never reuse a tag.
+5. **Do not change internal identity fields** (Bundle ID, PRODUCT_NAME, .app name) — it breaks TCC permission grants.
+6. **Test entitlement changes** by building and checking Screen Recording permission detection.
+7. **Never rename the Xcode project** (`macshot.xcodeproj`) or the main source directory (`macshot/`) unless the user explicitly asks — it breaks Xcode references.
+8. **The `PermissionsGuide.imageset` no longer contains an image** (removed in v0.1.4-alpha). `PermissionOnboardingController.swift` uses text-based instructions now. Do not add screenshots of system UI back.
+9. **The entitlements file** is `macshot/macshot.entitlements`. It includes `com.apple.security.device.screen-capture` which upstream does not have — this is intentional and must be kept.

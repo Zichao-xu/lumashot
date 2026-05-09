@@ -21,7 +21,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
     private let uploadURL = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
     private let filesURL = "https://www.googleapis.com/drive/v3/files"
 
-    private var lumashotFolderID: String?
+    private var macShotFolderID: String?
     private var authSession: ASWebAuthenticationSession?
     private weak var presentationWindow: NSWindow?
 
@@ -91,7 +91,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
     func signOut() {
         deleteTokens()
         UserDefaults.standard.removeObject(forKey: "gdriveUserEmail")
-        lumashotFolderID = nil
+        macShotFolderID = nil
     }
 
     /// Progress callback: percentage 0.0–1.0
@@ -262,7 +262,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
     // MARK: - Drive Operations
 
     private func ensureLumashotFolder(completion: @escaping (Result<String, Error>) -> Void) {
-        if let id = lumashotFolderID { completion(.success(id)); return }
+        if let id = macShotFolderID { completion(.success(id)); return }
 
         guard let token = loadAccessToken() else {
             completion(.failure(Self.error("No access token")))
@@ -306,7 +306,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
             }
 
             if let existing = files.first, let id = existing["id"] as? String {
-                self.lumashotFolderID = id
+                self.macShotFolderID = id
                 DispatchQueue.main.async { completion(.success(id)) }
             } else {
                 self.createLumashotFolder(token: token, completion: completion)
@@ -352,7 +352,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
                 DispatchQueue.main.async { completion(.failure(Self.error("Create folder: missing folder ID in response (HTTP \(statusCode))"))) }
                 return
             }
-            self?.lumashotFolderID = id
+            self?.macShotFolderID = id
             DispatchQueue.main.async { completion(.success(id)) }
         }.resume()
     }
@@ -489,7 +489,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
 
     private var tokenFileURL: URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let dir = appSupport.appendingPathComponent("com.zichao.lumashot")
+        let dir = appSupport.appendingPathComponent("com.sw33tlie.macshot")
         if !FileManager.default.fileExists(atPath: dir.path) {
             try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true,
                                                       attributes: [.posixPermissions: 0o700])

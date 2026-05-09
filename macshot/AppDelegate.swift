@@ -47,12 +47,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Prevent multiple instances — if already running, activate the existing one and quit
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.zichao.lumashot"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.sw33tlie.macshot.macshot"
         let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         if running.count > 1 {
             // Tell the existing instance to show its icon and open Settings
             DistributedNotificationCenter.default().postNotificationName(
-                .init("com.zichao.lumashot.showAndOpenPrefs"),
+                .init("com.sw33tlie.macshot.showAndOpenPrefs"),
                 object: nil, userInfo: nil, deliverImmediately: true
             )
             NSApp.terminate(nil)
@@ -100,7 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Listen for duplicate-launch notification to restore icon
         DistributedNotificationCenter.default().addObserver(
             self, selector: #selector(handleShowAndOpenPrefs),
-            name: .init("com.zichao.lumashot.showAndOpenPrefs"), object: nil
+            name: .init("com.sw33tlie.macshot.showAndOpenPrefs"), object: nil
         )
 
         // Dismiss overlays when the user switches spaces
@@ -112,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Pin from history panel
         NotificationCenter.default.addObserver(
             self, selector: #selector(pinFromHistory(_:)),
-            name: .init("com.zichao.lumashot.pinFromHistory"), object: nil
+            name: .init("macshot.pinFromHistory"), object: nil
         )
 
         // Check screen recording permission. If not yet granted, show the
