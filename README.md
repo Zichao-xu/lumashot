@@ -5,10 +5,7 @@
 </p>
 
 <p align="center">
-  <b>The most feature-rich open-source screenshot tool on macOS.</b><br>
-  <br>
-  18+ annotation tools, screen recording with a full video editor, OCR + translation,<br>
-  auto-redact PII, scroll capture, beautify — all native, all free.
+  <b>A minimal yet powerful macOS screenshot tool focused on native experience, customization, and modern HDR capture.</b><br>
 </p>
 
 <p align="center">
@@ -25,25 +22,41 @@
 
 ---
 
-### Why macshot?
+### What is macshot?
 
-- **Capture & annotate in one flow** — select a region, draw arrows/text/shapes/blur, copy to clipboard. One hotkey, zero friction.
-- **Screen recording with built-in editor** — record any area or full screen as MP4/GIF with system audio + microphone. Audio merge dialog with per-track volume control. Trim and export without leaving the app.
-- **Scroll capture** — select a region and scroll. macshot stitches it into one seamless tall (or wide) image automatically.
-- **Upload anywhere** — one-click upload to Google Drive, imgbb, or any S3-compatible service (Cloudflare R2, AWS S3, MinIO, etc.). Link copied to clipboard instantly.
-- **Lightweight & native** — ~8 MB memory at idle. Lives in your menu bar. Built with Swift and AppKit, not a web browser in disguise.
-- **40 languages** — English, 中文, 日本語, 한국어, Deutsch, Français, Español, Italiano, Português, العربية, हिन्दी, and 29 more. Auto-detects your system language.
+macshot is a fork of [sw33tLie/macshot](https://github.com/sw33tLie/macshot) focused on **HDR screenshot capture** and **native macOS interaction polish**. The upstream project is a full-featured screenshot tool with 18+ annotation tools, screen recording, OCR, and more. macshot inherits that foundation and narrows its scope to:
+
+- **HDR screenshot export** — ScreenCaptureKit-based capture with HEIC gain map output for genuine HDR display compatibility
+- **SDR + HDR dual path** — both HDR (HEIC gain map) and standard (PNG/JPEG/HEIC SDR) export in one workflow
+- **Native macOS feel** — clean toolbar interaction, macOS-like motion, AppKit-native implementation without Electron
+- **Lightweight annotation** — focused set of annotation tools covering the most common workflows
+- **File URL clipboard** — copy file references directly instead of raw image data, enabling smooth integration with other apps
+
+### Current Focus
+
+macshot is actively developing **HDR gain map capture** — making HEIC gain map output practical on macOS. This involves ScreenCaptureKit integration, HEIF gain map encoding, and ensuring compatibility across SDR and HDR displays. This work is experimental and still being finalized.
+
+### Upstream Attribution
+
+This project is forked from [sw33tLie/macshot](https://github.com/sw33tLie/macshot) and keeps full attribution to the upstream project. All upstream history and GPLv3 license are preserved. macshot develops fork-specific features (HDR capture, UI polish, customization) while remaining compatible with upstream releases.
+
+> macshot is **not** a replacement for the upstream project. The upstream has a broader feature set (scroll capture, screen recording, video editor, OCR, upload integrations). macshot is a focused fork for HDR-specific development.
+
+### Development Status
+
+Experimental / work in progress. HDR gain map capture is still being finalized and tested.
 
 ---
 
 ## Install
 
-**Homebrew:**
+> **This is a development fork.** Official releases come from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). To install macshot from this fork, build from source or install the latest CI artifact from the `feature/hdr-gainmap-finalize` branch.
+
+**From upstream (recommended for most users):**
 ```bash
 brew install --cask macshot
 ```
-
-**Manual:** Download the latest `.dmg` from [Releases](https://github.com/sw33tLie/macshot/releases), open it, drag to `/Applications`.
+Or download the latest `.dmg` from [sw33tLie/macshot Releases](https://github.com/sw33tLie/macshot/releases).
 
 ---
 
@@ -57,7 +70,9 @@ brew install --cask macshot
 ---
 
 <details>
-<summary><b>All Features</b></summary>
+<summary><b>All Features</b> <em>(inherited from upstream · macshot focuses on capture & HDR)</em></summary>
+
+> Full upstream features are preserved. macshot's current development is centered on capture and HDR output. Other features (scroll capture, screen recording, upload integrations) inherit upstream behavior.
 
 ### Capture
 - **Instant capture** — global hotkey freezes your screen, select any region
