@@ -1,12 +1,12 @@
-# macshot
+# Lumashot
 
 <p align="center">
-  <img src="assets/logo.svg" alt="macshot logo" width="200"/>
+  <img src="assets/logo.svg" alt="Lumashot logo" width="200"/>
 </p>
 
 <p align="center">
-  <b>A minimal yet powerful macOS screenshot tool focused on native experience, customization, and modern HDR capture.</b><br>
-  <b>一款轻量而强大的 macOS 截图工具，专注于原生体验、高度可定制和现代 HDR 截图。</b><br>
+  <b>Lumashot is a minimal yet powerful macOS screenshot tool for modern displays.</b><br>
+  <b>一款专注于现代显示器的轻量而强大的 macOS 截图工具。</b><br>
 </p>
 
 <p align="center">
@@ -14,51 +14,53 @@
 </p>
 
 <p align="center">
-  <img src="assets/preview.png" alt="macshot demo" width="700"/>
+  <img src="assets/preview.png" alt="Lumashot demo" width="700"/>
 </p>
 
 <p align="center">
-  <img src="assets/preview-editor.png" alt="macshot video editor" width="700"/>
+  <img src="assets/preview-editor.png" alt="Lumashot editor" width="700"/>
 </p>
 
 ---
 
-## What is macshot? / macshot 是什么？
+## What is Lumashot? / Lumashot 是什么？
 
-macshot is a fork of [sw33tLie/macshot](https://github.com/sw33tLie/macshot) focused on **HDR screenshot capture** and **native macOS interaction polish**. The upstream project is a full-featured screenshot tool with 18+ annotation tools, screen recording, OCR, and more. macshot inherits that foundation and focuses on:
+Lumashot is a fork of [sw33tLie/macshot](https://github.com/sw33tLie/macshot) focused on **modern display capture** and **native macOS interaction polish**. It inherits the full upstream feature set and narrows its development scope to:
 
-macshot 是 [sw33tLie/macshot](https://github.com/sw33tLie/macshot) 的一个 fork，专注于 **HDR 截图捕获**和**原生 macOS 交互打磨**。上游项目是一个功能完整的截图工具，拥有 18+ 标注工具、屏幕录制、OCR 等。macshot 继承了这一基础，并聚焦于：
+Lumashot 是 [sw33tLie/macshot](https://github.com/sw33tLie/macshot) 的一个 fork，专注于**现代显示器截图**和**原生 macOS 交互打磨**。它继承上游完整功能集，并将开发方向聚焦于：
 
-- **HDR screenshot export** — ScreenCaptureKit-based capture with HEIC gain map output for genuine HDR display compatibility
-- **HDR 截图导出** — 基于 ScreenCaptureKit 捕获，输出带 HEIC gain map 的截图，兼容真正 HDR 显示
-- **SDR + HDR dual path** — both HDR (HEIC gain map) and standard (PNG/JPEG/HEIC SDR) export in one workflow
-- **SDR + HDR 双路径** — 同时支持 HDR（HEIC gain map）和标准（PNG/JPEG/HEIC SDR）导出
-- **Native macOS feel** — clean toolbar interaction, macOS-like motion, AppKit-native implementation without Electron
-- **原生 macOS 体验** — 干净的工具栏交互、类 macOS 动效，基于 AppKit 原生实现，无 Electron
-- **Lightweight annotation** — focused set of annotation tools covering the most common workflows
-- **轻量标注** — 精选标注工具，覆盖最常见工作流
-- **File URL clipboard** — copy file references directly instead of raw image data, enabling smooth integration with other apps
-- **文件 URL 剪贴板** — 直接复制文件引用而非原始图像数据，与其他 App 无缝集成
+- **Native macOS screenshot experience** — global hotkey, clean toolbar, macOS-like motion, AppKit-native without Electron
+- **原生 macOS 截图体验** — 全局快捷键、干净工具栏、类 macOS 动效，AppKit 原生实现，无 Electron
+- **HDR screenshot export with HEIC gain map** — ScreenCaptureKit-based capture, genuine HDR output for HDR displays
+- **HDR 截图导出（HEIC gain map）** — 基于 ScreenCaptureKit 捕获，输出带 HEIC gain map 的 HDR 截图
+- **SDR/HDR compatible workflow** — both HDR and standard (PNG/JPEG/HEIC SDR) export in one workflow
+- **SDR/HDR 兼容工作流** — 同时支持 HDR 和标准（PNG/JPEG/HEIC SDR）导出
+- **Clean toolbar interaction** — focused annotation tools, macOS-like motion and feel
+- **干净工具栏交互** — 精选标注工具，macOS 风格动效和体验
+- **Lightweight annotation tools** — arrow, shape, text, pencil, marker, number, censor, and more
+- **轻量标注工具** — 箭头、形状、文字、铅笔、马克笔、数字标记、擦除等
+- **Customizable capture and export behavior** — global hotkeys, file format, quality, clipboard behavior all configurable
+- **可自定义的捕获和导出行为** — 全局快捷键、文件格式、质量、剪贴板行为均可配置
 
 ---
 
 ## Current Focus / 当前重点
 
-macshot is actively developing **HDR gain map capture** — making HEIC gain map output practical on macOS. This involves ScreenCaptureKit integration, HEIF gain map encoding, and ensuring compatibility across SDR and HDR displays. This work is experimental and still being finalized.
+Lumashot is actively developing **HDR gain map capture** — making HEIC gain map output practical on macOS. This involves ScreenCaptureKit integration, HEIF gain map encoding, and ensuring compatibility across SDR and HDR displays. This work is experimental and still being finalized.
 
-macshot 正在积极开发 **HDR gain map 捕获**功能 — 让 HEIC gain map 输出在 macOS 上真正可用。这包括 ScreenCaptureKit 集成、HEIF gain map 编码，以及确保在 SDR 和 HDR 显示器上的兼容性。该功能仍在实验阶段，尚未最终完成。
+Lumashot 正在积极开发 **HDR gain map 捕获**功能 — 让 HEIC gain map 输出在 macOS 上真正可用。这包括 ScreenCaptureKit 集成、HEIF gain map 编码，以及确保在 SDR 和 HDR 显示器上的兼容性。该功能仍在实验阶段，尚未最终完成。
 
 ---
 
 ## Upstream Attribution / 上游归属
 
-This project is forked from [sw33tLie/macshot](https://github.com/sw33tLie/macshot) and keeps full attribution to the upstream project. All upstream history and GPLv3 license are preserved. macshot develops fork-specific features (HDR capture, UI polish, customization) while remaining compatible with upstream releases.
+This project is based on / forked from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). We keep full attribution and upstream history while developing Lumashot-specific HDR capture, UI polish, and customization features. All upstream history and GPLv3 license are preserved.
 
-本项目 fork 自 [sw33tLie/macshot](https://github.com/sw33tLie/macshot)，并保留对上游项目的完整归属。所有上游历史和 GPLv3 协议均被保留。macshot 开发 fork 特有的功能（HDR 捕获、UI 打磨、可定制性），同时保持与上游版本的兼容性。
+本项目基于/ fork 自 [sw33tLie/macshot](https://github.com/sw33tLie/macshot)。我们保留完整归属和上游历史，同时开发 Lumashot 特有的 HDR 捕获、UI 打磨和可定制性功能。所有上游历史和 GPLv3 协议均被保留。
 
-> macshot is **not** a replacement for the upstream project. The upstream has a broader feature set (scroll capture, screen recording, video editor, OCR, upload integrations). macshot is a focused fork for HDR-specific development.
+> Lumashot is **not** a replacement for the upstream project. The upstream has a broader feature set (scroll capture, screen recording, video editor, OCR, upload integrations). Lumashot is a focused fork for modern display capture and HDR-specific development.
 >
-> macshot **不是**上游项目的替代品。上游拥有更广泛的功能集（滚动截图、屏幕录制、视频编辑器、OCR、上传集成等）。macshot 是一个专注于 HDR 方向的分支。
+> Lumashot **不是**上游项目的替代品。上游拥有更广泛的功能集（滚动截图、屏幕录制、视频编辑器、OCR、上传集成等）。Lumashot 是一个专注于现代显示器截图和 HDR 方向的分支。
 
 ---
 
@@ -72,9 +74,9 @@ Experimental / work in progress. HDR gain map capture is still being finalized a
 
 ## Install / 安装
 
-> **This is a development fork.** Official releases come from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). To install macshot from this fork, build from source or install the latest CI artifact from the `feature/hdr-gainmap-finalize` branch.
+> **This is a development fork.** Official releases come from [sw33tLie/macshot](https://github.com/sw33tLie/macshot). To install Lumashot from this fork, build from source or install the latest CI artifact from the `main` branch.
 >
-> **这是一个开发 fork。** 官方发布版本来自 [sw33tLie/macshot](https://github.com/sw33tLie/macshot)。如需安装本 fork 的 macshot，请从源码构建，或从 `feature/hdr-gainmap-finalize` 分支安装最新的 CI 构建产物。
+> **这是一个开发 fork。** 官方发布版本来自 [sw33tLie/macshot](https://github.com/sw33tLie/macshot)。如需安装本 fork 的 Lumashot，请从源码构建，或从 `main` 分支安装最新的 CI 构建产物。
 
 **From upstream (recommended for most users) / 从上游安装（推荐大多数用户）：**
 
@@ -88,8 +90,8 @@ Or download the latest `.dmg` from [sw33tLie/macshot Releases](https://github.co
 **Build from this fork / 从本 fork 构建：**
 
 ```bash
-git clone https://github.com/Zichao-xu/macshot.git
-cd macshot
+git clone https://github.com/Zichao-xu/lumashot.git
+cd lumashot
 xcodebuild -scheme macshot -configuration Release
 # Result: build/macshot.app → copy to /Applications
 ```
@@ -98,7 +100,7 @@ xcodebuild -scheme macshot -configuration Release
 
 ## Quick Start / 快速开始
 
-1. Launch macshot — it appears in your menu bar / 启动 macshot — 它会出现在菜单栏中
+1. Launch Lumashot — it appears in your menu bar / 启动 Lumashot — 它会出现在菜单栏中
 2. Press `Cmd+Shift+X` to capture / 按 `Cmd+Shift+X` 开始截图
 3. Drag to select, annotate with the toolbar, press `Cmd+C` to copy / 拖选区域，使用工具栏标注，按 `Cmd+C` 复制
 4. Press `Esc` to cancel / 按 `Esc` 取消
@@ -106,7 +108,7 @@ xcodebuild -scheme macshot -configuration Release
 ---
 
 <details>
-<summary><b>All Features / 全部功能</b> <em>(inherited from upstream · macshot focuses on capture & HDR / 继承自上游 · macshot 专注于截图 & HDR)</em></summary>
+<summary><b>All Features / 全部功能</b> <em>(inherited from upstream · Lumashot focuses on capture & HDR / 继承自上游 · Lumashot 专注于截图 & HDR)</em></summary>
 
 ### Capture / 截图
 
@@ -152,8 +154,8 @@ xcodebuild -scheme macshot -configuration Release
 
 - **MP4 (H.264)** up to 120fps or **GIF** (5/10/15fps)
 - **MP4 (H.264)** 最高 120fps，或 **GIF**（5/10/15fps）
-- **System audio capture** — toggle on/off, excludes macshot's own sounds
-- **系统音频捕获** — 可开关，排除 macshot 自身的声音
+- **System audio capture** — toggle on/off, excludes Lumashot's own sounds
+- **系统音频捕获** — 可开关，排除 Lumashot 自身的声音
 - **Microphone recording** — record voice narration alongside screen capture
 - **麦克风录制** — 屏幕捕获同时录制语音旁白
 - **Video editor** — trim timeline, mute/strip audio, play/pause, save, upload
@@ -163,8 +165,8 @@ xcodebuild -scheme macshot -configuration Release
 
 - **Formats** — PNG, JPEG, HEIC, WebP with quality slider
 - **格式** — PNG、JPEG、HEIC、WebP，带质量滑块
-- **Google Drive** — sign in once, uploads to a private "macshot" folder
-- **Google Drive** — 登录一次，上传到私有 "macshot" 文件夹
+- **Google Drive** — sign in once, uploads to a private "Lumashot" folder
+- **Google Drive** — 登录一次，上传到私有 "Lumashot" 文件夹
 - **S3-compatible** — upload to Cloudflare R2, AWS S3, MinIO, etc.
 - **兼容 S3** — 上传到 Cloudflare R2、AWS S3、MinIO 等
 - **Retina downscale** — optional 1x export for smaller files
@@ -237,8 +239,8 @@ xcodebuild -scheme macshot -configuration Release
 
 ## Permissions / 权限
 
-macshot requires **Screen Recording** permission. macOS will prompt you on first capture.
-macshot 需要**屏幕录制**权限。首次截图时 macOS 会自动提示授权。
+Lumashot requires **Screen Recording** permission. macOS will prompt you on first capture.
+Lumashot 需要**屏幕录制**权限。首次截图时 macOS 会自动提示授权。
 
 ---
 
@@ -253,3 +255,6 @@ macOS 12.3 (Monterey) or later / macOS 12.3（Monterey）或更高版本。
 ## License / 许可证
 
 [GPLv3](LICENSE)
+
+*This project is based on [sw33tLie/macshot](https://github.com/sw33tLie/macshot). Full attribution to the original authors is preserved.*
+*本项目基于 [sw33tLie/macshot](https://github.com/sw33tLie/macshot)。对原始作者的完整归属已被保留。*
