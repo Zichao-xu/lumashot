@@ -244,10 +244,6 @@ Lumashot 需要**屏幕录制**权限。首次截图时 macOS 会自动提示授
 
 ---
 
-## Star History / Star 历史
-
-[![Star History Chart](https://api.star-history.com/svg?repos=sw33tLie/macshot&type=Date)](https://star-history.com/#sw33tLie/macshot&Date)
-
 ## Requirements / 系统要求
 
 macOS 12.3 (Monterey) or later / macOS 12.3（Monterey）或更高版本。
