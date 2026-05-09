@@ -64,15 +64,28 @@ class PermissionOnboardingController: NSWindowController {
         title.translatesAutoresizingMaskIntoConstraints = false
         cv.addSubview(title)
 
-        // Guide image — always visible, shows how to enable permission
-        let imgView = NSImageView()
-        imgView.image = NSImage(named: "PermissionsGuide")
-        imgView.imageScaling = .scaleProportionallyUpOrDown
-        imgView.wantsLayer = true
-        imgView.layer?.cornerRadius = 7
-        imgView.layer?.masksToBounds = true
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        cv.addSubview(imgView)
+        // Step-by-step instructions (no screenshot — avoids stale OS UI images)
+        let instructionBox = NSBox()
+        instructionBox.boxType = .custom
+        instructionBox.fillColor = NSColor(name: nil) { appearance in
+            switch appearance.name {
+            case .darkAqua: return NSColor.white.withAlphaComponent(0.08)
+            default: return NSColor.black.withAlphaComponent(0.05)
+            }
+        }
+        instructionBox.borderColor = .separatorColor
+        instructionBox.borderWidth = 1
+        instructionBox.cornerRadius = 8
+        instructionBox.translatesAutoresizingMaskIntoConstraints = false
+        cv.addSubview(instructionBox)
+
+        let stepsText = NSTextField(wrappingLabelWithString:
+            L("1. Click \"Open Screen Recording Settings\" below.\n2. In System Settings, find Lumashot in the list.\n3. Turn Lumashot on.\n4. Close System Settings and return here."))
+        stepsText.font = NSFont.systemFont(ofSize: 11, weight: .regular)
+        stepsText.textColor = .secondaryLabelColor
+        stepsText.alignment = .left
+        stepsText.translatesAutoresizingMaskIntoConstraints = false
+        instructionBox.addSubview(stepsText)
 
         // Step indicator box
         let stepBox = NSBox()
@@ -130,9 +143,6 @@ class PermissionOnboardingController: NSWindowController {
         cv.addSubview(contBtn)
         self.continueButton = contBtn
 
-        // Image aspect ratio: 1405 × 892
-        let imgAspect: CGFloat = 892.0 / 1405.0
-
         NSLayoutConstraint.activate([
             logoView.centerXAnchor.constraint(equalTo: cv.centerXAnchor),
             logoView.topAnchor.constraint(equalTo: cv.topAnchor, constant: 20),
@@ -143,13 +153,17 @@ class PermissionOnboardingController: NSWindowController {
             title.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 24),
             title.trailingAnchor.constraint(equalTo: cv.trailingAnchor, constant: -24),
 
-            // Guide image — fixed small size, centered, just enough to orient the user
-            imgView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 12),
-            imgView.centerXAnchor.constraint(equalTo: cv.centerXAnchor),
-            imgView.widthAnchor.constraint(equalToConstant: 360),
-            imgView.heightAnchor.constraint(equalToConstant: floor(360 * imgAspect)),
+            // Instruction box — fixed size, centered
+            instructionBox.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 12),
+            instructionBox.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
+            instructionBox.trailingAnchor.constraint(equalTo: cv.trailingAnchor, constant: -20),
+            instructionBox.heightAnchor.constraint(equalToConstant: 80),
 
-            stepBox.topAnchor.constraint(equalTo: imgView.bottomAnchor, constant: 14),
+            stepsText.leadingAnchor.constraint(equalTo: instructionBox.leadingAnchor, constant: 12),
+            stepsText.trailingAnchor.constraint(equalTo: instructionBox.trailingAnchor, constant: -12),
+            stepsText.centerYAnchor.constraint(equalTo: instructionBox.centerYAnchor),
+
+            stepBox.topAnchor.constraint(equalTo: instructionBox.bottomAnchor, constant: 14),
             stepBox.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
             stepBox.trailingAnchor.constraint(equalTo: cv.trailingAnchor, constant: -20),
             stepBox.heightAnchor.constraint(equalToConstant: 38),
