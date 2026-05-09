@@ -39,7 +39,7 @@ enum HDRCaptureManager {
                 await MainActor.run { completion(outputURL) }
             } catch {
                 #if DEBUG
-                    NSLog("macshot: HDR gain map capture failed: \(error.localizedDescription)")
+                    NSLog("Lumashot: HDR gain map capture failed: \(error.localizedDescription)")
                 #endif
                 await MainActor.run { completion(nil) }
             }
@@ -125,7 +125,7 @@ enum HDRCaptureManager {
         )
         #if DEBUG
             NSLog(
-                "macshot: HDR gain map headroom full=\(products.fullHeadroom) toneMap=\(products.toneMapHeadroom) gainMap=\(products.gainMapHeadroom)"
+                "Lumashot: HDR gain map headroom full=\(products.fullHeadroom) toneMap=\(products.toneMapHeadroom) gainMap=\(products.gainMapHeadroom)"
             )
         #endif
         return fileURL

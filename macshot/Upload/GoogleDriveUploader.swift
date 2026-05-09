@@ -4,7 +4,7 @@ import CryptoKit
 import AuthenticationServices
 
 /// Google Drive uploader using OAuth2 with PKCE.
-/// Files are uploaded to a "macshot" folder in the user's Drive, kept private (not shared).
+/// Files are uploaded to a "Lumashot" folder in the user's Drive, kept private (not shared).
 final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContextProviding {
 
     static let shared = GoogleDriveUploader()
@@ -97,14 +97,14 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
     /// Progress callback: percentage 0.0–1.0
     var onProgress: ((Double) -> Void)?
 
-    /// Upload a file (image or video) to the macshot folder.
+    /// Upload a file (image or video) to the Lumashot folder.
     func upload(data: Data, filename: String, mimeType: String, completion: @escaping (Result<String, Error>) -> Void) {
         ensureValidToken { [weak self] success in
             guard let self = self, success else {
                 completion(.failure(Self.error("Not signed in")))
                 return
             }
-            self.ensureMacShotFolder { result in
+            self.ensureLumashotFolder { result in
                 switch result {
                 case .success(let folderID):
                     self.uploadFile(data: data, filename: filename, mimeType: mimeType, folderID: folderID, completion: completion)
@@ -261,7 +261,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
 
     // MARK: - Drive Operations
 
-    private func ensureMacShotFolder(completion: @escaping (Result<String, Error>) -> Void) {
+    private func ensureLumashotFolder(completion: @escaping (Result<String, Error>) -> Void) {
         if let id = macShotFolderID { completion(.success(id)); return }
 
         guard let token = loadAccessToken() else {
@@ -269,8 +269,8 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
             return
         }
 
-        // Search for existing macshot folder
-        let query = "name='macshot' and mimeType='application/vnd.google-apps.folder' and trashed=false"
+        // Search for existing Lumashot folder
+        let query = "name='Lumashot' and mimeType='application/vnd.google-apps.folder' and trashed=false"
         var searchURL = URLComponents(string: filesURL)!
         searchURL.queryItems = [URLQueryItem(name: "q", value: query), URLQueryItem(name: "fields", value: "files(id)")]
 
@@ -309,19 +309,19 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
                 self.macShotFolderID = id
                 DispatchQueue.main.async { completion(.success(id)) }
             } else {
-                self.createMacShotFolder(token: token, completion: completion)
+                self.createLumashotFolder(token: token, completion: completion)
             }
         }.resume()
     }
 
-    private func createMacShotFolder(token: String, completion: @escaping (Result<String, Error>) -> Void) {
+    private func createLumashotFolder(token: String, completion: @escaping (Result<String, Error>) -> Void) {
         var request = URLRequest(url: URL(string: filesURL)!)
         request.httpMethod = "POST"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let metadata: [String: Any] = [
-            "name": "macshot",
+            "name": "Lumashot",
             "mimeType": "application/vnd.google-apps.folder",
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: metadata)
@@ -389,7 +389,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
 
         // Write body to temp file for uploadTask (enables progress tracking)
-        let tmpFile = FileManager.default.temporaryDirectory.appendingPathComponent("macshot_upload_\(UUID().uuidString).tmp")
+        let tmpFile = FileManager.default.temporaryDirectory.appendingPathComponent("Lumashot_upload_\(UUID().uuidString).tmp")
         try? body.write(to: tmpFile)
 
         let maxRetries = 3
@@ -489,7 +489,7 @@ final class GoogleDriveUploader: NSObject, ASWebAuthenticationPresentationContex
 
     private var tokenFileURL: URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let dir = appSupport.appendingPathComponent("com.sw33tlie.macshot")
+        let dir = appSupport.appendingPathComponent("com.zichao.lumashot")
         if !FileManager.default.fileExists(atPath: dir.path) {
             try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true,
                                                       attributes: [.posixPermissions: 0o700])

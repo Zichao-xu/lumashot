@@ -1,17 +1,17 @@
-/* 简体中文 — macshot localization
+/* 简体中文 — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "从剪贴板打开";
 "Preferences..." = "偏好设置...";
 "Check for Updates..." = "检查更新...";
-"Quit macshot" = "退出 macshot";
+"Quit Lumashot" = "退出 Lumashot";
 "No recent captures" = "暂无最近捕获";
 "Clear History" = "清除历史";
 
@@ -174,7 +174,7 @@
 "Copy to clipboard" = "拷贝到剪贴板";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot 偏好设置";
+"Lumashot Preferences" = "Lumashot 偏好设置";
 "General" = "通用";
 "Tools" = "工具";
 "Recording" = "录制";
@@ -194,7 +194,7 @@
 "Capture mouse cursor in screenshot" = "在截图中捕获鼠标指针";
 "Use window title in saved filename" = "在保存文件名中使用窗口标题";
 "Hide menu bar icon" = "隐藏菜单栏图标";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "快捷键仍可使用。若要再次显示图标，请重新启动 macshot。";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "快捷键仍可使用。若要再次显示图标，请重新启动 Lumashot。";
 "Check for updates automatically" = "自动检查更新";
 "Check for beta updates" = "检查测试版更新";
 "Thumbnail" = "缩略图";
@@ -311,7 +311,7 @@
 "Video upload requires Google Drive or S3" = "视频上传需要 Google Drive 或 S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "版本 %@（%@）";
 "Made by" = "开发者";
 "Licensed under the GPLv3" = "基于 GPLv3 许可协议";
@@ -322,23 +322,23 @@
 "Copy an image to the clipboard first, then try again." = "请先将图片拷贝到剪贴板，然后重试。";
 "OK" = "好";
 "Accessibility Access Required" = "需要辅助功能权限";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot 需要辅助功能权限才能自动滚动其他应用。请在系统设置中授予权限，然后重试。";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot 需要辅助功能权限才能进行滚动截图。请在系统设置中授予访问权限，然后重试。";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot 需要辅助功能权限才能自动滚动其他应用。请在系统设置中授予权限，然后重试。";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot 需要辅助功能权限才能进行滚动截图。请在系统设置中授予访问权限，然后重试。";
 "Open Settings" = "打开设置";
 "Cancel" = "取消";
 "Microphone Access Required" = "需要麦克风权限";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot 需要麦克风权限来录制语音。请打开系统设置以授予权限。";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot 需要麦克风权限来录制语音。请打开系统设置以授予权限。";
 "Upload to Google Drive?" = "上传到 Google Drive？";
 "Upload to S3?" = "上传到 S3？";
 "Upload to imgbb.com?" = "上传到 imgbb.com？";
 "Your screenshot will be uploaded." = "您的截图将被上传。";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "欢迎使用 macshot";
-"macshot needs one permission" = "macshot 需要一项权限";
+"Welcome to Lumashot" = "欢迎使用 Lumashot";
+"Lumashot needs one permission" = "Lumashot 需要一项权限";
 "Screen Recording not yet granted" = "尚未授予屏幕录制权限";
 "Screen Recording granted!" = "屏幕录制权限已授予！";
-"Enable macshot, then try taking a screenshot" = "启用 macshot，然后尝试截图";
+"Enable Lumashot, then try taking a screenshot" = "启用 Lumashot，然后尝试截图";
 "Open Screen Recording Settings" = "打开屏幕录制设置";
 "Continue" = "继续";
 
@@ -369,7 +369,7 @@
 "Path copied!" = "路径已拷贝！";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot 视频编辑器";
+"Lumashot Video Editor" = "Lumashot 视频编辑器";
 "%@ selected" = "已选择 %@";
 "Exporting..." = "导出中...";
 "Export failed" = "导出失败";
@@ -414,8 +414,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "需要输入监控权限";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot 需要输入监控权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot 需要辅助功能权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要输入监控权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要辅助功能权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "显示按键";
@@ -431,7 +431,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "摄像头叠加";
 "Camera Access Required" = "需要摄像头权限";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot 需要摄像头权限来使用摄像头叠加。请打开系统设置以授予权限。";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot 需要摄像头权限来使用摄像头叠加。请打开系统设置以授予权限。";
 "Webcam" = "摄像头";
 "Bottom Right" = "右下";
 "Bottom Left" = "左下";
@@ -447,7 +447,7 @@
 
 /* New Strings */
 "Settings..." = "设置...";
-"macshot Settings" = "macshot 设置";
+"Lumashot Settings" = "Lumashot 设置";
 "Also open in Editor" = "同时在编辑器中打开";
 "Hide controls" = "隐藏控制";
 "Hide recording controls" = "隐藏录制控制";
@@ -500,13 +500,13 @@
 "Clear History?" = "清除历史记录？";
 "This will permanently delete all screenshots from history." = "这将从历史记录中永久删除所有截图。";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "点击\"设置\"，然后按下包含至少一个修饰键（⌘、⌥、⌃、⇧）的组合键来设置快捷键。";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "文件将上传到您 Google Drive 中的\"macshot\"文件夹。所有内容均保持私密——不会公开共享任何内容。";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "文件将上传到您 Google Drive 中的\"Lumashot\"文件夹。所有内容均保持私密——不会公开共享任何内容。";
 
 "Pressure" = "压感";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "打开视频...";
-"Choose a video to open in macshot editor" = "选取要在 macshot 编辑器中打开的视频";
+"Choose a video to open in Lumashot editor" = "选取要在 Lumashot 编辑器中打开的视频";
 "Click to add effects" = "点按以添加效果";
 "Add Zoom" = "添加缩放";
 "Add Censor" = "添加遮挡";
@@ -559,9 +559,9 @@
 "Stop the current recording" = "停止当前录制";
 "Supported URL Scheme Commands" = "支持的 URL Scheme 命令";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "文件扩展名会自动附加。{window} 中的斜杠和冒号会变为短横线。";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "从 Raycast、Alfred、Shortcuts 或任何能打开 URL 的工具触发 macshot。";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "从 Raycast、Alfred、Shortcuts 或任何能打开 URL 的工具触发 Lumashot。";
 "URL scheme info" = "URL scheme 信息";
-"Enable macshot:// URL scheme" = "启用 macshot:// URL scheme";
+"Enable lumashot:// URL scheme" = "启用 lumashot:// URL scheme";
 "sec (0 = never)" = "秒（0 = 永不）";
 
 /* AI translation */

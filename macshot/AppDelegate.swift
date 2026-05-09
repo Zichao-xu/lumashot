@@ -48,12 +48,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Prevent multiple instances — if already running, activate the existing one and quit
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.sw33tlie.macshot.macshot"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.zichao.lumashot"
         let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         if running.count > 1 {
             // Tell the existing instance to show its icon and open Settings
             DistributedNotificationCenter.default().postNotificationName(
-                .init("com.sw33tlie.macshot.showAndOpenPrefs"),
+                .init("com.zichao.lumashot.showAndOpenPrefs"),
                 object: nil, userInfo: nil, deliverImmediately: true
             )
             NSApp.terminate(nil)
@@ -100,7 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         // Listen for duplicate-launch notification to restore icon
         DistributedNotificationCenter.default().addObserver(
             self, selector: #selector(handleShowAndOpenPrefs),
-            name: .init("com.sw33tlie.macshot.showAndOpenPrefs"), object: nil
+            name: .init("com.zichao.lumashot.showAndOpenPrefs"), object: nil
         )
 
         // Dismiss overlays when the user switches spaces
@@ -112,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         // Pin from history panel
         NotificationCenter.default.addObserver(
             self, selector: #selector(pinFromHistory(_:)),
-            name: .init("macshot.pinFromHistory"), object: nil
+            name: .init("com.zichao.lumashot.pinFromHistory"), object: nil
         )
 
         // Check screen recording permission. If not yet granted, show the
@@ -140,7 +140,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        // Re-launching macshot while it's running: show the menu bar icon
+        // Re-launching Lumashot while it's running: show the menu bar icon
         if UserDefaults.standard.bool(forKey: "hideMenuBarIcon") {
             UserDefaults.standard.set(false, forKey: "hideMenuBarIcon")
             setMenuBarIconVisible(true)
@@ -222,7 +222,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
         let alert = NSAlert()
         alert.messageText = "Move to Applications folder?"
-        alert.informativeText = "macshot is running from a disk image. Move it to your Applications folder for auto-updates and best experience."
+        alert.informativeText = "Lumashot is running from a disk image. Move it to your Applications folder for auto-updates and best experience."
         alert.addButton(withTitle: "Move to Applications")
         alert.addButton(withTitle: "Not Now")
         alert.showsSuppressionButton = true
@@ -234,7 +234,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         }
         guard response == .alertFirstButtonReturn else { return }
 
-        let dest = URL(fileURLWithPath: "/Applications/macshot.app")
+        let dest = URL(fileURLWithPath: "/Applications/Lumashot.app")
         let src = URL(fileURLWithPath: bundlePath)
         do {
             // Remove old version if present
@@ -251,7 +251,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         } catch {
             let errAlert = NSAlert()
             errAlert.messageText = "Could not move to Applications"
-            errAlert.informativeText = "Please drag macshot to your Applications folder manually.\n\n\(error.localizedDescription)"
+            errAlert.informativeText = "Please drag Lumashot to your Applications folder manually.\n\n\(error.localizedDescription)"
             errAlert.runModal()
         }
     }
@@ -272,9 +272,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         mainMenu.addItem(appMenuItem)
 
         let appMenu = NSMenu()
-        appMenu.addItem(withTitle: "About macshot", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        appMenu.addItem(withTitle: "About Lumashot", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         appMenu.addItem(NSMenuItem.separator())
-        appMenu.addItem(withTitle: "Quit macshot", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit Lumashot", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appMenuItem.submenu = appMenu
 
         NSApp.mainMenu = mainMenu
@@ -295,7 +295,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
                 img.size = NSSize(width: 22, height: 22)
                 button.image = img
             } else {
-                button.title = "macshot"
+                button.title = "Lumashot"
             }
             // Use custom click handler so we can dismiss modals before showing the menu
             button.target = self
@@ -449,7 +449,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        let quitItem = NSMenuItem(title: L("Quit macshot"), action: #selector(quitApp), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: L("Quit Lumashot"), action: #selector(quitApp), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 
@@ -502,10 +502,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
     private var pendingScrollCaptureMode: Bool = false
     private var capturedWindowTitle: String?
     /// The app that was active before the overlay appeared — re-activated on dismiss.
-    /// The app that was active before macshot showed its overlay.
+    /// The app that was active before Lumashot showed its overlay.
     private var previousApp: NSRunningApplication?
 
-    /// Titled macshot windows (editors, preferences, Sparkle, etc.) that were
+    /// Titled Lumashot windows (editors, preferences, Sparkle, etc.) that were
     /// visible when capture started. We `orderOut` them so `NSApp.activate`
     /// during capture can't drag them in front of the user's frontmost app,
     /// then `orderFront` them when the overlay dismisses. Kept in the order
@@ -517,7 +517,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         !thumbnailControllers.isEmpty || !pinControllers.isEmpty
     }
 
-    /// Call when a macshot window closes. If no titled windows remain,
+    /// Call when a Lumashot window closes. If no titled windows remain,
     /// switches to accessory activation policy and returns focus to
     /// the previous app (or the next regular app in line).
     func returnFocusIfNeeded() {
@@ -710,7 +710,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         delayCountdownWindow = window
 
         // Listen for Escape to cancel countdown — use both local and global monitors
-        // Local catches keys when macshot is active; global catches when another app has focus
+        // Local catches keys when Lumashot is active; global catches when another app has focus
         delayEscMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             if event.keyCode == 53 {
                 self?.cancelPreCaptureCountdown()
@@ -886,19 +886,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         }
     }
 
-    /// Hide non-overlay titled macshot windows so they can't be dragged in
+    /// Hide non-overlay titled Lumashot windows so they can't be dragged in
     /// front of the user's frontmost app when the overlay activates.
     ///
     /// We only stash when another app was frontmost — that means the user is
-    /// trying to screenshot something *other than* macshot, and any macshot
+    /// trying to screenshot something *other than* Lumashot, and any Lumashot
     /// windows still on screen are unintended background clutter. When
-    /// macshot itself is frontmost the user presumably wants to capture one
+    /// Lumashot itself is frontmost the user presumably wants to capture one
     /// of its own windows, so we leave everything alone.
     private func stashBackgroundWindows() {
         stashedBackgroundWindows.removeAll()
         let ourBundleID = Bundle.main.bundleIdentifier
-        let macshotWasFrontmost = previousApp?.bundleIdentifier == ourBundleID
-        guard !macshotWasFrontmost else { return }
+        let lumashotWasFrontmost = previousApp?.bundleIdentifier == ourBundleID
+        guard !lumashotWasFrontmost else { return }
         for window in NSApp.windows where window.isVisible && window.styleMask.contains(.titled) {
             stashedBackgroundWindows.append(window)
             window.orderOut(nil)
@@ -1276,7 +1276,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
         panel.allowedContentTypes = [.png, .jpeg, .tiff, .bmp, .gif, .heic, .webP, .image]
-        panel.message = "Choose an image to open in macshot editor"
+        panel.message = "Choose an image to open in Lumashot editor"
 
         NSApp.activate(ignoringOtherApps: true)
         panel.begin { response in
@@ -1313,7 +1313,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
         panel.allowedContentTypes = [.mpeg4Movie, .quickTimeMovie, .movie, .video, .gif]
-        panel.message = L("Choose a video to open in macshot editor")
+        panel.message = L("Choose a video to open in Lumashot editor")
 
         NSApp.activate(ignoringOtherApps: true)
         panel.begin { response in
@@ -1334,7 +1334,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         let imageExtensions: Set<String> = ["png", "jpg", "jpeg", "tiff", "tif", "bmp", "gif", "heic", "heif", "webp", "icns"]
         let videoExtensions: Set<String> = ["mp4", "mov", "m4v"]
         for url in urls {
-            if url.scheme == "macshot" {
+            if url.scheme == "lumashot" {
                 let urlSchemeEnabled = UserDefaults.standard.object(forKey: "urlSchemeEnabled") as? Bool ?? true
                 guard urlSchemeEnabled else { continue }
                 handleURLSchemeAction(url)
@@ -1352,8 +1352,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         }
     }
 
-    /// Handle macshot:// URL scheme actions from external tools (Raycast, Alfred, etc.).
-    /// Usage: `open macshot://capture`, `open macshot://ocr`, etc.
+    /// Handle lumashot:// URL scheme actions from external tools (Raycast, Alfred, etc.).
+    /// Usage: `open lumashot://capture`, `open lumashot://ocr`, etc.
     private func handleURLSchemeAction(_ url: URL) {
         guard let action = url.host else { return }
         switch action {
@@ -1957,7 +1957,7 @@ extension AppDelegate: OverlayWindowControllerDelegate {
         // fixed path on the next clipboard copy).
         let ext = url.pathExtension.lowercased()
         let fixedURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("macshot-clipboard-recording.\(ext)")
+            .appendingPathComponent("Lumashot-clipboard-recording.\(ext)")
         try? FileManager.default.removeItem(at: fixedURL)
         let pasteURL: URL
         if (try? FileManager.default.moveItem(at: url, to: fixedURL)) != nil {
@@ -2010,7 +2010,7 @@ extension AppDelegate: OverlayWindowControllerDelegate {
             AXIsProcessTrustedWithOptions(opts)
             let alert = NSAlert()
             alert.messageText = L("Accessibility Access Required")
-            alert.informativeText = L("macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again.")
+            alert.informativeText = L("Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again.")
             alert.alertStyle = .warning
             alert.addButton(withTitle: L("Open Settings"))
             alert.addButton(withTitle: L("Cancel"))
@@ -2075,7 +2075,7 @@ extension AppDelegate: OverlayWindowControllerDelegate {
         AXIsProcessTrustedWithOptions(opts)
         let alert = NSAlert()
         alert.messageText = L("Accessibility Access Required")
-        alert.informativeText = L("macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again.")
+        alert.informativeText = L("Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again.")
         alert.alertStyle = .warning
         alert.addButton(withTitle: L("Open Settings"))
         alert.addButton(withTitle: L("Cancel"))
@@ -2092,7 +2092,7 @@ extension AppDelegate: OverlayWindowControllerDelegate {
         KeystrokeOverlay.requestInputMonitoringPermission()
         let alert = NSAlert()
         alert.messageText = L("Input Monitoring Required")
-        alert.informativeText = L("macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again.")
+        alert.informativeText = L("Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again.")
         alert.alertStyle = .warning
         alert.addButton(withTitle: L("Open Settings"))
         alert.addButton(withTitle: L("Cancel"))
@@ -2123,7 +2123,7 @@ extension AppDelegate: OverlayWindowControllerDelegate {
                 AXIsProcessTrustedWithOptions(opts)
                 let alert = NSAlert()
                 alert.messageText = L("Accessibility Access Required")
-                alert.informativeText = L("macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again.")
+                alert.informativeText = L("Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again.")
                 alert.alertStyle = .warning
                 alert.addButton(withTitle: L("Open Settings"))
                 alert.addButton(withTitle: L("Cancel"))

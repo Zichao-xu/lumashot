@@ -692,7 +692,7 @@ class OverlayView: NSView {
             }
         }
 
-        // Escape key monitor — global catches when another app has focus; local when macshot has focus.
+        // Escape key monitor — global catches when another app has focus; local when Lumashot has focus.
         let handleScrollKey: (NSEvent) -> Void = { [weak self] event in
             guard let self = self, self.isScrollCapturing else { return }
             if event.keyCode == 53 {  // Escape
@@ -6150,7 +6150,7 @@ class OverlayView: NSView {
     private func showCameraPermissionAlert() {
         let alert = NSAlert()
         alert.messageText = L("Camera Access Required")
-        alert.informativeText = L("macshot needs camera permission for the webcam overlay. Open System Settings to grant access.")
+        alert.informativeText = L("Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access.")
         alert.alertStyle = .warning
         alert.addButton(withTitle: L("Open Settings"))
         alert.addButton(withTitle: L("Cancel"))
@@ -6939,7 +6939,7 @@ class OverlayView: NSView {
         let alert = NSAlert()
         alert.messageText = L("Microphone Access Required")
         alert.informativeText =
-            L("macshot needs microphone permission to record voice audio. Open System Settings to grant access.")
+            L("Lumashot needs microphone permission to record voice audio. Open System Settings to grant access.")
         alert.alertStyle = .warning
         alert.addButton(withTitle: L("Open Settings"))
         alert.addButton(withTitle: L("Cancel"))
@@ -7383,7 +7383,7 @@ class OverlayView: NSView {
 
     // MARK: - Annotation Copy/Paste
 
-    private static let annotationPasteboardType = NSPasteboard.PasteboardType("com.sw33tlie.macshot.annotations")
+    private static let annotationPasteboardType = NSPasteboard.PasteboardType("com.zichao.lumashot.annotations")
 
     /// Copy selected annotations to the pasteboard.
     func copySelectedAnnotations() {

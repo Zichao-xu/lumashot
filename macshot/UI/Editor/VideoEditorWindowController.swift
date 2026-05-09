@@ -62,7 +62,7 @@ final class VideoEditorWindowController: NSObject, NSWindowDelegate {
         )
         // Prefix with the source filename so multiple editor windows are
         // distinguishable in the Dock menu and Window menu.
-        win.title = "\(url.deletingPathExtension().lastPathComponent) — \(L("macshot Video Editor"))"
+        win.title = "\(url.deletingPathExtension().lastPathComponent) — \(L("Lumashot Video Editor"))"
         win.minSize = NSSize(width: 880, height: 400)
         win.isReleasedWhenClosed = false
         win.delegate = self
@@ -1981,8 +1981,8 @@ private final class VideoEditorView: NSView {
                 writer.startSession(atSourceTime: .zero)
 
                 let group = DispatchGroup()
-                let videoQueue = DispatchQueue(label: "macshot.export.video")
-                let audioQueue = DispatchQueue(label: "macshot.export.audio")
+                let videoQueue = DispatchQueue(label: "Lumashot.export.video")
+                let audioQueue = DispatchQueue(label: "Lumashot.export.audio")
 
                 // Pump video
                 group.enter()
@@ -2102,7 +2102,7 @@ private final class VideoEditorView: NSView {
             uploadFileURL(videoURL, false)
         } else {
             guard let asset = asset else { return }
-            let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("macshot_upload_\(UUID().uuidString).mp4")
+            let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("Lumashot_upload_\(UUID().uuidString).mp4")
 
             let timeRange = CMTimeRange(start: CMTime(seconds: trimStart, preferredTimescale: 600),
                                         end: CMTime(seconds: trimEnd, preferredTimescale: 600))

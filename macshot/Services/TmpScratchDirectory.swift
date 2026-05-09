@@ -18,7 +18,7 @@ enum TmpScratchDirectory {
     /// Path to the scratch subfolder. Created lazily on first access.
     static let url: URL = {
         let dir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("macshot-share")
+            .appendingPathComponent("Lumashot-share")
         if !FileManager.default.fileExists(atPath: dir.path) {
             try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         }

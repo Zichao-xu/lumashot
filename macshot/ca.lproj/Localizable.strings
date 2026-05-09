@@ -1,17 +1,17 @@
-/* Catala — macshot localization
+/* Catala — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Obrir des del porta-retalls";
 "Preferences..." = "Preferencies...";
 "Check for Updates..." = "Cercar actualitzacions...";
-"Quit macshot" = "Sortir de macshot";
+"Quit Lumashot" = "Sortir de Lumashot";
 "No recent captures" = "No hi ha captures recents";
 "Clear History" = "Esborrar historial";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Copiar al porta-retalls";
 
 /* Preferences - General */
-"macshot Preferences" = "Preferencies de macshot";
+"Lumashot Preferences" = "Preferencies de Lumashot";
 "General" = "General";
 "Tools" = "Eines";
 "Recording" = "Gravacio";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Capturar el cursor del ratoli a la captura";
 "Use window title in saved filename" = "Utilitzar el titol de la finestra al nom del fitxer";
 "Hide menu bar icon" = "Amagar la icona de la barra de menus";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Les dreceres segueixen funcionant. Per mostrar la icona de nou, reinicieu macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Les dreceres segueixen funcionant. Per mostrar la icona de nou, reinicieu Lumashot.";
 "Check for updates automatically" = "Cercar actualitzacions automaticament";
 "Check for beta updates" = "Cercar actualitzacions beta";
 "Thumbnail" = "Miniatura";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "La pujada de video requereix Google Drive o S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Versio %@ (%@)";
 "Made by" = "Creat per";
 "Licensed under the GPLv3" = "Llicenciat sota la GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Copieu primer una imatge al porta-retalls i torneu-ho a provar.";
 "OK" = "D'acord";
 "Accessibility Access Required" = "Es requereix acces d'accessibilitat";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot necessita permis d'accessibilitat per desplacar automaticament altres aplicacions. Concediu l'acces a la Configuracio del sistema i torneu-ho a provar.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot necessita permís d'accessibilitat per a la captura de desplaçament. Concediu l'accés a Configuració del sistema i torneu-ho a provar.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot necessita permis d'accessibilitat per desplacar automaticament altres aplicacions. Concediu l'acces a la Configuracio del sistema i torneu-ho a provar.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot necessita permís d'accessibilitat per a la captura de desplaçament. Concediu l'accés a Configuració del sistema i torneu-ho a provar.";
 "Open Settings" = "Obrir configuracio";
 "Cancel" = "Cancel·lar";
 "Microphone Access Required" = "Es requereix acces al microfon";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot necessita permis de microfon per gravar audio de veu. Obriu la Configuracio del sistema per concedir l'acces.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot necessita permis de microfon per gravar audio de veu. Obriu la Configuracio del sistema per concedir l'acces.";
 "Upload to Google Drive?" = "Pujar a Google Drive?";
 "Upload to S3?" = "Pujar a S3?";
 "Upload to imgbb.com?" = "Pujar a imgbb.com?";
 "Your screenshot will be uploaded." = "La vostra captura de pantalla es pujara.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Benvingut a macshot";
-"macshot needs one permission" = "macshot necessita un permis";
+"Welcome to Lumashot" = "Benvingut a Lumashot";
+"Lumashot needs one permission" = "Lumashot necessita un permis";
 "Screen Recording not yet granted" = "Gravacio de pantalla encara no concedida";
 "Screen Recording granted!" = "Gravacio de pantalla concedida!";
-"Enable macshot, then try taking a screenshot" = "Activeu macshot i proveu de fer una captura de pantalla";
+"Enable Lumashot, then try taking a screenshot" = "Activeu Lumashot i proveu de fer una captura de pantalla";
 "Open Screen Recording Settings" = "Obrir la configuracio de gravacio de pantalla";
 "Continue" = "Continuar";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Ruta copiada!";
 
 /* Video Editor */
-"macshot Video Editor" = "Editor de video de macshot";
+"Lumashot Video Editor" = "Editor de video de Lumashot";
 "%@ selected" = "%@ seleccionat";
 "Exporting..." = "Exportant...";
 "Export failed" = "Error en exportar";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Es requereix monitoratge d'entrada";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot necessita permis de monitoratge d'entrada per mostrar les pulsacions de tecles durant la gravacio. Concediu l'acces a System Settings i torneu-ho a provar.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot necessita permis d'accessibilitat per mostrar les pulsacions de tecles durant la gravacio. Concediu l'acces a System Settings i torneu-ho a provar.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot necessita permis de monitoratge d'entrada per mostrar les pulsacions de tecles durant la gravacio. Concediu l'acces a System Settings i torneu-ho a provar.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot necessita permis d'accessibilitat per mostrar les pulsacions de tecles durant la gravacio. Concediu l'acces a System Settings i torneu-ho a provar.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Mostrar pulsacions de tecles";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Superposicio de webcam";
 "Camera Access Required" = "Es requereix acces a la camera";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot necessita permis de camera per a la superposicio de webcam. Obriu la Configuracio del sistema per concedir l'acces.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot necessita permis de camera per a la superposicio de webcam. Obriu la Configuracio del sistema per concedir l'acces.";
 "Webcam" = "Webcam";
 "Bottom Right" = "Baix a la dreta";
 "Bottom Left" = "Baix a l'esquerra";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "Configuració...";
-"macshot Settings" = "Configuracio de macshot";
+"Lumashot Settings" = "Configuracio de Lumashot";
 "Also open in Editor" = "Obrir tambe a l'editor";
 "Hide controls" = "Amagar controls";
 "Hide recording controls" = "Amagar controls de gravacio";
@@ -495,13 +495,13 @@
 "Clear History?" = "Esborrar l'historial?";
 "This will permanently delete all screenshots from history." = "Això eliminarà permanentment totes les captures de pantalla de l'historial.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Feu clic a \"Establir\" i premeu una combinació de tecles amb almenys un modificador (⌘, ⌥, ⌃, ⇧) per definir una drecera.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Els fitxers es pugen a una carpeta \"macshot\" del vostre Google Drive. Tot és privat — res no es comparteix públicament.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Els fitxers es pugen a una carpeta \"Lumashot\" del vostre Google Drive. Tot és privat — res no es comparteix públicament.";
 
 "Pressure" = "Pressió";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Obrir vídeo...";
-"Choose a video to open in macshot editor" = "Trieu un vídeo per obrir a l'editor de macshot";
+"Choose a video to open in Lumashot editor" = "Trieu un vídeo per obrir a l'editor de Lumashot";
 "Click to add effects" = "Feu clic per afegir efectes";
 "Add Zoom" = "Afegir zoom";
 "Add Censor" = "Afegir censura";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "Tornar a capturar l'última àrea seleccionada";
 "Screenshots only — captured window title (blank otherwise)" = "Només captures de pantalla — títol de la finestra capturada (en blanc en cas contrari)";
 "Show available filename tokens" = "Mostrar els testimonis de nom de fitxer disponibles";
-"Enable macshot:// URL scheme" = "Activar l'esquema d'URL macshot://";
+"Enable lumashot:// URL scheme" = "Activar l'esquema d'URL lumashot://";
 "Show supported URL scheme commands" = "Mostrar les ordres d'esquema d'URL compatibles";
 "Start area capture" = "Iniciar captura d'àrea";
 "Start area recording" = "Iniciar gravació d'àrea";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "Aturar la gravació actual";
 "Supported URL Scheme Commands" = "Ordres d'esquema d'URL compatibles";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "L'extensió del fitxer s'afegeix automàticament. Les barres i els dos punts a {window} es converteixen en guions.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Activeu macshot des de Raycast, Alfred, Shortcuts o qualsevol eina que obri URLs.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Activeu Lumashot des de Raycast, Alfred, Shortcuts o qualsevol eina que obri URLs.";
 "URL scheme info" = "Informació de l'esquema d'URL";
 "sec (0 = never)" = "seg (0 = mai)";

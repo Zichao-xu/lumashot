@@ -39,7 +39,7 @@
 git clone https://github.com/Zichao-xu/lumashot.git
 cd lumashot
 xcodebuild -scheme macshot -configuration Release
-# Result: build/macshot.app → copy to /Applications
+# Result: Lumashot.app → copy to /Applications
 ```
 
 Or download the latest alpha from [Releases](https://github.com/Zichao-xu/lumashot/releases).

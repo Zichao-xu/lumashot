@@ -107,13 +107,13 @@ enum LaunchCleanup {
 
 // MARK: - Concrete cleaners
 
-/// Sweeps macshot-owned files from `NSTemporaryDirectory()` that match
+/// Sweeps Lumashot-owned files from `NSTemporaryDirectory()` that match
 /// known stale patterns — legacy UUID-named clipboard PNGs, date-named
 /// captures, microphone scratch, debug logs, upload intermediates,
 /// UUID-named GIF/MP4 scratch files, and macOS sandbox quarantine stubs.
 ///
 /// Preserves:
-///   - `macshot-clipboard.png` and `macshot-clipboard-recording.*`
+///   - `Lumashot-clipboard.png` and `Lumashot-clipboard-recording.*`
 ///     (fixed paths that are always-overwritten by design).
 ///   - `Recording *` files (user-visible when `recordingOnStop = "finder"`;
 ///     auto-deleting would silently lose their recording).
@@ -126,9 +126,9 @@ private struct TmpFileCleaner: LaunchCleaner {
     /// and short enough that abandoned temporaries don't accumulate.
     private let ttl: TimeInterval = 24 * 60 * 60
 
-    /// Filename prefixes we know are ours. The `macshot-clipboard-`
+    /// Filename prefixes we know are ours. The `Lumashot-clipboard-`
     /// prefix here is intentional to catch the *legacy* UUID-named form
-    /// from pre-fix builds; the current single-file `macshot-clipboard.png`
+    /// from pre-fix builds; the current single-file `Lumashot-clipboard.png`
     /// is explicitly preserved in the filter below.
     ///
     /// "Recording " is included now that every `recordingOnStop` branch
@@ -138,11 +138,11 @@ private struct TmpFileCleaner: LaunchCleaner {
     /// cancelled the Save panel on the finder path, or the app crashed
     /// mid-editor-session before `deleteOnClose` fired.
     private let stalePrefixes: [String] = [
-        "macshot-clipboard-",
-        "macshot_upload_",
-        "macshot_mic_",
-        "macshot_cursor_debug",
-        "macshot_",
+        "Lumashot-clipboard-",
+        "Lumashot_upload_",
+        "Lumashot_mic_",
+        "Lumashot_cursor_debug",
+        "Lumashot_",
         "Recording ",
     ]
 
@@ -160,8 +160,8 @@ private struct TmpFileCleaner: LaunchCleaner {
 
     private func isStale(name: String) -> Bool {
         // Preserve always-overwritten fixed paths.
-        if name == "macshot-clipboard.png" { return false }
-        if name.hasPrefix("macshot-clipboard-recording.") { return false }
+        if name == "Lumashot-clipboard.png" { return false }
+        if name.hasPrefix("Lumashot-clipboard-recording.") { return false }
 
         if stalePrefixes.contains(where: { name.hasPrefix($0) }) { return true }
         if isUUIDScratchFile(name: name) { return true }
@@ -187,7 +187,7 @@ private struct TmpFileCleaner: LaunchCleaner {
     }
 }
 
-/// Sweeps everything in `tmp/macshot-share/` older than 5 minutes.
+/// Sweeps everything in `tmp/Lumashot-share/` older than 5 minutes.
 /// That subfolder is exclusively used for drag-to-Finder and
 /// share-sheet scratch files whose names follow the user-configured
 /// filename template (so they can't be pattern-matched reliably). The
@@ -205,12 +205,12 @@ private struct ScratchDirectoryCleaner: LaunchCleaner {
     }
 }
 
-/// Sweeps everything in `tmp/macshot-clipboard/` older than 24 hours.
+/// Sweeps everything in `tmp/Lumashot-clipboard/` older than 24 hours.
 ///
 /// `ImageEncoder.copyToClipboard` writes a date-stamped image file here and
 /// deletes the previous one on the next copy — at most one file ever
 /// lives here during normal use. This sweeper is a backstop for the
-/// case where macshot crashed or force-quit between writes, leaving an
+/// case where Lumashot crashed or force-quit between writes, leaving an
 /// orphan. 24h TTL so we never race with a file that's currently
 /// referenced on the pasteboard.
 private struct ClipboardDirectoryCleaner: LaunchCleaner {

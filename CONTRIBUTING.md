@@ -1,6 +1,6 @@
-# Contributing to macshot
+# Contributing to Lumashot
 
-Thanks for your interest in contributing! macshot is open to bug fixes, improvements, and new features.
+Thanks for your interest in contributing! Lumashot is open to bug fixes, improvements, and new features.
 
 ## Before you start
 

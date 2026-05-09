@@ -1,17 +1,17 @@
-/* हिन्दी — macshot localization
+/* हिन्दी — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "क्लिपबोर्ड से खोलें";
 "Preferences..." = "प्राथमिकताएँ...";
 "Check for Updates..." = "अपडेट जाँचें...";
-"Quit macshot" = "macshot बंद करें";
+"Quit Lumashot" = "Lumashot बंद करें";
 "No recent captures" = "कोई हालिया कैप्चर नहीं";
 "Clear History" = "इतिहास मिटाएँ";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "क्लिपबोर्ड पर कॉपी करें";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot प्राथमिकताएँ";
+"Lumashot Preferences" = "Lumashot प्राथमिकताएँ";
 "General" = "सामान्य";
 "Tools" = "उपकरण";
 "Recording" = "रिकॉर्डिंग";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "स्क्रीनशॉट में माउस कर्सर कैप्चर करें";
 "Use window title in saved filename" = "सहेजे गए फ़ाइलनाम में विंडो शीर्षक उपयोग करें";
 "Hide menu bar icon" = "मेनू बार आइकन छिपाएँ";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "हॉटकी अभी भी काम करेंगी। आइकन फिर से दिखाने के लिए macshot पुनः लॉन्च करें।";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "हॉटकी अभी भी काम करेंगी। आइकन फिर से दिखाने के लिए Lumashot पुनः लॉन्च करें।";
 "Check for updates automatically" = "स्वचालित रूप से अपडेट जाँचें";
 "Check for beta updates" = "बीटा अपडेट जाँचें";
 "Thumbnail" = "थंबनेल";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "वीडियो अपलोड के लिए Google Drive या S3 आवश्यक है";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "संस्करण %@ (%@)";
 "Made by" = "निर्माता";
 "Licensed under the GPLv3" = "GPLv3 के अंतर्गत लाइसेंसीकृत";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "पहले क्लिपबोर्ड पर एक छवि कॉपी करें, फिर पुनः प्रयास करें।";
 "OK" = "ठीक है";
 "Accessibility Access Required" = "सुलभता पहुँच आवश्यक";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot को अन्य ऐप्स को स्वतः-स्क्रॉल करने के लिए सुलभता अनुमति चाहिए। कृपया सिस्टम सेटिंग्स में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "स्क्रॉल कैप्चर के लिए macshot को एक्सेसिबिलिटी अनुमति चाहिए। कृपया सिस्टम सेटिंग्स में एक्सेस दें, फिर पुनः प्रयास करें।";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot को अन्य ऐप्स को स्वतः-स्क्रॉल करने के लिए सुलभता अनुमति चाहिए। कृपया सिस्टम सेटिंग्स में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "स्क्रॉल कैप्चर के लिए Lumashot को एक्सेसिबिलिटी अनुमति चाहिए। कृपया सिस्टम सेटिंग्स में एक्सेस दें, फिर पुनः प्रयास करें।";
 "Open Settings" = "सेटिंग्स खोलें";
 "Cancel" = "रद्द करें";
 "Microphone Access Required" = "माइक्रोफ़ोन पहुँच आवश्यक";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot को ध्वनि ऑडियो रिकॉर्ड करने के लिए माइक्रोफ़ोन अनुमति चाहिए। पहुँच प्रदान करने के लिए सिस्टम सेटिंग्स खोलें।";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot को ध्वनि ऑडियो रिकॉर्ड करने के लिए माइक्रोफ़ोन अनुमति चाहिए। पहुँच प्रदान करने के लिए सिस्टम सेटिंग्स खोलें।";
 "Upload to Google Drive?" = "Google Drive पर अपलोड करें?";
 "Upload to S3?" = "S3 पर अपलोड करें?";
 "Upload to imgbb.com?" = "imgbb.com पर अपलोड करें?";
 "Your screenshot will be uploaded." = "आपका स्क्रीनशॉट अपलोड किया जाएगा।";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "macshot में आपका स्वागत है";
-"macshot needs one permission" = "macshot को एक अनुमति चाहिए";
+"Welcome to Lumashot" = "Lumashot में आपका स्वागत है";
+"Lumashot needs one permission" = "Lumashot को एक अनुमति चाहिए";
 "Screen Recording not yet granted" = "स्क्रीन रिकॉर्डिंग अभी तक प्रदान नहीं की गई";
 "Screen Recording granted!" = "स्क्रीन रिकॉर्डिंग प्रदान की गई!";
-"Enable macshot, then try taking a screenshot" = "macshot सक्षम करें, फिर स्क्रीनशॉट लेने का प्रयास करें";
+"Enable Lumashot, then try taking a screenshot" = "Lumashot सक्षम करें, फिर स्क्रीनशॉट लेने का प्रयास करें";
 "Open Screen Recording Settings" = "स्क्रीन रिकॉर्डिंग सेटिंग्स खोलें";
 "Continue" = "जारी रखें";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "पथ कॉपी किया गया!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot वीडियो संपादक";
+"Lumashot Video Editor" = "Lumashot वीडियो संपादक";
 "%@ selected" = "%@ चयनित";
 "Exporting..." = "निर्यात हो रहा है...";
 "Export failed" = "निर्यात विफल";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "इनपुट मॉनिटरिंग आवश्यक";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot को रिकॉर्डिंग के दौरान कीस्ट्रोक दिखाने के लिए इनपुट मॉनिटरिंग अनुमति चाहिए। कृपया System Settings में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot को रिकॉर्डिंग के दौरान कीस्ट्रोक दिखाने के लिए सुलभता अनुमति चाहिए। कृपया System Settings में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot को रिकॉर्डिंग के दौरान कीस्ट्रोक दिखाने के लिए इनपुट मॉनिटरिंग अनुमति चाहिए। कृपया System Settings में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot को रिकॉर्डिंग के दौरान कीस्ट्रोक दिखाने के लिए सुलभता अनुमति चाहिए। कृपया System Settings में पहुँच प्रदान करें, फिर पुनः प्रयास करें।";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "कीस्ट्रोक दिखाएँ";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "वेबकैम ओवरले";
 "Camera Access Required" = "कैमरा पहुँच आवश्यक";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot को वेबकैम ओवरले के लिए कैमरा अनुमति चाहिए। पहुँच प्रदान करने के लिए सिस्टम सेटिंग्स खोलें।";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot को वेबकैम ओवरले के लिए कैमरा अनुमति चाहिए। पहुँच प्रदान करने के लिए सिस्टम सेटिंग्स खोलें।";
 "Webcam" = "वेबकैम";
 "Bottom Right" = "नीचे दाएँ";
 "Bottom Left" = "नीचे बाएँ";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "सेटिंग्स...";
-"macshot Settings" = "macshot सेटिंग्स";
+"Lumashot Settings" = "Lumashot सेटिंग्स";
 "Also open in Editor" = "संपादक में भी खोलें";
 "Hide controls" = "नियंत्रण छिपाएँ";
 "Hide recording controls" = "रिकॉर्डिंग नियंत्रण छिपाएँ";
@@ -495,13 +495,13 @@
 "Clear History?" = "इतिहास साफ़ करें?";
 "This will permanently delete all screenshots from history." = "यह इतिहास से सभी स्क्रीनशॉट स्थायी रूप से हटा देगा।";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "\"सेट\" पर क्लिक करें और कम से कम एक मॉडिफ़ायर (⌘, ⌥, ⌃, ⇧) के साथ एक कुंजी संयोजन दबाएं।";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "फ़ाइलें आपके Google Drive में एक \"macshot\" फ़ोल्डर में अपलोड की जाती हैं। सब कुछ निजी रहता है — कुछ भी सार्वजनिक रूप से साझा नहीं किया जाता।";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "फ़ाइलें आपके Google Drive में एक \"Lumashot\" फ़ोल्डर में अपलोड की जाती हैं। सब कुछ निजी रहता है — कुछ भी सार्वजनिक रूप से साझा नहीं किया जाता।";
 
 "Pressure" = "दबाव";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "वीडियो खोलें...";
-"Choose a video to open in macshot editor" = "macshot संपादक में खोलने के लिए वीडियो चुनें";
+"Choose a video to open in Lumashot editor" = "Lumashot संपादक में खोलने के लिए वीडियो चुनें";
 "Click to add effects" = "प्रभाव जोड़ने के लिए क्लिक करें";
 "Add Zoom" = "ज़ूम जोड़ें";
 "Add Censor" = "सेंसर जोड़ें";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "अंतिम चयनित क्षेत्र पुनः कैप्चर करें";
 "Screenshots only — captured window title (blank otherwise)" = "केवल स्क्रीनशॉट — कैप्चर किए गए विंडो का शीर्षक (अन्यथा खाली)";
 "Show available filename tokens" = "उपलब्ध फ़ाइलनाम टोकन दिखाएँ";
-"Enable macshot:// URL scheme" = "macshot:// URL स्कीम सक्षम करें";
+"Enable lumashot:// URL scheme" = "lumashot:// URL स्कीम सक्षम करें";
 "Show supported URL scheme commands" = "समर्थित URL स्कीम कमांड दिखाएँ";
 "Start area capture" = "क्षेत्र कैप्चर शुरू करें";
 "Start area recording" = "क्षेत्र रिकॉर्डिंग शुरू करें";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "वर्तमान रिकॉर्डिंग रोकें";
 "Supported URL Scheme Commands" = "समर्थित URL स्कीम कमांड";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "फ़ाइल एक्सटेंशन स्वचालित रूप से जोड़ा जाता है। {window} में स्लैश और कोलन डैश बन जाते हैं।";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts, या URL खोलने वाले किसी भी उपकरण से macshot ट्रिगर करें।";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts, या URL खोलने वाले किसी भी उपकरण से Lumashot ट्रिगर करें।";
 "URL scheme info" = "URL स्कीम जानकारी";
 "sec (0 = never)" = "से. (0 = कभी नहीं)";

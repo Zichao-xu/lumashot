@@ -21,7 +21,7 @@ class PermissionOnboardingController: NSWindowController {
             backing: .buffered,
             defer: false
         )
-        window.title = L("Welcome to macshot")
+        window.title = L("Welcome to Lumashot")
         window.center()
         window.isReleasedWhenClosed = false
         window.titlebarAppearsTransparent = false
@@ -57,7 +57,7 @@ class PermissionOnboardingController: NSWindowController {
         cv.addSubview(logoView)
 
         // Title
-        let title = NSTextField(labelWithString: L("macshot needs one permission"))
+        let title = NSTextField(labelWithString: L("Lumashot needs one permission"))
         title.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         title.textColor = .labelColor
         title.alignment = .center
@@ -253,14 +253,14 @@ class PermissionOnboardingController: NSWindowController {
 
     @objc private func openSettings() {
         // Deep-link directly to Privacy & Security → Screen Recording.
-        // macOS will add macshot to the list automatically when it first
+        // macOS will add Lumashot to the list automatically when it first
         // attempts a capture — no CGRequestScreenCaptureAccess() call needed
         // (that API shows the redundant native dialog we want to avoid).
         if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
             NSWorkspace.shared.open(url)
         }
 
-        statusLabel?.stringValue = L("Enable macshot, then try taking a screenshot")
+        statusLabel?.stringValue = L("Enable Lumashot, then try taking a screenshot")
     }
 
     @objc private func continueClicked() {

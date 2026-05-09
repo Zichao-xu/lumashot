@@ -1,17 +1,17 @@
-/* Čeština — macshot localization
+/* Čeština — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Otevřít ze schránky";
 "Preferences..." = "Předvolby...";
 "Check for Updates..." = "Zkontrolovat aktualizace...";
-"Quit macshot" = "Ukončit macshot";
+"Quit Lumashot" = "Ukončit Lumashot";
 "No recent captures" = "Žádné nedávné snímky";
 "Clear History" = "Vymazat historii";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Kopírovat do schránky";
 
 /* Preferences - General */
-"macshot Preferences" = "Předvolby macshot";
+"Lumashot Preferences" = "Předvolby Lumashot";
 "General" = "Obecné";
 "Tools" = "Nástroje";
 "Recording" = "Nahrávání";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Zachytit kurzor myši na snímku";
 "Use window title in saved filename" = "Použít název okna v uloženém souboru";
 "Hide menu bar icon" = "Skrýt ikonu v liště";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Klávesové zkratky stále fungují. Pro opětovné zobrazení ikony znovu spusťte macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Klávesové zkratky stále fungují. Pro opětovné zobrazení ikony znovu spusťte Lumashot.";
 "Check for updates automatically" = "Automaticky kontrolovat aktualizace";
 "Check for beta updates" = "Kontrolovat beta aktualizace";
 "Thumbnail" = "Náhled";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Nahrávání videa vyžaduje Google Drive nebo S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Verze %@ (%@)";
 "Made by" = "Vytvořil";
 "Licensed under the GPLv3" = "Licencováno pod GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Nejprve zkopírujte obrázek do schránky a zkuste to znovu.";
 "OK" = "OK";
 "Accessibility Access Required" = "Vyžadován přístup k usnadnění";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot potřebuje oprávnění Usnadnění pro automatické posouvání jiných aplikací. Udělte přístup v Nastavení systému a zkuste to znovu.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot potřebuje oprávnění Zpřístupnění pro snímání posouváním. Povolte přístup v Nastavení systému a zkuste to znovu.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot potřebuje oprávnění Usnadnění pro automatické posouvání jiných aplikací. Udělte přístup v Nastavení systému a zkuste to znovu.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot potřebuje oprávnění Zpřístupnění pro snímání posouváním. Povolte přístup v Nastavení systému a zkuste to znovu.";
 "Open Settings" = "Otevřít nastavení";
 "Cancel" = "Zrušit";
 "Microphone Access Required" = "Vyžadován přístup k mikrofonu";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot potřebuje oprávnění k mikrofonu pro nahrávání hlasu. Otevřete Nastavení systému pro udělení přístupu.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot potřebuje oprávnění k mikrofonu pro nahrávání hlasu. Otevřete Nastavení systému pro udělení přístupu.";
 "Upload to Google Drive?" = "Nahrát na Google Drive?";
 "Upload to S3?" = "Nahrát na S3?";
 "Upload to imgbb.com?" = "Nahrát na imgbb.com?";
 "Your screenshot will be uploaded." = "Váš snímek bude nahrán.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Vítejte v macshot";
-"macshot needs one permission" = "macshot potřebuje jedno oprávnění";
+"Welcome to Lumashot" = "Vítejte v Lumashot";
+"Lumashot needs one permission" = "Lumashot potřebuje jedno oprávnění";
 "Screen Recording not yet granted" = "Nahrávání obrazovky zatím nebylo povoleno";
 "Screen Recording granted!" = "Nahrávání obrazovky povoleno!";
-"Enable macshot, then try taking a screenshot" = "Povolte macshot a zkuste pořídit snímek";
+"Enable Lumashot, then try taking a screenshot" = "Povolte Lumashot a zkuste pořídit snímek";
 "Open Screen Recording Settings" = "Otevřít nastavení nahrávání obrazovky";
 "Continue" = "Pokračovat";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Cesta zkopírována!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot Video Editor";
+"Lumashot Video Editor" = "Lumashot Video Editor";
 "%@ selected" = "%@ vybráno";
 "Exporting..." = "Exportování...";
 "Export failed" = "Export selhal";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Vyžadováno monitorování vstupu";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot potřebuje oprávnění Monitorování vstupu pro zobrazení stisknutých kláves během nahrávání. Udělte přístup v System Settings a zkuste to znovu.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot potřebuje oprávnění Usnadnění pro zobrazení stisknutých kláves během nahrávání. Udělte přístup v System Settings a zkuste to znovu.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot potřebuje oprávnění Monitorování vstupu pro zobrazení stisknutých kláves během nahrávání. Udělte přístup v System Settings a zkuste to znovu.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot potřebuje oprávnění Usnadnění pro zobrazení stisknutých kláves během nahrávání. Udělte přístup v System Settings a zkuste to znovu.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Zobrazit stisknuté klávesy";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Překryv webkamery";
 "Camera Access Required" = "Vyžadován přístup ke kameře";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot potřebuje oprávnění ke kameře pro překryv webkamery. Otevřete Nastavení systému pro udělení přístupu.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot potřebuje oprávnění ke kameře pro překryv webkamery. Otevřete Nastavení systému pro udělení přístupu.";
 "Webcam" = "Webkamera";
 "Bottom Right" = "Vpravo dole";
 "Bottom Left" = "Vlevo dole";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "Nastavení...";
-"macshot Settings" = "Nastavení macshot";
+"Lumashot Settings" = "Nastavení Lumashot";
 "Also open in Editor" = "Otevřít také v editoru";
 "Hide controls" = "Skrýt ovládací prvky";
 "Hide recording controls" = "Skrýt ovládací prvky nahrávání";
@@ -493,13 +493,13 @@
 "Clear History?" = "Vymazat historii?";
 "This will permanently delete all screenshots from history." = "Tím se trvale odstraní všechny snímky obrazovky z historie.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Klikněte na \"Nastavit\" a stiskněte kombinaci kláves s alespoň jedním modifikátorem (⌘, ⌥, ⌃, ⇧) pro nastavení zkratky.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Soubory jsou nahrávány do složky \"macshot\" na vašem Disku Google. Vše zůstává soukromé — nic není veřejně sdíleno.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Soubory jsou nahrávány do složky \"Lumashot\" na vašem Disku Google. Vše zůstává soukromé — nic není veřejně sdíleno.";
 
 "Pressure" = "Přítlak";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Otevřít video...";
-"Choose a video to open in macshot editor" = "Vyberte video k otevření v editoru macshot";
+"Choose a video to open in Lumashot editor" = "Vyberte video k otevření v editoru Lumashot";
 "Click to add effects" = "Kliknutím přidejte efekty";
 "Add Zoom" = "Přidat přiblížení";
 "Add Censor" = "Přidat cenzuru";
@@ -552,7 +552,7 @@
 "Stop the current recording" = "Zastavit aktuální nahrávání";
 "Supported URL Scheme Commands" = "Podporované příkazy URL schématu";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Přípona souboru se přidá automaticky. Lomítka a dvojtečky v {window} se změní na pomlčky.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Spusťte macshot z Raycast, Alfred, Shortcuts nebo jakéhokoli nástroje, který otevírá URL.";
-"Enable macshot:// URL scheme" = "Povolit URL schéma macshot://";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Spusťte Lumashot z Raycast, Alfred, Shortcuts nebo jakéhokoli nástroje, který otevírá URL.";
+"Enable lumashot:// URL scheme" = "Povolit URL schéma lumashot://";
 "URL scheme info" = "Informace o URL schématu";
 "sec (0 = never)" = "s (0 = nikdy)";

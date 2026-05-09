@@ -1,17 +1,17 @@
-/* Ελληνικά — macshot localization
+/* Ελληνικά — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Άνοιγμα από πρόχειρο";
 "Preferences..." = "Προτιμήσεις...";
 "Check for Updates..." = "Έλεγχος για ενημερώσεις...";
-"Quit macshot" = "Τερματισμός macshot";
+"Quit Lumashot" = "Τερματισμός Lumashot";
 "No recent captures" = "Δεν υπάρχουν πρόσφατες λήψεις";
 "Clear History" = "Εκκαθάριση ιστορικού";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Αντιγραφή στο πρόχειρο";
 
 /* Preferences - General */
-"macshot Preferences" = "Προτιμήσεις macshot";
+"Lumashot Preferences" = "Προτιμήσεις Lumashot";
 "General" = "Γενικά";
 "Tools" = "Εργαλεία";
 "Recording" = "Εγγραφή";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Λήψη δρομέα ποντικιού στο στιγμιότυπο";
 "Use window title in saved filename" = "Χρήση τίτλου παραθύρου στο όνομα αρχείου";
 "Hide menu bar icon" = "Απόκρυψη εικονιδίου γραμμής μενού";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Τα πλήκτρα συντόμευσης λειτουργούν ακόμα. Για εμφάνιση του εικονιδίου, επανεκκινήστε το macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Τα πλήκτρα συντόμευσης λειτουργούν ακόμα. Για εμφάνιση του εικονιδίου, επανεκκινήστε το Lumashot.";
 "Check for updates automatically" = "Αυτόματος έλεγχος ενημερώσεων";
 "Check for beta updates" = "Έλεγχος για ενημερώσεις beta";
 "Thumbnail" = "Μικρογραφία";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Η μεταφόρτωση βίντεο απαιτεί Google Drive ή S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Έκδοση %@ (%@)";
 "Made by" = "Δημιουργήθηκε από";
 "Licensed under the GPLv3" = "Με άδεια GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Αντιγράψτε πρώτα μια εικόνα στο πρόχειρο και δοκιμάστε ξανά.";
 "OK" = "OK";
 "Accessibility Access Required" = "Απαιτείται πρόσβαση προσβασιμότητας";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Το macshot χρειάζεται άδεια προσβασιμότητας για αυτόματη κύλιση άλλων εφαρμογών. Παραχωρήστε πρόσβαση στις Ρυθμίσεις συστήματος και δοκιμάστε ξανά.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Το macshot χρειάζεται άδεια Προσβασιμότητας για λήψη κύλισης. Παραχωρήστε πρόσβαση στις Ρυθμίσεις Συστήματος και δοκιμάστε ξανά.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Το Lumashot χρειάζεται άδεια προσβασιμότητας για αυτόματη κύλιση άλλων εφαρμογών. Παραχωρήστε πρόσβαση στις Ρυθμίσεις συστήματος και δοκιμάστε ξανά.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Το Lumashot χρειάζεται άδεια Προσβασιμότητας για λήψη κύλισης. Παραχωρήστε πρόσβαση στις Ρυθμίσεις Συστήματος και δοκιμάστε ξανά.";
 "Open Settings" = "Άνοιγμα ρυθμίσεων";
 "Cancel" = "Ακύρωση";
 "Microphone Access Required" = "Απαιτείται πρόσβαση μικροφώνου";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "Το macshot χρειάζεται άδεια μικροφώνου για εγγραφή φωνητικού ήχου. Ανοίξτε τις Ρυθμίσεις συστήματος για παραχώρηση πρόσβασης.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Το Lumashot χρειάζεται άδεια μικροφώνου για εγγραφή φωνητικού ήχου. Ανοίξτε τις Ρυθμίσεις συστήματος για παραχώρηση πρόσβασης.";
 "Upload to Google Drive?" = "Μεταφόρτωση στο Google Drive;";
 "Upload to S3?" = "Μεταφόρτωση στο S3;";
 "Upload to imgbb.com?" = "Μεταφόρτωση στο imgbb.com;";
 "Your screenshot will be uploaded." = "Το στιγμιότυπό σας θα μεταφορτωθεί.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Καλώς ήρθατε στο macshot";
-"macshot needs one permission" = "Το macshot χρειάζεται μία άδεια";
+"Welcome to Lumashot" = "Καλώς ήρθατε στο Lumashot";
+"Lumashot needs one permission" = "Το Lumashot χρειάζεται μία άδεια";
 "Screen Recording not yet granted" = "Η εγγραφή οθόνης δεν έχει παραχωρηθεί ακόμα";
 "Screen Recording granted!" = "Η εγγραφή οθόνης παραχωρήθηκε!";
-"Enable macshot, then try taking a screenshot" = "Ενεργοποιήστε το macshot και δοκιμάστε να τραβήξετε στιγμιότυπο";
+"Enable Lumashot, then try taking a screenshot" = "Ενεργοποιήστε το Lumashot και δοκιμάστε να τραβήξετε στιγμιότυπο";
 "Open Screen Recording Settings" = "Άνοιγμα ρυθμίσεων εγγραφής οθόνης";
 "Continue" = "Συνέχεια";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Η διαδρομή αντιγράφηκε!";
 
 /* Video Editor */
-"macshot Video Editor" = "Επεξεργαστής βίντεο macshot";
+"Lumashot Video Editor" = "Επεξεργαστής βίντεο Lumashot";
 "%@ selected" = "%@ επιλεγμένο";
 "Exporting..." = "Εξαγωγή...";
 "Export failed" = "Αποτυχία εξαγωγής";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Απαιτείται παρακολούθηση εισόδου";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Το macshot χρειάζεται άδεια παρακολούθησης εισόδου για να εμφανίζει τα πλήκτρα κατά την εγγραφή. Παραχωρήστε πρόσβαση στις System Settings και δοκιμάστε ξανά.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Το macshot χρειάζεται άδεια προσβασιμότητας για να εμφανίζει τα πλήκτρα κατά την εγγραφή. Παραχωρήστε πρόσβαση στις System Settings και δοκιμάστε ξανά.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Το Lumashot χρειάζεται άδεια παρακολούθησης εισόδου για να εμφανίζει τα πλήκτρα κατά την εγγραφή. Παραχωρήστε πρόσβαση στις System Settings και δοκιμάστε ξανά.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Το Lumashot χρειάζεται άδεια προσβασιμότητας για να εμφανίζει τα πλήκτρα κατά την εγγραφή. Παραχωρήστε πρόσβαση στις System Settings και δοκιμάστε ξανά.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Εμφάνιση πλήκτρων";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Επικάλυψη κάμερας";
 "Camera Access Required" = "Απαιτείται πρόσβαση κάμερας";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Το macshot χρειάζεται άδεια κάμερας για την επικάλυψη κάμερας. Ανοίξτε τις Ρυθμίσεις συστήματος για παραχώρηση πρόσβασης.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Το Lumashot χρειάζεται άδεια κάμερας για την επικάλυψη κάμερας. Ανοίξτε τις Ρυθμίσεις συστήματος για παραχώρηση πρόσβασης.";
 "Webcam" = "Κάμερα";
 "Bottom Right" = "Κάτω δεξιά";
 "Bottom Left" = "Κάτω αριστερά";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "Ρυθμίσεις...";
-"macshot Settings" = "Ρυθμίσεις macshot";
+"Lumashot Settings" = "Ρυθμίσεις Lumashot";
 "Also open in Editor" = "Άνοιγμα και σε επεξεργαστή";
 "Hide controls" = "Απόκρυψη χειριστηρίων";
 "Hide recording controls" = "Απόκρυψη χειριστηρίων εγγραφής";
@@ -495,13 +495,13 @@
 "Clear History?" = "Εκκαθάριση ιστορικού;";
 "This will permanently delete all screenshots from history." = "Αυτό θα διαγράψει μόνιμα όλα τα στιγμιότυπα από το ιστορικό.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Κάνε κλικ στο \"Ορισμός\" και πάτησε έναν συνδυασμό πλήκτρων με τουλάχιστον έναν τροποποιητή (⌘, ⌥, ⌃, ⇧) για να ορίσεις μια συντόμευση.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Τα αρχεία ανεβαίνουν σε έναν φάκελο \"macshot\" στο Google Drive σου. Όλα παραμένουν ιδιωτικά — τίποτα δεν κοινοποιείται δημόσια.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Τα αρχεία ανεβαίνουν σε έναν φάκελο \"Lumashot\" στο Google Drive σου. Όλα παραμένουν ιδιωτικά — τίποτα δεν κοινοποιείται δημόσια.";
 
 "Pressure" = "Πίεση";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Άνοιγμα βίντεο...";
-"Choose a video to open in macshot editor" = "Επιλέξτε ένα βίντεο για άνοιγμα στον επεξεργαστή του macshot";
+"Choose a video to open in Lumashot editor" = "Επιλέξτε ένα βίντεο για άνοιγμα στον επεξεργαστή του Lumashot";
 "Click to add effects" = "Κάντε κλικ για προσθήκη εφέ";
 "Add Zoom" = "Προσθήκη ζουμ";
 "Add Censor" = "Προσθήκη λογοκρισίας";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "Επανάληψη λήψης της τελευταίας επιλεγμένης περιοχής";
 "Screenshots only — captured window title (blank otherwise)" = "Μόνο στιγμιότυπα — τίτλος παραθύρου λήψης (κενό διαφορετικά)";
 "Show available filename tokens" = "Εμφάνιση διαθέσιμων διακριτικών ονόματος αρχείου";
-"Enable macshot:// URL scheme" = "Ενεργοποίηση URL scheme macshot://";
+"Enable lumashot:// URL scheme" = "Ενεργοποίηση URL scheme lumashot://";
 "Show supported URL scheme commands" = "Εμφάνιση υποστηριζόμενων εντολών URL scheme";
 "Start area capture" = "Έναρξη λήψης περιοχής";
 "Start area recording" = "Έναρξη εγγραφής περιοχής";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "Διακοπή της τρέχουσας εγγραφής";
 "Supported URL Scheme Commands" = "Υποστηριζόμενες εντολές URL Scheme";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Η επέκταση αρχείου προστίθεται αυτόματα. Οι κάθετοι και οι άνω κάτω τελείες στο {window} γίνονται παύλες.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Ενεργοποιήστε το macshot από το Raycast, το Alfred, τα Shortcuts ή οποιοδήποτε εργαλείο ανοίγει URLs.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Ενεργοποιήστε το Lumashot από το Raycast, το Alfred, τα Shortcuts ή οποιοδήποτε εργαλείο ανοίγει URLs.";
 "URL scheme info" = "Πληροφορίες URL scheme";
 "sec (0 = never)" = "δευτ. (0 = ποτέ)";

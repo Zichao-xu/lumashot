@@ -1,17 +1,17 @@
-/* Български — macshot localization
+/* Български — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Отваряне от клипборда";
 "Preferences..." = "Настройки...";
 "Check for Updates..." = "Проверка за обновления...";
-"Quit macshot" = "Изход от macshot";
+"Quit Lumashot" = "Изход от Lumashot";
 "No recent captures" = "Няма скорошни заснемания";
 "Clear History" = "Изчистване на историята";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Копиране в клипборда";
 
 /* Preferences - General */
-"macshot Preferences" = "Настройки на macshot";
+"Lumashot Preferences" = "Настройки на Lumashot";
 "General" = "Общи";
 "Tools" = "Инструменти";
 "Recording" = "Запис";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Заснемане на курсора в екранната снимка";
 "Use window title in saved filename" = "Използване на заглавието на прозореца в името на файла";
 "Hide menu bar icon" = "Скриване на иконата в лентата с менюта";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Бързите клавиши продължават да работят. За да покажете иконата отново, рестартирайте macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Бързите клавиши продължават да работят. За да покажете иконата отново, рестартирайте Lumashot.";
 "Check for updates automatically" = "Автоматична проверка за обновления";
 "Check for beta updates" = "Проверка за бета обновления";
 "Thumbnail" = "Миниатюр";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Качването на видео изисква Google Drive или S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Версия %@ (%@)";
 "Made by" = "Създадено от";
 "Licensed under the GPLv3" = "Лицензирано под GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Първо копирайте изображение в клипборда, след което опитайте отново.";
 "OK" = "ОК";
 "Accessibility Access Required" = "Необходим е достъп за достъпност";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot се нуждае от разрешение за достъпност, за да превърта автоматично други приложения. Моля, дайте достъп в Системни настройки, след което опитайте отново.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot се нуждае от разрешение за достъпност за заснемане с превъртане. Моля, разрешете достъпа в Системни настройки и опитайте отново.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot се нуждае от разрешение за достъпност, за да превърта автоматично други приложения. Моля, дайте достъп в Системни настройки, след което опитайте отново.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot се нуждае от разрешение за достъпност за заснемане с превъртане. Моля, разрешете достъпа в Системни настройки и опитайте отново.";
 "Open Settings" = "Отваряне на настройките";
 "Cancel" = "Отказ";
 "Microphone Access Required" = "Необходим е достъп до микрофон";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot се нуждае от разрешение за микрофон, за да записва гласово аудио. Отворете Системни настройки, за да дадете достъп.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot се нуждае от разрешение за микрофон, за да записва гласово аудио. Отворете Системни настройки, за да дадете достъп.";
 "Upload to Google Drive?" = "Качване в Google Drive?";
 "Upload to S3?" = "Качване в S3?";
 "Upload to imgbb.com?" = "Качване в imgbb.com?";
 "Your screenshot will be uploaded." = "Вашата екранна снимка ще бъде качена.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Добре дошли в macshot";
-"macshot needs one permission" = "macshot се нуждае от едно разрешение";
+"Welcome to Lumashot" = "Добре дошли в Lumashot";
+"Lumashot needs one permission" = "Lumashot се нуждае от едно разрешение";
 "Screen Recording not yet granted" = "Записът на екран все още не е разрешен";
 "Screen Recording granted!" = "Записът на екран е разрешен!";
-"Enable macshot, then try taking a screenshot" = "Включете macshot, след което опитайте да направите екранна снимка";
+"Enable Lumashot, then try taking a screenshot" = "Включете Lumashot, след което опитайте да направите екранна снимка";
 "Open Screen Recording Settings" = "Отваряне на настройките за запис на екран";
 "Continue" = "Продължаване";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Пътят е копиран!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot Видео редактор";
+"Lumashot Video Editor" = "Lumashot Видео редактор";
 "%@ selected" = "%@ избрано";
 "Exporting..." = "Експортиране...";
 "Export failed" = "Експортирането е неуспешно";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Необходим е мониторинг на въвеждането";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot се нуждае от разрешение за мониторинг на въвеждането, за да показва натисканията на клавиши по време на запис. Моля, дайте достъп в System Settings и опитайте отново.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot се нуждае от разрешение за достъпност, за да показва натисканията на клавиши по време на запис. Моля, дайте достъп в System Settings и опитайте отново.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot се нуждае от разрешение за мониторинг на въвеждането, за да показва натисканията на клавиши по време на запис. Моля, дайте достъп в System Settings и опитайте отново.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot се нуждае от разрешение за достъпност, за да показва натисканията на клавиши по време на запис. Моля, дайте достъп в System Settings и опитайте отново.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Показване на натискания";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Уебкамера наслагване";
 "Camera Access Required" = "Необходим е достъп до камерата";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot се нуждае от разрешение за камера за наслагването на уебкамерата. Отворете Системни настройки, за да дадете достъп.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot се нуждае от разрешение за камера за наслагването на уебкамерата. Отворете Системни настройки, за да дадете достъп.";
 "Webcam" = "Уебкамера";
 "Bottom Right" = "Долу вдясно";
 "Bottom Left" = "Долу вляво";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "Настройки...";
-"macshot Settings" = "Настройки на macshot";
+"Lumashot Settings" = "Настройки на Lumashot";
 "Also open in Editor" = "Отвори и в редактора";
 "Hide controls" = "Скрий контролите";
 "Hide recording controls" = "Скрий контролите за запис";
@@ -493,13 +493,13 @@
 "Clear History?" = "Изчисти историята?";
 "This will permanently delete all screenshots from history." = "Това ще изтрие окончателно всички екранни снимки от историята.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Кликнете върху \"Set\" и натиснете комбинация от клавиши с поне един модификатор (⌘, ⌥, ⌃, ⇧), за да зададете пряк път.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Файловете се качват в папка \"macshot\" във вашия Google Drive. Всичко остава поверително — нищо не се споделя публично.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Файловете се качват в папка \"Lumashot\" във вашия Google Drive. Всичко остава поверително — нищо не се споделя публично.";
 
 "Pressure" = "Натиск";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Отваряне на видео...";
-"Choose a video to open in macshot editor" = "Изберете видео за отваряне в редактора на macshot";
+"Choose a video to open in Lumashot editor" = "Изберете видео за отваряне в редактора на Lumashot";
 "Click to add effects" = "Щракнете за добавяне на ефекти";
 "Add Zoom" = "Добавяне на мащабиране";
 "Add Censor" = "Добавяне на цензуриране";
@@ -552,7 +552,7 @@
 "Stop the current recording" = "Спиране на текущия запис";
 "Supported URL Scheme Commands" = "Поддържани команди за URL схема";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Разширението на файла се добавя автоматично. Наклонените черти и двоеточията в {window} стават тирета.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Задействайте macshot от Raycast, Alfred, Shortcuts или всеки инструмент, който отваря URL адреси.";
-"Enable macshot:// URL scheme" = "Активиране на URL схемата macshot://";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Задействайте Lumashot от Raycast, Alfred, Shortcuts или всеки инструмент, който отваря URL адреси.";
+"Enable lumashot:// URL scheme" = "Активиране на URL схемата lumashot://";
 "URL scheme info" = "Информация за URL схема";
 "sec (0 = never)" = "сек (0 = никога)";

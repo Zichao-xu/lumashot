@@ -1,17 +1,17 @@
-/* Bahasa Melayu — macshot localization
+/* Bahasa Melayu — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Buka dari Papan Keratan";
 "Preferences..." = "Keutamaan...";
 "Check for Updates..." = "Semak Kemas Kini...";
-"Quit macshot" = "Keluar macshot";
+"Quit Lumashot" = "Keluar Lumashot";
 "No recent captures" = "Tiada tangkapan terkini";
 "Clear History" = "Padam Sejarah";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Salin ke papan keratan";
 
 /* Preferences - General */
-"macshot Preferences" = "Keutamaan macshot";
+"Lumashot Preferences" = "Keutamaan Lumashot";
 "General" = "Umum";
 "Tools" = "Alatan";
 "Recording" = "Rakaman";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Tangkap kursor tetikus dalam tangkapan skrin";
 "Use window title in saved filename" = "Guna tajuk tetingkap dalam nama fail yang disimpan";
 "Hide menu bar icon" = "Sembunyikan ikon bar menu";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Kekunci panas masih berfungsi. Untuk menunjukkan ikon semula, lancar semula macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Kekunci panas masih berfungsi. Untuk menunjukkan ikon semula, lancar semula Lumashot.";
 "Check for updates automatically" = "Semak kemas kini secara automatik";
 "Check for beta updates" = "Semak kemas kini beta";
 "Thumbnail" = "Lakaran Kecil";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Muat naik video memerlukan Google Drive atau S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Versi %@ (%@)";
 "Made by" = "Dibuat oleh";
 "Licensed under the GPLv3" = "Dilesenkan di bawah GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Salin imej ke papan keratan dahulu, kemudian cuba lagi.";
 "OK" = "OK";
 "Accessibility Access Required" = "Akses Kebolehcapaian Diperlukan";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot memerlukan kebenaran Kebolehcapaian untuk auto-tatal aplikasi lain. Sila berikan akses dalam Tetapan Sistem, kemudian cuba lagi.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot memerlukan kebenaran Kebolehcapaian untuk tangkapan tatal. Sila berikan akses dalam Tetapan Sistem, kemudian cuba lagi.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot memerlukan kebenaran Kebolehcapaian untuk auto-tatal aplikasi lain. Sila berikan akses dalam Tetapan Sistem, kemudian cuba lagi.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot memerlukan kebenaran Kebolehcapaian untuk tangkapan tatal. Sila berikan akses dalam Tetapan Sistem, kemudian cuba lagi.";
 "Open Settings" = "Buka Tetapan";
 "Cancel" = "Batal";
 "Microphone Access Required" = "Akses Mikrofon Diperlukan";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot memerlukan kebenaran mikrofon untuk merakam audio suara. Buka Tetapan Sistem untuk memberikan akses.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot memerlukan kebenaran mikrofon untuk merakam audio suara. Buka Tetapan Sistem untuk memberikan akses.";
 "Upload to Google Drive?" = "Muat naik ke Google Drive?";
 "Upload to S3?" = "Muat naik ke S3?";
 "Upload to imgbb.com?" = "Muat naik ke imgbb.com?";
 "Your screenshot will be uploaded." = "Tangkapan skrin anda akan dimuat naik.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Selamat datang ke macshot";
-"macshot needs one permission" = "macshot memerlukan satu kebenaran";
+"Welcome to Lumashot" = "Selamat datang ke Lumashot";
+"Lumashot needs one permission" = "Lumashot memerlukan satu kebenaran";
 "Screen Recording not yet granted" = "Rakaman Skrin belum diberikan";
 "Screen Recording granted!" = "Rakaman Skrin diberikan!";
-"Enable macshot, then try taking a screenshot" = "Dayakan macshot, kemudian cuba ambil tangkapan skrin";
+"Enable Lumashot, then try taking a screenshot" = "Dayakan Lumashot, kemudian cuba ambil tangkapan skrin";
 "Open Screen Recording Settings" = "Buka Tetapan Rakaman Skrin";
 "Continue" = "Teruskan";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Laluan disalin!";
 
 /* Video Editor */
-"macshot Video Editor" = "Editor Video macshot";
+"Lumashot Video Editor" = "Editor Video Lumashot";
 "%@ selected" = "%@ dipilih";
 "Exporting..." = "Mengeksport...";
 "Export failed" = "Eksport gagal";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Pemantauan Input Diperlukan";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot memerlukan kebenaran Pemantauan Input untuk menunjukkan ketukan kekunci semasa rakaman. Sila berikan akses dalam System Settings, kemudian cuba lagi.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot memerlukan kebenaran Kebolehcapaian untuk menunjukkan ketukan kekunci semasa rakaman. Sila berikan akses dalam System Settings, kemudian cuba lagi.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot memerlukan kebenaran Pemantauan Input untuk menunjukkan ketukan kekunci semasa rakaman. Sila berikan akses dalam System Settings, kemudian cuba lagi.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot memerlukan kebenaran Kebolehcapaian untuk menunjukkan ketukan kekunci semasa rakaman. Sila berikan akses dalam System Settings, kemudian cuba lagi.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Tunjuk Ketukan Kekunci";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Tindanan Webcam";
 "Camera Access Required" = "Akses Kamera Diperlukan";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot memerlukan kebenaran kamera untuk tindanan webcam. Buka Tetapan Sistem untuk memberikan akses.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot memerlukan kebenaran kamera untuk tindanan webcam. Buka Tetapan Sistem untuk memberikan akses.";
 "Webcam" = "Webcam";
 "Bottom Right" = "Kanan Bawah";
 "Bottom Left" = "Kiri Bawah";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "Tetapan...";
-"macshot Settings" = "Tetapan macshot";
+"Lumashot Settings" = "Tetapan Lumashot";
 "Also open in Editor" = "Buka juga dalam Editor";
 "Hide controls" = "Sembunyikan kawalan";
 "Hide recording controls" = "Sembunyikan kawalan rakaman";
@@ -495,13 +495,13 @@
 "Clear History?" = "Kosongkan Sejarah?";
 "This will permanently delete all screenshots from history." = "Ini akan memadamkan semua tangkapan skrin daripada sejarah secara kekal.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Klik \"Tetapkan\" dan tekan kombinasi kekunci dengan sekurang-kurangnya satu pengubah suai (⌘, ⌥, ⌃, ⇧) untuk menetapkan pintasan.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Fail dimuat naik ke folder \"macshot\" dalam Google Drive anda. Semua maklumat kekal peribadi — tiada apa yang dikongsi secara awam.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Fail dimuat naik ke folder \"Lumashot\" dalam Google Drive anda. Semua maklumat kekal peribadi — tiada apa yang dikongsi secara awam.";
 
 "Pressure" = "Tekanan";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Buka Video...";
-"Choose a video to open in macshot editor" = "Pilih video untuk dibuka dalam editor macshot";
+"Choose a video to open in Lumashot editor" = "Pilih video untuk dibuka dalam editor Lumashot";
 "Click to add effects" = "Klik untuk menambah kesan";
 "Add Zoom" = "Tambah Zum";
 "Add Censor" = "Tambah Sensor";
@@ -554,7 +554,7 @@
 "Stop the current recording" = "Hentikan rakaman semasa";
 "Supported URL Scheme Commands" = "Arahan Skema URL yang Disokong";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Sambungan fail ditambah secara automatik. Garis miring dan titik bertindih dalam {window} menjadi sengkang.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Cetuskan macshot dari Raycast, Alfred, Shortcuts, atau mana-mana alat yang membuka URL.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Cetuskan Lumashot dari Raycast, Alfred, Shortcuts, atau mana-mana alat yang membuka URL.";
 "URL scheme info" = "Maklumat skema URL";
-"Enable macshot:// URL scheme" = "Dayakan skema URL macshot://";
+"Enable lumashot:// URL scheme" = "Dayakan skema URL lumashot://";
 "sec (0 = never)" = "saat (0 = tidak pernah)";

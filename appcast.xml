@@ -1,51 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
     <channel>
-        <title>macshot</title>
-        <link>https://github.com/sw33tLie/macshot</link>
-        <description>macshot updates</description>
-<item xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
-    <title>v4.0.4</title>
-    <pubDate>Mon, 13 Apr 2026 01:42:48 +0000</pubDate>
-    <sparkle:version>35</sparkle:version>
-    <sparkle:shortVersionString>4.0.4</sparkle:shortVersionString>
-    <sparkle:minimumSystemVersion>12.3</sparkle:minimumSystemVersion>
-
-    <description>
-      &lt;style&gt;
-        body { font-family: -apple-system, sans-serif; font-size: 13px; padding: 12px; }
-        h3 { font-size: 14px; margin: 12px 0 6px 0; }
-        h3:first-child { margin-top: 0; }
-        ul { padding-left: 18px; margin: 4px 0; }
-        li { margin: 4px 0; line-height: 1.5; }
-      &lt;/style&gt;
-      &lt;h3&gt;Added&lt;/h3&gt;&lt;ul&gt; &lt;li&gt;&lt;b&gt;Customizable toolbar background color&lt;/b&gt; — new "Background color" setting in Preferences &gt; Appearance. All toolbar text, icons, borders, and system controls adapt to stay readable on any background.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Adaptive toolbar appearance&lt;/b&gt; — toolbar and popovers automatically switch between light and dark AppKit appearance based on background brightness.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Export dimensions dropdown&lt;/b&gt; — scale down recordings before saving (Original, 75%, 50%, 33%, 25%). Applied at export time; recordings always capture at full resolution.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Estimated export file size&lt;/b&gt; — shows estimated output size in the video editor when trim, scale, or format change would affect the result.&lt;/li&gt;  &lt;/ul&gt;&lt;h3&gt;Fixed&lt;/h3&gt;&lt;ul&gt; &lt;li&gt;&lt;b&gt;Multi-line text clipped after commit&lt;/b&gt; — text snapshot now uses the same measurement as the rendering engine, preventing the last line from being cut off at non-default font sizes.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Ctrl+lasso broken in pencil mode&lt;/b&gt; — Ctrl now enables instant annotation selection in pencil mode (no long-press delay). Multi-selections can be dragged without holding Ctrl, matching all other tools.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Pen pressure over-smoothing after many strokes&lt;/b&gt; — committed annotations are now drawn from a cached bitmap during active drawing, preventing progressive frame time degradation that caused macOS to coalesce tablet events and reduce stroke fidelity.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Pen pressure range&lt;/b&gt; — light touch now gives 20–100% of stroke width (was 30–100%) for finer control.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Apple Translation language list empty on first use&lt;/b&gt; — the Translation framework can return stale results at launch; empty results are no longer cached, so the language picker retries on next open.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Global hotkeys stop working after closing editor&lt;/b&gt; — `NSApp.hide(nil)` could suspend the Carbon event loop; replaced with cooperative focus transfer.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Window snap highlight not showing on overlay appear&lt;/b&gt; — snap query now runs immediately at the mouse position instead of waiting for mouse movement. (PR #100, thanks @TimFang4162)&lt;/li&gt; &lt;li&gt;&lt;b&gt;Smoother refined pencil stroke tails&lt;/b&gt; — end of refined strokes no longer has an abrupt straight segment.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Cursor flicker after finishing a stroke&lt;/b&gt; — the annotation cache is now incrementally updated on commit instead of rebuilt from scratch.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Video editor bottom bar overlap&lt;/b&gt; — left-side info gracefully hides when the window is narrow instead of overlapping action buttons.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Timeline thumbnail seams&lt;/b&gt; — sub-pixel gaps between thumbnail tiles eliminated.&lt;/li&gt;  &lt;/ul&gt;&lt;h3&gt;Changed&lt;/h3&gt;&lt;ul&gt; &lt;li&gt;&lt;b&gt;Lasso selection moved to Ctrl+drag&lt;/b&gt; — frees Shift for line/shape constraining without timing conflicts.&lt;/li&gt; &lt;li&gt;&lt;b&gt;Video editor minimum width&lt;/b&gt; increased to 820px to ensure all controls fit.&lt;/li&gt;&lt;/ul&gt;
-    </description>
-    <enclosure url="https://github.com/sw33tLie/macshot/releases/download/v4.0.4/MacShot.dmg" length="5940423" type="application/octet-stream" sparkle:edSignature="Bcj1UKJt6ByGyOk28g/M7CFxKiId+FvNsHSxUXlcv0BiHEBmpSSJ4/S3yPCIcLQpOhZzLZ9ADN9OsV4Q2qgRBw==" />
-</item>
-<item>
-    <title>v4.1.0-beta.8</title>
-    <pubDate>Sun, 03 May 2026 10:37:41 +0000</pubDate>
-    <sparkle:version>72</sparkle:version>
-    <sparkle:shortVersionString>4.1.0-beta.8</sparkle:shortVersionString>
-    <sparkle:minimumSystemVersion>12.3</sparkle:minimumSystemVersion>
-    <sparkle:channel>beta</sparkle:channel>
-    <description><![CDATA[
-      <style>
-        body { font-family: -apple-system, sans-serif; font-size: 13px; padding: 12px; }
-        h3 { font-size: 14px; margin: 12px 0 6px 0; }
-        h3:first-child { margin-top: 0; }
-        ul { padding-left: 18px; margin: 4px 0; }
-        li { margin: 4px 0; line-height: 1.5; }
-      </style>
-      <h3>Fixed</h3><ul> <li><b>Quick Capture's "Also open in Editor" was resetting last-used tool and stroke width.</b> `DetachedEditorWindowController.open(...)` had `tool: .arrow` / `strokeWidth: 3` as parameter defaults and unconditionally wrote them to the new EditorView on every open, which triggered the `currentTool` didSet that persists globally — so opening the editor (Quick Capture, History → Open in Editor, Pin → Edit) silently overwrote `lastUsedTool` and `currentStrokeWidth` for the entire app. Parameters are now optional with `nil` default; the editor only overrides when a caller explicitly passes a value, otherwise the EditorView's own UserDefaults-backed initializers are honored. Refs #58.</li></ul>
-    ]]></description>
-    <enclosure
-        url="https://github.com/sw33tLie/macshot/releases/download/v4.1.0-beta.8/MacShot.dmg"
-        length="5869435"
-        type="application/octet-stream"
-        sparkle:edSignature="kwvxLzE2UgRRR2XoSi4BiNbTcoZcAELLv0GjmroSUK3qFvhq+NNZwdxtAFohwk7cjF8bglSehK6lY7RBwspkDg=="
-    />
-</item>
+        <title>Lumashot</title>
+        <link>https://github.com/Zichao-xu/lumashot</link>
+        <description>Lumashot updates</description>
     </channel>
 </rss>

@@ -1,17 +1,17 @@
-/* Nederlands — macshot localization
+/* Nederlands — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Openen vanuit klembord";
 "Preferences..." = "Instellingen...";
 "Check for Updates..." = "Controleer op updates...";
-"Quit macshot" = "Stop macshot";
+"Quit Lumashot" = "Stop Lumashot";
 "No recent captures" = "Geen recente opnames";
 "Clear History" = "Geschiedenis wissen";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Kopieer naar klembord";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot-instellingen";
+"Lumashot Preferences" = "Lumashot-instellingen";
 "General" = "Algemeen";
 "Tools" = "Gereedschap";
 "Recording" = "Opname";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Muiscursor vastleggen in schermafbeelding";
 "Use window title in saved filename" = "Venstertitel gebruiken in bestandsnaam";
 "Hide menu bar icon" = "Menubalkpictogram verbergen";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Sneltoetsen werken nog steeds. Start macshot opnieuw op om het pictogram weer te tonen.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Sneltoetsen werken nog steeds. Start Lumashot opnieuw op om het pictogram weer te tonen.";
 "Check for updates automatically" = "Automatisch op updates controleren";
 "Check for beta updates" = "Controleren op bèta-updates";
 "Thumbnail" = "Miniatuur";
@@ -307,7 +307,7 @@
 "Video upload requires Google Drive or S3" = "Video-upload vereist Google Drive of S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Versie %@ (%@)";
 "Made by" = "Gemaakt door";
 "Licensed under the GPLv3" = "Gelicenseerd onder de GPLv3";
@@ -318,23 +318,23 @@
 "Copy an image to the clipboard first, then try again." = "Kopieer eerst een afbeelding naar het klembord en probeer het opnieuw.";
 "OK" = "OK";
 "Accessibility Access Required" = "Toegankelijkheidstoegang vereist";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot heeft toegankelijkheidstoegang nodig om automatisch in andere apps te scrollen. Verleen toegang in Systeeminstellingen en probeer het opnieuw.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot heeft toegankelijkheids­toestemming nodig voor scrollopname. Verleen toegang in Systeeminstellingen en probeer het opnieuw.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot heeft toegankelijkheidstoegang nodig om automatisch in andere apps te scrollen. Verleen toegang in Systeeminstellingen en probeer het opnieuw.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot heeft toegankelijkheids­toestemming nodig voor scrollopname. Verleen toegang in Systeeminstellingen en probeer het opnieuw.";
 "Open Settings" = "Open Instellingen";
 "Cancel" = "Annuleer";
 "Microphone Access Required" = "Microfoontoegang vereist";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot heeft microfoontoestemming nodig om spraak op te nemen. Open Systeeminstellingen om toegang te verlenen.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot heeft microfoontoestemming nodig om spraak op te nemen. Open Systeeminstellingen om toegang te verlenen.";
 "Upload to Google Drive?" = "Uploaden naar Google Drive?";
 "Upload to S3?" = "Uploaden naar S3?";
 "Upload to imgbb.com?" = "Uploaden naar imgbb.com?";
 "Your screenshot will be uploaded." = "Je schermafbeelding wordt geupload.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Welkom bij macshot";
-"macshot needs one permission" = "macshot heeft een toestemming nodig";
+"Welcome to Lumashot" = "Welkom bij Lumashot";
+"Lumashot needs one permission" = "Lumashot heeft een toestemming nodig";
 "Screen Recording not yet granted" = "Schermopname nog niet toegestaan";
 "Screen Recording granted!" = "Schermopname toegestaan!";
-"Enable macshot, then try taking a screenshot" = "Schakel macshot in en probeer een schermafbeelding te maken";
+"Enable Lumashot, then try taking a screenshot" = "Schakel Lumashot in en probeer een schermafbeelding te maken";
 "Open Screen Recording Settings" = "Open schermopname-instellingen";
 "Continue" = "Ga door";
 
@@ -364,7 +364,7 @@
 "Path copied!" = "Pad gekopieerd!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot Video-editor";
+"Lumashot Video Editor" = "Lumashot Video-editor";
 "%@ selected" = "%@ geselecteerd";
 "Exporting..." = "Exporteren...";
 "Export failed" = "Export mislukt";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Invoerbewaking vereist";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot heeft de toestemming Invoerbewaking nodig om toetsaanslagen te tonen tijdens de opname. Verleen toegang in System Settings en probeer het opnieuw.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot heeft de toegankelijkheidstoestemming nodig om toetsaanslagen te tonen tijdens de opname. Verleen toegang in System Settings en probeer het opnieuw.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot heeft de toestemming Invoerbewaking nodig om toetsaanslagen te tonen tijdens de opname. Verleen toegang in System Settings en probeer het opnieuw.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot heeft de toegankelijkheidstoestemming nodig om toetsaanslagen te tonen tijdens de opname. Verleen toegang in System Settings en probeer het opnieuw.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Toetsaanslagen tonen";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Webcamoverlay";
 "Camera Access Required" = "Cameratoegang vereist";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot heeft cameratoegang nodig voor de webcamoverlay. Open Systeeminstellingen om toegang te verlenen.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot heeft cameratoegang nodig voor de webcamoverlay. Open Systeeminstellingen om toegang te verlenen.";
 "Webcam" = "Webcam";
 "Bottom Right" = "Rechtsonder";
 "Bottom Left" = "Linksonder";
@@ -443,7 +443,7 @@
 
 /* New strings */
 "Settings..." = "Instellingen...";
-"macshot Settings" = "macshot-instellingen";
+"Lumashot Settings" = "Lumashot-instellingen";
 "Also open in Editor" = "Ook openen in editor";
 "Hide controls" = "Bedieningselementen verbergen";
 "Hide recording controls" = "Opnamebediening verbergen";
@@ -493,13 +493,13 @@
 "Clear History?" = "Geschiedenis wissen?";
 "This will permanently delete all screenshots from history." = "Hiermee worden alle schermafbeeldingen definitief uit de geschiedenis verwijderd.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Klik op \"Instellen\" en druk op een toetscombinatie met ten minste één modifier (⌘, ⌥, ⌃, ⇧) om een sneltoets in te stellen.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Bestanden worden geüpload naar een \"macshot\"-map in uw Google Drive. Alles blijft privé — er wordt niets openbaar gedeeld.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Bestanden worden geüpload naar een \"Lumashot\"-map in uw Google Drive. Alles blijft privé — er wordt niets openbaar gedeeld.";
 
 "Pressure" = "Druk";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Video openen...";
-"Choose a video to open in macshot editor" = "Kies een video om in de macshot-editor te openen";
+"Choose a video to open in Lumashot editor" = "Kies een video om in de Lumashot-editor te openen";
 "Click to add effects" = "Klik om effecten toe te voegen";
 "Add Zoom" = "Zoom toevoegen";
 "Add Censor" = "Censuur toevoegen";
@@ -545,7 +545,7 @@
 "Screenshots only — captured window title (blank otherwise)" = "Alleen schermafbeeldingen — titel van het vastgelegde venster (anders leeg)";
 "Show available filename tokens" = "Beschikbare bestandsnaam-tokens tonen";
 "Show supported URL scheme commands" = "Ondersteunde URL-schemacommando's tonen";
-"Enable macshot:// URL scheme" = "macshot:// URL-schema inschakelen";
+"Enable lumashot:// URL scheme" = "lumashot:// URL-schema inschakelen";
 "Start area capture" = "Gebiedsopname starten";
 "Start area recording" = "Gebiedsopname (video) starten";
 "Start full-screen recording" = "Volledige schermopname starten";
@@ -553,6 +553,6 @@
 "Stop the current recording" = "Huidige opname stoppen";
 "Supported URL Scheme Commands" = "Ondersteunde URL-schemacommando's";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "De bestandsextensie wordt automatisch toegevoegd. Schuine strepen en dubbele punten in {window} worden streepjes.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Activeer macshot vanuit Raycast, Alfred, Shortcuts of elke tool die URL's opent.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Activeer Lumashot vanuit Raycast, Alfred, Shortcuts of elke tool die URL's opent.";
 "URL scheme info" = "URL-schema-info";
 "sec (0 = never)" = "sec (0 = nooit)";

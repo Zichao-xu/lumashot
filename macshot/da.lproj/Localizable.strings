@@ -1,17 +1,17 @@
-/* Dansk — macshot lokalisering
+/* Dansk — Lumashot lokalisering
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "\U00C5bn fra udklipsholder";
 "Preferences..." = "Indstillinger...";
 "Check for Updates..." = "S\U00F8g efter opdateringer...";
-"Quit macshot" = "Afslut macshot";
+"Quit Lumashot" = "Afslut Lumashot";
 "No recent captures" = "Ingen seneste optagelser";
 "Clear History" = "Ryd historik";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Kopi\U00E9r til udklipsholder";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot Indstillinger";
+"Lumashot Preferences" = "Lumashot Indstillinger";
 "General" = "Generelt";
 "Tools" = "V\U00E6rkt\U00F8jer";
 "Recording" = "Optagelse";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Inkluder musemark\U00F8r i sk\U00E6rmbillede";
 "Use window title in saved filename" = "Brug vinduets titel i gemt filnavn";
 "Hide menu bar icon" = "Skjul menulinjeikon";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Genvejstaster virker stadig. For at vise ikonet igen skal du genstarte macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Genvejstaster virker stadig. For at vise ikonet igen skal du genstarte Lumashot.";
 "Check for updates automatically" = "S\U00F8g efter opdateringer automatisk";
 "Check for beta updates" = "S\U00F8g efter betaopdateringer";
 "Thumbnail" = "Miniature";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Videoupload kr\U00E6ver Google Drive eller S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Version %@ (%@)";
 "Made by" = "Lavet af";
 "Licensed under the GPLv3" = "Licenseret under GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Kopi\U00E9r f\U00F8rst et billede til udklipsholderen, og pr\U00F8v derefter igen.";
 "OK" = "OK";
 "Accessibility Access Required" = "Tilg\U00E6ngelighedsadgang kr\U00E6ves";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot kr\U00E6ver tilg\U00E6ngelighedstilladelse for at auto-rulle andre apps. Giv adgang i Systemindstillinger, og pr\U00F8v derefter igen.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot har brug for tilgængeligheds­tilladelse til rulleoptagelse. Giv adgang i Systemindstillinger, og prøv igen.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot kr\U00E6ver tilg\U00E6ngelighedstilladelse for at auto-rulle andre apps. Giv adgang i Systemindstillinger, og pr\U00F8v derefter igen.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot har brug for tilgængeligheds­tilladelse til rulleoptagelse. Giv adgang i Systemindstillinger, og prøv igen.";
 "Open Settings" = "\U00C5bn Indstillinger";
 "Cancel" = "Annull\U00E9r";
 "Microphone Access Required" = "Mikrofonadgang kr\U00E6ves";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot kr\U00E6ver mikrofontilladelse for at optage stemmelyd. \U00C5bn Systemindstillinger for at give adgang.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot kr\U00E6ver mikrofontilladelse for at optage stemmelyd. \U00C5bn Systemindstillinger for at give adgang.";
 "Upload to Google Drive?" = "Upload til Google Drive?";
 "Upload to S3?" = "Upload til S3?";
 "Upload to imgbb.com?" = "Upload til imgbb.com?";
 "Your screenshot will be uploaded." = "Dit sk\U00E6rmbillede vil blive uploadet.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Velkommen til macshot";
-"macshot needs one permission" = "macshot kr\U00E6ver \U00E9n tilladelse";
+"Welcome to Lumashot" = "Velkommen til Lumashot";
+"Lumashot needs one permission" = "Lumashot kr\U00E6ver \U00E9n tilladelse";
 "Screen Recording not yet granted" = "Sk\U00E6rmoptagelse endnu ikke givet";
 "Screen Recording granted!" = "Sk\U00E6rmoptagelse givet!";
-"Enable macshot, then try taking a screenshot" = "Aktiv\U00E9r macshot, og pr\U00F8v at tage et sk\U00E6rmbillede";
+"Enable Lumashot, then try taking a screenshot" = "Aktiv\U00E9r Lumashot, og pr\U00F8v at tage et sk\U00E6rmbillede";
 "Open Screen Recording Settings" = "\U00C5bn sk\U00E6rmoptagelsesindstillinger";
 "Continue" = "Forts\U00E6t";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Sti kopieret!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot Videoredigering";
+"Lumashot Video Editor" = "Lumashot Videoredigering";
 "%@ selected" = "%@ valgt";
 "Exporting..." = "Eksporterer...";
 "Export failed" = "Eksport mislykkedes";
@@ -410,8 +410,8 @@
 
 /* Recording \U2014 Input Monitoring Permission */
 "Input Monitoring Required" = "Inputoverv\U00E5gning kr\U00E6ves";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot kr\U00E6ver tilladelse til inputoverv\U00E5gning for at vise tastetryk under optagelse. Giv adgang i System Settings, og pr\U00F8v derefter igen.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot kr\U00E6ver tilg\U00E6ngelighedstilladelse for at vise tastetryk under optagelse. Giv adgang i System Settings, og pr\U00F8v derefter igen.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot kr\U00E6ver tilladelse til inputoverv\U00E5gning for at vise tastetryk under optagelse. Giv adgang i System Settings, og pr\U00F8v derefter igen.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot kr\U00E6ver tilg\U00E6ngelighedstilladelse for at vise tastetryk under optagelse. Giv adgang i System Settings, og pr\U00F8v derefter igen.";
 
 /* Recording \U2014 Keystroke Overlay */
 "Show Keystrokes" = "Vis tastetryk";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Webcam-overlay";
 "Camera Access Required" = "Kameraadgang kr\U00E6ves";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot kr\U00E6ver kameratilladelse til webcam-overlayet. \U00C5bn Systemindstillinger for at give adgang.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot kr\U00E6ver kameratilladelse til webcam-overlayet. \U00C5bn Systemindstillinger for at give adgang.";
 "Webcam" = "Webcam";
 "Bottom Right" = "Nederst til h\U00F8jre";
 "Bottom Left" = "Nederst til venstre";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "Indstillinger...";
-"macshot Settings" = "macshot Indstillinger";
+"Lumashot Settings" = "Lumashot Indstillinger";
 "Also open in Editor" = "\U00C5bn ogs\U00E5 i redigering";
 "Hide controls" = "Skjul kontroller";
 "Hide recording controls" = "Skjul optagelseskontroller";
@@ -495,13 +495,13 @@
 "Clear History?" = "Ryd historik?";
 "This will permanently delete all screenshots from history." = "Dette vil permanent slette alle skærmbilleder fra historikken.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Klik på \"Indstil\" og tryk på en tastekombination med mindst én modifikator (⌘, ⌥, ⌃, ⇧) for at angive en genvej.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Filer uploades til en \"macshot\"-mappe på dit Google Drev. Alt forbliver privat — intet deles offentligt.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Filer uploades til en \"Lumashot\"-mappe på dit Google Drev. Alt forbliver privat — intet deles offentligt.";
 
 "Pressure" = "Tryk";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "\U00C5bn video...";
-"Choose a video to open in macshot editor" = "V\U00E6lg en video at \U00E5bne i macshot-redigering";
+"Choose a video to open in Lumashot editor" = "V\U00E6lg en video at \U00E5bne i Lumashot-redigering";
 "Click to add effects" = "Klik for at tilf\U00F8je effekter";
 "Add Zoom" = "Tilf\U00F8j zoom";
 "Add Censor" = "Tilf\U00F8j censur";
@@ -554,7 +554,7 @@
 "Stop the current recording" = "Stop den aktuelle optagelse";
 "Supported URL Scheme Commands" = "Underst\U00F8ttede URL-skema-kommandoer";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Filendelsen tilf\U00F8jes automatisk. Skr\U00E5streger og koloner i {window} bliver til bindestreger.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Udl\U00F8s macshot fra Raycast, Alfred, Shortcuts eller ethvert v\U00E6rkt\U00F8j, der \U00E5bner URL'er.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Udl\U00F8s Lumashot fra Raycast, Alfred, Shortcuts eller ethvert v\U00E6rkt\U00F8j, der \U00E5bner URL'er.";
 "URL scheme info" = "URL-skema-info";
-"Enable macshot:// URL scheme" = "Aktiv\U00E9r macshot://-URL-skema";
+"Enable lumashot:// URL scheme" = "Aktiv\U00E9r lumashot://-URL-skema";
 "sec (0 = never)" = "sek (0 = aldrig)";

@@ -34,7 +34,7 @@ final class RecordingEngine: NSObject {
     private var micAudioInput: AVAssetWriterInput?    // microphone audio
     private var adaptor: AVAssetWriterInputPixelBufferAdaptor?
     /// Serial queue for all recording I/O (video + audio).
-    private let recordingQueue = DispatchQueue(label: "macshot.recording")
+    private let recordingQueue = DispatchQueue(label: "Lumashot.recording")
     private var outputURL: URL?
     private var startTime: CMTime = .invalid
     private var sessionStarted: Bool = false
@@ -154,7 +154,7 @@ final class RecordingEngine: NSObject {
                 return
             }
 
-            // Exclude specific macshot UI chrome windows (selection border, HUD)
+            // Exclude specific Lumashot UI chrome windows (selection border, HUD)
             // but NOT recording overlays (webcam, mouse highlight, keystrokes)
             // which are intentionally part of the recording.
             let excludeIDs = excludeWindowNumbers
@@ -183,7 +183,7 @@ final class RecordingEngine: NSObject {
             if #available(macOS 13.0, *) {
                 let recordAudio = UserDefaults.standard.bool(forKey: "recordSystemAudio")
                 config.capturesAudio = recordAudio
-                config.excludesCurrentProcessAudio = true  // don't capture macshot's own sounds
+                config.excludesCurrentProcessAudio = true  // don't capture Lumashot's own sounds
             }
 
             let pixelW = config.width

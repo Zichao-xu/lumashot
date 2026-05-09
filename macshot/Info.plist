@@ -14,10 +14,10 @@
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>macshot Actions</string>
+			<string>Lumashot Actions</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>macshot</string>
+				<string>lumashot</string>
 			</array>
 		</dict>
 	</array>
@@ -44,13 +44,13 @@
 		</dict>
 	</array>
 	<key>Privacy - Screen Capture Usage Description</key>
-	<string>macshot needs screen recording permission to capture screenshots.</string>
+	<string>Lumashot needs screen recording permission to capture screenshots.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>macshot can record microphone audio during screen recordings.</string>
+	<string>Lumashot can record microphone audio during screen recordings.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>macshot can show a webcam overlay during screen recordings.</string>
+	<string>Lumashot can show a webcam overlay during screen recordings.</string>
 	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/sw33tLie/macshot/main/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>+5RTT9lGyoeOYAYuNfCdPhxugmruYvRDyFXgk6VPY1c=</string>
 	<key>SUScheduledCheckInterval</key>

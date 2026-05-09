@@ -130,7 +130,7 @@ class ScreenCaptureManager {
                 await MainActor.run { completion(captures) }
             } catch {
                 #if DEBUG
-                    NSLog("macshot: screen capture error: \(error.localizedDescription)")
+                    NSLog("Lumashot: screen capture error: \(error.localizedDescription)")
                 #endif
                 await MainActor.run { completion([]) }
             }

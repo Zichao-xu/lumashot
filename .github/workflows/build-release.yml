@@ -5,12 +5,15 @@ on:
   push:
     tags:
       - "v*.*.*"
-      - "v*.*.*-beta.*"
+      - "v*.*.*-*"
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to build (e.g. v3.8.0-beta.2)'
+        description: 'Tag to build (e.g. v0.1.2-alpha)'
         required: true
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -23,7 +26,6 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
 
       # ── 2. Parse version from tag ──────────────────────────────────────────
       - name: Set version
@@ -31,13 +33,17 @@ jobs:
           # Use manual input tag if workflow_dispatch, otherwise use the pushed tag
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
           VERSION="${TAG#v}"   # strip leading 'v'
-          BUILD_NUMBER="${{ github.run_number }}"
+          BASE_VERSION="${VERSION%%-*}"
+          IFS=. read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+          BUILD_NUMBER=$((10#$MAJOR * 10000 + 10#$MINOR * 100 + 10#$PATCH))
+          DMG_NAME="Lumashot-darwin-arm64-${VERSION}.dmg"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-          if [[ "$VERSION" == *"-beta"* ]]; then
-            echo "IS_BETA=true" >> $GITHUB_ENV
+          echo "DMG_NAME=$DMG_NAME" >> $GITHUB_ENV
+          if [[ "$VERSION" == *"-"* ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
           else
-            echo "IS_BETA=false" >> $GITHUB_ENV
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
           fi
 
       # ── 3. Import Developer ID certificate into a temporary keychain ───────
@@ -105,7 +111,7 @@ jobs:
       # ── 5. Sign the .app with Developer ID ────────────────────────────────
       - name: Sign app
         run: |
-          APP="build/Build/Products/Release/macshot.app"
+          APP="build/Build/Products/Release/Lumashot.app"
 
           # Sparkle's XPC services (Installer.xpc, Downloader.xpc) must NOT be sandboxed.
           # They ship with empty entitlements so they can write to /Applications to replace
@@ -184,20 +190,20 @@ jobs:
           brew install create-dmg
           # Stage the .app in a folder (create-dmg copies folder contents into DMG)
           mkdir -p /tmp/dmg-staging
-          cp -R "build/Build/Products/Release/macshot.app" /tmp/dmg-staging/
+          cp -R "build/Build/Products/Release/Lumashot.app" /tmp/dmg-staging/
           # create-dmg returns exit code 2 if it can't set the volume icon
           # (no .icns at the root), which is fine — the app icon shows up anyway.
           create-dmg \
-            --volname "macshot" \
+            --volname "Lumashot" \
             --background "assets/dmg-background.png" \
             --window-pos 200 120 \
             --window-size 600 400 \
             --icon-size 100 \
-            --icon "macshot.app" 150 185 \
+            --icon "Lumashot.app" 150 185 \
             --app-drop-link 450 185 \
             --no-internet-enable \
-            --hide-extension "macshot.app" \
-            MacShot.dmg \
+            --hide-extension "Lumashot.app" \
+            "$DMG_NAME" \
             /tmp/dmg-staging \
             || [ $? -eq 2 ]
 
@@ -212,23 +218,23 @@ jobs:
           echo "$ASC_API_KEY_BASE64" | base64 --decode \
             > ~/.appstoreconnect/private_keys/AuthKey_${ASC_API_KEY_ID}.p8
 
-          xcrun notarytool submit MacShot.dmg \
+          xcrun notarytool submit "$DMG_NAME" \
             --key ~/.appstoreconnect/private_keys/AuthKey_${ASC_API_KEY_ID}.p8 \
             --key-id "$ASC_API_KEY_ID" \
             --issuer "$ASC_API_ISSUER_ID" \
             --wait \
             --timeout 20m
 
-          xcrun stapler staple MacShot.dmg
+          xcrun stapler staple "$DMG_NAME"
 
           echo "✅ Notarization complete"
 
           rm -f ~/.appstoreconnect/private_keys/AuthKey_${ASC_API_KEY_ID}.p8
 
-      # ── 8. Get SHA256 for Homebrew ─────────────────────────────────────────
+      # ── 8. Get SHA256 ─────────────────────────────────────────────────────
       - name: Compute SHA256
         run: |
-          SHA256=$(shasum -a 256 MacShot.dmg | awk '{print $1}')
+          SHA256=$(shasum -a 256 "$DMG_NAME" | awk '{print $1}')
           echo "SHA256=$SHA256" >> $GITHUB_ENV
           echo "SHA256: $SHA256"
 
@@ -237,6 +243,9 @@ jobs:
         run: |
           awk "/^## \[$VERSION\]/{found=1; next} found && /^## \[/{exit} found{print}" \
             CHANGELOG.md > release_notes.md
+          if [ ! -s release_notes.md ]; then
+            echo "Lumashot ${VERSION} fixes the Sparkle update feed and product identity." > release_notes.md
+          fi
           cat release_notes.md
 
       # ── 10. Sign DMG for Sparkle and update appcast ───────────────────────
@@ -288,21 +297,15 @@ jobs:
           """))
           pathlib.Path("/tmp/assemble_appcast.py").write_text(textwrap.dedent("""\
               import sys, os
-              is_beta = sys.argv[1] == 'true'
-              stable = ''
-              if is_beta and os.path.exists('/tmp/stable_items.xml'):
-                  stable = open('/tmp/stable_items.xml').read().strip()
               new_item = open('/tmp/new_item.xml').read().strip()
-              parts = [p for p in [stable, new_item] if p]
-              items = '\\n'.join(parts)
               with open('appcast.xml', 'w') as f:
                   f.write(f'''<?xml version="1.0" encoding="utf-8"?>
               <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
                   <channel>
-                      <title>macshot</title>
-                      <link>https://github.com/sw33tLie/macshot</link>
-                      <description>macshot updates</description>
-              {items}
+                      <title>Lumashot</title>
+                      <link>https://github.com/Zichao-xu/lumashot</link>
+                      <description>Lumashot updates</description>
+              {new_item}
                   </channel>
               </rss>
               ''')
@@ -322,14 +325,14 @@ jobs:
 
           # Sign the DMG with Sparkle's EdDSA key
           echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_key
-          SIGN_OUTPUT=$(/tmp/sparkle/bin/sign_update MacShot.dmg --ed-key-file /tmp/sparkle_key)
+          SIGN_OUTPUT=$(/tmp/sparkle/bin/sign_update "$DMG_NAME" --ed-key-file /tmp/sparkle_key)
           rm -f /tmp/sparkle_key
           echo "Sparkle signature output: $SIGN_OUTPUT"
 
           # Parse: sparkle:edSignature="..." length="..."
           ED_SIG=$(echo "$SIGN_OUTPUT" | sed -n 's/.*edSignature="\([^"]*\)".*/\1/p')
-          FILESIZE=$(stat -f%z MacShot.dmg)
-          DOWNLOAD_URL="https://github.com/sw33tLie/macshot/releases/download/v${VERSION}/MacShot.dmg"
+          FILESIZE=$(stat -f%z "$DMG_NAME")
+          DOWNLOAD_URL="https://github.com/Zichao-xu/lumashot/releases/download/v${VERSION}/${DMG_NAME}"
           DATE=$(date -R)
 
           # Convert release notes markdown to HTML for Sparkle update dialog
@@ -349,27 +352,17 @@ jobs:
 
           # Build the new <item> block
           CHANNEL=""
-          if [ "$IS_BETA" = "true" ]; then
+          if [[ "$VERSION" == *"-beta"* ]]; then
             CHANNEL="beta"
           fi
 
           python3 /tmp/build_item.py "$VERSION" "$BUILD_NUMBER" "$DATE" "$CHANNEL" "$RELEASE_HTML" "$DOWNLOAD_URL" "$FILESIZE" "$ED_SIG"
           NEW_ITEM=$(cat /tmp/new_item.xml)
 
-          # Merge into appcast.xml:
-          # - Beta release: keep existing stable item, replace any previous beta item
-          # - Stable release: replace everything (stable is now the latest, drop old beta)
-
           # Write new item to a temp file for clean assembly
           echo "$NEW_ITEM" > /tmp/new_item.xml
 
-          if [ "$IS_BETA" = "true" ] && [ -f appcast.xml ]; then
-            python3 /tmp/extract_stable.py 2>/dev/null || echo "" > /tmp/stable_items.xml
-          else
-            echo "" > /tmp/stable_items.xml
-          fi
-
-          python3 /tmp/assemble_appcast.py "$IS_BETA"
+          python3 /tmp/assemble_appcast.py
 
           # Validate appcast XML before proceeding — abort if malformed
           python3 -c "import xml.etree.ElementTree as ET; ET.parse('appcast.xml')" || {
@@ -384,13 +377,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete "v$VERSION" --yes 2>/dev/null || true
           PRERELEASE_FLAG=""
-          if [ "$IS_BETA" = "true" ]; then
+          if [ "$IS_PRERELEASE" = "true" ]; then
             PRERELEASE_FLAG="--prerelease"
           fi
-          gh release create "v$VERSION" MacShot.dmg \
-            --title "v$VERSION" \
+          gh release create "v$VERSION" "$DMG_NAME" \
+            --title "Lumashot v$VERSION" \
             --notes-file release_notes.md \
             $PRERELEASE_FLAG
 
@@ -404,7 +396,7 @@ jobs:
           git fetch origin main
           git checkout -f main
           cp /tmp/appcast.xml appcast.xml
-          if [ "$IS_BETA" = "false" ]; then
+          if [ "$IS_PRERELEASE" = "false" ]; then
             sed -i '' "s/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/v${VERSION}/" website/index.html
             git add website/index.html
           fi
@@ -414,40 +406,7 @@ jobs:
             git push origin main
           }
 
-      # ── 13. Update Homebrew formula (personal tap) ─────────────────────────
-      - name: Update Homebrew formula
-        if: env.IS_BETA == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        run: |
-          git clone https://x-access-token:${GH_TOKEN}@github.com/sw33tLie/homebrew-macshot.git /tmp/tap
-
-          sed -i '' \
-            -e "s/version \".*\"/version \"$VERSION\"/" \
-            -e "s/sha256 \".*\"/sha256 \"$SHA256\"/" \
-            /tmp/tap/Casks/macshot.rb
-
-          cd /tmp/tap
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Casks/macshot.rb
-          git commit -m "macshot $VERSION"
-          git push
-
-      # ── 14. Bump homebrew-cask (official) ──────────────────────────────────
-      - name: Bump homebrew-cask
-        if: env.IS_BETA == 'false'
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        run: |
-          brew tap homebrew/cask 2>/dev/null || true
-          brew bump-cask-pr macshot \
-            --version "$VERSION" \
-            --sha256 "$SHA256" \
-            --no-browse \
-            || echo "⚠️ homebrew-cask bump failed (cask may not exist yet or is already up to date)"
-
-      # ── 15. Cleanup keychain ────────────────────────────────────────────────
+      # ── 13. Cleanup keychain ────────────────────────────────────────────────
       - name: Cleanup keychain
         if: always()
         run: |

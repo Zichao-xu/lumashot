@@ -39,7 +39,7 @@
 git clone https://github.com/Zichao-xu/lumashot.git
 cd lumashot
 xcodebuild -scheme macshot -configuration Release
-# 结果：build/macshot.app → 复制到 /Applications
+# 结果：Lumashot.app → 复制到 /Applications
 ```
 
 或从 [Releases](https://github.com/Zichao-xu/lumashot/releases) 下载最新 alpha 版本。

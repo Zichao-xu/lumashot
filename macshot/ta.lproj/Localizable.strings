@@ -1,17 +1,17 @@
-/* தமிழ் — macshot localization
+/* தமிழ் — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "ஒட்டுப்பலகையிலிருந்து திற";
 "Preferences..." = "விருப்பங்கள்...";
 "Check for Updates..." = "புதுப்பிப்புகளைச் சரிபார்...";
-"Quit macshot" = "macshot-ஐ நிறுத்து";
+"Quit Lumashot" = "Lumashot-ஐ நிறுத்து";
 "No recent captures" = "சமீபத்திய பிடிப்புகள் இல்லை";
 "Clear History" = "வரலாற்றை அழி";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "ஒட்டுப்பலகையில் நகலெடு";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot விருப்பங்கள்";
+"Lumashot Preferences" = "Lumashot விருப்பங்கள்";
 "General" = "பொது";
 "Tools" = "கருவிகள்";
 "Recording" = "பதிவு";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "திரைப்பிடிப்பில் சுட்டியைப் பிடி";
 "Use window title in saved filename" = "சேமிக்கும் கோப்புப் பெயரில் சாளரத் தலைப்பைப் பயன்படுத்து";
 "Hide menu bar icon" = "பட்டிப்பட்டை ஐகானை மறை";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "விரைவு விசைகள் செயல்படும். ஐகானை மீண்டும் காட்ட, macshot-ஐ மறுதொடக்கம் செய்யுங்கள்.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "விரைவு விசைகள் செயல்படும். ஐகானை மீண்டும் காட்ட, Lumashot-ஐ மறுதொடக்கம் செய்யுங்கள்.";
 "Check for updates automatically" = "புதுப்பிப்புகளைத் தானாகச் சரிபார்";
 "Check for beta updates" = "பீட்டா புதுப்பிப்புகளைச் சரிபார்";
 "Thumbnail" = "சிறுபடம்";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "காணொளி பதிவேற்றத்திற்கு Google Drive அல்லது S3 தேவை";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "பதிப்பு %@ (%@)";
 "Made by" = "உருவாக்கியவர்";
 "Licensed under the GPLv3" = "GPLv3 உரிமத்தின் கீழ் வழங்கப்பட்டது";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "முதலில் ஒட்டுப்பலகையில் ஒரு படத்தை நகலெடுத்து, பின்னர் மீண்டும் முயற்சிக்கவும்.";
 "OK" = "சரி";
 "Accessibility Access Required" = "அணுகல்தன்மை அனுமதி தேவை";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot பிற பயன்பாடுகளை தானாக உருட்ட அணுகல்தன்மை அனுமதி தேவை. கணினி அமைப்புகளில் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "ஸ்க்ரோல் கேப்சருக்கு macshot-க்கு அணுகல்தன்மை அனுமதி தேவை. கணினி அமைப்புகளில் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot பிற பயன்பாடுகளை தானாக உருட்ட அணுகல்தன்மை அனுமதி தேவை. கணினி அமைப்புகளில் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "ஸ்க்ரோல் கேப்சருக்கு Lumashot-க்கு அணுகல்தன்மை அனுமதி தேவை. கணினி அமைப்புகளில் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
 "Open Settings" = "அமைப்புகளைத் திற";
 "Cancel" = "ரத்துசெய்";
 "Microphone Access Required" = "ஒலிவாங்கி அணுகல் தேவை";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot குரல் ஒலியைப் பதிவு செய்ய ஒலிவாங்கி அனுமதி தேவை. அணுகலை வழங்க கணினி அமைப்புகளைத் திறக்கவும்.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot குரல் ஒலியைப் பதிவு செய்ய ஒலிவாங்கி அனுமதி தேவை. அணுகலை வழங்க கணினி அமைப்புகளைத் திறக்கவும்.";
 "Upload to Google Drive?" = "Google Drive இல் பதிவேற்றவா?";
 "Upload to S3?" = "S3 இல் பதிவேற்றவா?";
 "Upload to imgbb.com?" = "imgbb.com இல் பதிவேற்றவா?";
 "Your screenshot will be uploaded." = "உங்கள் திரைப்பிடிப்பு பதிவேற்றப்படும்.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "macshot க்கு வரவேற்கிறோம்";
-"macshot needs one permission" = "macshot க்கு ஒரு அனுமதி தேவை";
+"Welcome to Lumashot" = "Lumashot க்கு வரவேற்கிறோம்";
+"Lumashot needs one permission" = "Lumashot க்கு ஒரு அனுமதி தேவை";
 "Screen Recording not yet granted" = "திரைப் பதிவு இன்னும் வழங்கப்படவில்லை";
 "Screen Recording granted!" = "திரைப் பதிவு வழங்கப்பட்டது!";
-"Enable macshot, then try taking a screenshot" = "macshot ஐ இயக்கி, திரைப்பிடிப்பு எடுக்க முயற்சிக்கவும்";
+"Enable Lumashot, then try taking a screenshot" = "Lumashot ஐ இயக்கி, திரைப்பிடிப்பு எடுக்க முயற்சிக்கவும்";
 "Open Screen Recording Settings" = "திரைப் பதிவு அமைப்புகளைத் திற";
 "Continue" = "தொடரவும்";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "பாதை நகலெடுக்கப்பட்டது!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot காணொளி திருத்தி";
+"Lumashot Video Editor" = "Lumashot காணொளி திருத்தி";
 "%@ selected" = "%@ தேர்ந்தெடுக்கப்பட்டது";
 "Exporting..." = "ஏற்றுமதி செய்கிறது...";
 "Export failed" = "ஏற்றுமதி தோல்வி";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "உள்ளீட்டு கண்காணிப்பு தேவை";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "பதிவின் போது விசை அழுத்தங்களைக் காட்ட macshot க்கு உள்ளீட்டு கண்காணிப்பு அனுமதி தேவை. System Settings இல் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "பதிவின் போது விசை அழுத்தங்களைக் காட்ட macshot க்கு அணுகல்தன்மை அனுமதி தேவை. System Settings இல் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "பதிவின் போது விசை அழுத்தங்களைக் காட்ட Lumashot க்கு உள்ளீட்டு கண்காணிப்பு அனுமதி தேவை. System Settings இல் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "பதிவின் போது விசை அழுத்தங்களைக் காட்ட Lumashot க்கு அணுகல்தன்மை அனுமதி தேவை. System Settings இல் அணுகலை வழங்கி, மீண்டும் முயற்சிக்கவும்.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "விசை அழுத்தங்களைக் காட்டு";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "வெப்கேம் மேலடுக்கு";
 "Camera Access Required" = "கேமரா அணுகல் தேவை";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "வெப்கேம் மேலடுக்குக்கு macshot க்கு கேமரா அனுமதி தேவை. அணுகலை வழங்க System Settings ஐ திறக்கவும்.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "வெப்கேம் மேலடுக்குக்கு Lumashot க்கு கேமரா அனுமதி தேவை. அணுகலை வழங்க System Settings ஐ திறக்கவும்.";
 "Webcam" = "வெப்கேம்";
 "Bottom Right" = "கீழ் வலது";
 "Bottom Left" = "கீழ் இடது";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "அமைப்புகள்...";
-"macshot Settings" = "macshot அமைப்புகள்";
+"Lumashot Settings" = "Lumashot அமைப்புகள்";
 "Also open in Editor" = "எடிட்டரிலும் திற";
 "Hide controls" = "கட்டுப்பாடுகளை மறை";
 "Hide recording controls" = "பதிவு கட்டுப்பாடுகளை மறை";
@@ -495,13 +495,13 @@
 "Clear History?" = "வரலாற்றை அழிக்கவா?";
 "This will permanently delete all screenshots from history." = "இது வரலாற்றில் உள்ள அனைத்து ஸ்கிரீன்ஷாட்களையும் நிரந்தரமாக நீக்கும்.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "\"அமை\" என்பதை கிளிக் செய்து, குறுக்குவழியை அமைக்க குறைந்தது ஒரு மாற்றி (⌘, ⌥, ⌃, ⇧) கொண்ட விசை சேர்க்கையை அழுத்தவும்.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "கோப்புகள் உங்கள் Google Drive-ல் உள்ள \"macshot\" கோப்புறையில் பதிவேற்றப்படும். அனைத்தும் தனிப்பட்டதாக இருக்கும் — எதுவும் பொதுவில் பகிரப்படாது.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "கோப்புகள் உங்கள் Google Drive-ல் உள்ள \"Lumashot\" கோப்புறையில் பதிவேற்றப்படும். அனைத்தும் தனிப்பட்டதாக இருக்கும் — எதுவும் பொதுவில் பகிரப்படாது.";
 
 "Pressure" = "அழுத்தம்";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "காணொளியைத் திற...";
-"Choose a video to open in macshot editor" = "macshot திருத்தியில் திறக்க காணொளியைத் தேர்வுசெய்";
+"Choose a video to open in Lumashot editor" = "Lumashot திருத்தியில் திறக்க காணொளியைத் தேர்வுசெய்";
 "Click to add effects" = "விளைவுகளைச் சேர்க்க கிளிக் செய்";
 "Add Zoom" = "பெரிதாக்கலைச் சேர்";
 "Add Censor" = "மறைப்பைச் சேர்";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "கடைசியாக தேர்ந்தெடுத்த பகுதியை மீண்டும் பிடி";
 "Screenshots only — captured window title (blank otherwise)" = "திரைப்பிடிப்புகள் மட்டும் — பிடிக்கப்பட்ட சாளரத் தலைப்பு (இல்லையெனில் காலி)";
 "Show available filename tokens" = "கிடைக்கும் கோப்புப்பெயர் டோக்கன்களைக் காட்டு";
-"Enable macshot:// URL scheme" = "macshot:// URL திட்டத்தை இயக்கு";
+"Enable lumashot:// URL scheme" = "lumashot:// URL திட்டத்தை இயக்கு";
 "Show supported URL scheme commands" = "ஆதரிக்கப்படும் URL திட்ட கட்டளைகளைக் காட்டு";
 "Start area capture" = "பகுதி பிடிப்பைத் தொடங்கு";
 "Start area recording" = "பகுதி பதிவைத் தொடங்கு";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "தற்போதைய பதிவை நிறுத்து";
 "Supported URL Scheme Commands" = "ஆதரிக்கப்படும் URL திட்ட கட்டளைகள்";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "கோப்பு நீட்டிப்பு தானாகவே சேர்க்கப்படும். {window} இல் உள்ள சாய்வுக் கோடுகள் மற்றும் முக்காற்புள்ளிகள் இடைக்கோடுகளாக மாறும்.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts அல்லது URL-களைத் திறக்கும் எந்தக் கருவியிலிருந்தும் macshot-ஐத் தூண்டவும்.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts அல்லது URL-களைத் திறக்கும் எந்தக் கருவியிலிருந்தும் Lumashot-ஐத் தூண்டவும்.";
 "URL scheme info" = "URL திட்ட தகவல்";
 "sec (0 = never)" = "வி (0 = ஒருபோதும் இல்லை)";

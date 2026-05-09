@@ -1,17 +1,17 @@
-/* 한국어 — macshot localization
+/* 한국어 — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "클립보드에서 열기";
 "Preferences..." = "환경설정...";
 "Check for Updates..." = "업데이트 확인...";
-"Quit macshot" = "macshot 종료";
+"Quit Lumashot" = "Lumashot 종료";
 "No recent captures" = "최근 캡처 없음";
 "Clear History" = "기록 지우기";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "클립보드에 복사";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot 환경설정";
+"Lumashot Preferences" = "Lumashot 환경설정";
 "General" = "일반";
 "Tools" = "도구";
 "Recording" = "녹화";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "스크린샷에 마우스 커서 포함";
 "Use window title in saved filename" = "저장 파일명에 윈도우 제목 사용";
 "Hide menu bar icon" = "메뉴 막대 아이콘 숨기기";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "단축키는 계속 작동합니다. 아이콘을 다시 표시하려면 macshot을 재실행하세요.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "단축키는 계속 작동합니다. 아이콘을 다시 표시하려면 Lumashot을 재실행하세요.";
 "Check for updates automatically" = "자동으로 업데이트 확인";
 "Check for beta updates" = "베타 업데이트 확인";
 "Thumbnail" = "썸네일";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "동영상 업로드에는 Google Drive 또는 S3가 필요합니다";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "버전 %@ (%@)";
 "Made by" = "제작자";
 "Licensed under the GPLv3" = "GPLv3 라이선스";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "먼저 이미지를 클립보드에 복사한 후 다시 시도하세요.";
 "OK" = "확인";
 "Accessibility Access Required" = "손쉬운 사용 권한 필요";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot이 다른 앱을 자동 스크롤하려면 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 권한을 허용한 후 다시 시도하세요.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "스크롤 캡처를 위해 macshot에 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도해 주세요.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot이 다른 앱을 자동 스크롤하려면 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 권한을 허용한 후 다시 시도하세요.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "스크롤 캡처를 위해 Lumashot에 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도해 주세요.";
 "Open Settings" = "설정 열기";
 "Cancel" = "취소";
 "Microphone Access Required" = "마이크 접근 권한 필요";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot이 음성을 녹음하려면 마이크 권한이 필요합니다. 시스템 설정을 열어 권한을 허용하세요.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot이 음성을 녹음하려면 마이크 권한이 필요합니다. 시스템 설정을 열어 권한을 허용하세요.";
 "Upload to Google Drive?" = "Google Drive에 업로드하시겠습니까?";
 "Upload to S3?" = "S3에 업로드하시겠습니까?";
 "Upload to imgbb.com?" = "imgbb.com에 업로드하시겠습니까?";
 "Your screenshot will be uploaded." = "스크린샷이 업로드됩니다.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "macshot에 오신 것을 환영합니다";
-"macshot needs one permission" = "macshot에 권한 하나가 필요합니다";
+"Welcome to Lumashot" = "Lumashot에 오신 것을 환영합니다";
+"Lumashot needs one permission" = "Lumashot에 권한 하나가 필요합니다";
 "Screen Recording not yet granted" = "화면 기록 권한이 아직 허용되지 않았습니다";
 "Screen Recording granted!" = "화면 기록 권한이 허용되었습니다!";
-"Enable macshot, then try taking a screenshot" = "macshot을 활성화한 후 스크린샷을 찍어보세요";
+"Enable Lumashot, then try taking a screenshot" = "Lumashot을 활성화한 후 스크린샷을 찍어보세요";
 "Open Screen Recording Settings" = "화면 기록 설정 열기";
 "Continue" = "계속";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "경로가 복사되었습니다!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot 비디오 편집기";
+"Lumashot Video Editor" = "Lumashot 비디오 편집기";
 "%@ selected" = "%@ 선택됨";
 "Exporting..." = "내보내는 중...";
 "Export failed" = "내보내기 실패";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "입력 모니터링 권한 필요";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot이 녹화 중 키 입력을 표시하려면 입력 모니터링 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도하세요.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot이 녹화 중 키 입력을 표시하려면 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도하세요.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot이 녹화 중 키 입력을 표시하려면 입력 모니터링 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도하세요.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot이 녹화 중 키 입력을 표시하려면 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 접근 권한을 부여한 후 다시 시도하세요.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "키 입력 표시";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "웹캠 오버레이";
 "Camera Access Required" = "카메라 접근 권한 필요";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot이 웹캠 오버레이를 사용하려면 카메라 권한이 필요합니다. 시스템 설정을 열어 권한을 허용하세요.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot이 웹캠 오버레이를 사용하려면 카메라 권한이 필요합니다. 시스템 설정을 열어 권한을 허용하세요.";
 "Webcam" = "웹캠";
 "Bottom Right" = "오른쪽 하단";
 "Bottom Left" = "왼쪽 하단";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "설정...";
-"macshot Settings" = "macshot 설정";
+"Lumashot Settings" = "Lumashot 설정";
 "Also open in Editor" = "편집기에서도 열기";
 "Hide controls" = "컨트롤 숨기기";
 "Hide recording controls" = "녹화 컨트롤 숨기기";
@@ -495,13 +495,13 @@
 "Clear History?" = "기록을 지우시겠습니까?";
 "This will permanently delete all screenshots from history." = "기록에서 모든 스크린샷이 영구적으로 삭제됩니다.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "\"설정\" 을 클릭하고 적어도 하나의 수정 키 (⌘, ⌥, ⌃, ⇧) 가 포함된 키 조합을 눌러 단축키를 설정하세요.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "파일은 Google Drive의 \"macshot\" 폴더에 업로드됩니다. 모든 것은 비공개로 유지되며 공개적으로 공유되지 않습니다.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "파일은 Google Drive의 \"Lumashot\" 폴더에 업로드됩니다. 모든 것은 비공개로 유지되며 공개적으로 공유되지 않습니다.";
 
 "Pressure" = "필압";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "비디오 열기...";
-"Choose a video to open in macshot editor" = "macshot 편집기에서 열 비디오 선택";
+"Choose a video to open in Lumashot editor" = "Lumashot 편집기에서 열 비디오 선택";
 "Click to add effects" = "클릭하여 효과 추가";
 "Add Zoom" = "줌 추가";
 "Add Censor" = "검열 추가";
@@ -554,7 +554,7 @@
 "Stop the current recording" = "현재 녹화 중지";
 "Supported URL Scheme Commands" = "지원되는 URL 스킴 명령";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "파일 확장자는 자동으로 추가됩니다. {window}의 슬래시와 콜론은 대시로 변환됩니다.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts 또는 URL을 여는 모든 도구에서 macshot을 실행하세요.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Raycast, Alfred, Shortcuts 또는 URL을 여는 모든 도구에서 Lumashot을 실행하세요.";
 "URL scheme info" = "URL 스킴 정보";
-"Enable macshot:// URL scheme" = "macshot:// URL 스킴 사용";
+"Enable lumashot:// URL scheme" = "lumashot:// URL 스킴 사용";
 "sec (0 = never)" = "초 (0 = 사용 안 함)";

@@ -1,17 +1,17 @@
-/* עברית — macshot localization
+/* עברית — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "פתח מהלוח";
 "Preferences..." = "העדפות...";
 "Check for Updates..." = "בדוק עדכונים...";
-"Quit macshot" = "צא מ-macshot";
+"Quit Lumashot" = "צא מ-Lumashot";
 "No recent captures" = "אין לכידות אחרונות";
 "Clear History" = "נקה היסטוריה";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "העתק ללוח";
 
 /* Preferences - General */
-"macshot Preferences" = "העדפות macshot";
+"Lumashot Preferences" = "העדפות Lumashot";
 "General" = "כללי";
 "Tools" = "כלים";
 "Recording" = "הקלטה";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "לכוד סמן עכבר בצילום מסך";
 "Use window title in saved filename" = "השתמש בכותרת חלון בשם הקובץ";
 "Hide menu bar icon" = "הסתר סמל שורת התפריטים";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "מקשי קיצור עדיין פועלים. להצגת הסמל שוב, הפעל מחדש את macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "מקשי קיצור עדיין פועלים. להצגת הסמל שוב, הפעל מחדש את Lumashot.";
 "Check for updates automatically" = "בדוק עדכונים באופן אוטומטי";
 "Check for beta updates" = "בדוק עדכוני בטא";
 "Thumbnail" = "תמונה ממוזערת";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "העלאת וידאו דורשת Google Drive או S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "גרסה %@ (%@)";
 "Made by" = "נוצר על ידי";
 "Licensed under the GPLv3" = "מורשה תחת GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "העתק תמונה ללוח קודם, ואז נסה שוב.";
 "OK" = "אישור";
 "Accessibility Access Required" = "נדרשת גישת נגישות";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot זקוק להרשאת נגישות לגלילה אוטומטית באפליקציות אחרות. אנא אשר גישה בהגדרות המערכת ונסה שוב.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot זקוק להרשאת נגישות ללכידת גלילה. אנא הענק גישה בהגדרות המערכת ונסה שוב.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot זקוק להרשאת נגישות לגלילה אוטומטית באפליקציות אחרות. אנא אשר גישה בהגדרות המערכת ונסה שוב.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot זקוק להרשאת נגישות ללכידת גלילה. אנא הענק גישה בהגדרות המערכת ונסה שוב.";
 "Open Settings" = "פתח הגדרות";
 "Cancel" = "ביטול";
 "Microphone Access Required" = "נדרשת גישה למיקרופון";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot זקוק להרשאת מיקרופון להקלטת שמע קולי. פתח את הגדרות המערכת לאישור גישה.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot זקוק להרשאת מיקרופון להקלטת שמע קולי. פתח את הגדרות המערכת לאישור גישה.";
 "Upload to Google Drive?" = "להעלות ל-Google Drive?";
 "Upload to S3?" = "להעלות ל-S3?";
 "Upload to imgbb.com?" = "להעלות ל-imgbb.com?";
 "Your screenshot will be uploaded." = "צילום המסך שלך יועלה.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "ברוכים הבאים ל-macshot";
-"macshot needs one permission" = "macshot זקוק להרשאה אחת";
+"Welcome to Lumashot" = "ברוכים הבאים ל-Lumashot";
+"Lumashot needs one permission" = "Lumashot זקוק להרשאה אחת";
 "Screen Recording not yet granted" = "הרשאת הקלטת מסך טרם ניתנה";
 "Screen Recording granted!" = "הרשאת הקלטת מסך אושרה!";
-"Enable macshot, then try taking a screenshot" = "הפעל את macshot ואז נסה לצלם מסך";
+"Enable Lumashot, then try taking a screenshot" = "הפעל את Lumashot ואז נסה לצלם מסך";
 "Open Screen Recording Settings" = "פתח הגדרות הקלטת מסך";
 "Continue" = "המשך";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "הנתיב הועתק!";
 
 /* Video Editor */
-"macshot Video Editor" = "עורך הווידאו של macshot";
+"Lumashot Video Editor" = "עורך הווידאו של Lumashot";
 "%@ selected" = "%@ נבחר";
 "Exporting..." = "מייצא...";
 "Export failed" = "הייצוא נכשל";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "נדרש ניטור קלט";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot זקוק להרשאת ניטור קלט כדי להציג הקשות מקשים בזמן הקלטה. אנא אשר גישה ב-System Settings ונסה שוב.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot זקוק להרשאת נגישות כדי להציג הקשות מקשים בזמן הקלטה. אנא אשר גישה ב-System Settings ונסה שוב.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot זקוק להרשאת ניטור קלט כדי להציג הקשות מקשים בזמן הקלטה. אנא אשר גישה ב-System Settings ונסה שוב.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot זקוק להרשאת נגישות כדי להציג הקשות מקשים בזמן הקלטה. אנא אשר גישה ב-System Settings ונסה שוב.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "הצג הקשות מקשים";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "שכבת מצלמת רשת";
 "Camera Access Required" = "נדרשת גישה למצלמה";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot זקוק להרשאת מצלמה עבור שכבת מצלמת הרשת. פתח את הגדרות המערכת לאישור גישה.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot זקוק להרשאת מצלמה עבור שכבת מצלמת הרשת. פתח את הגדרות המערכת לאישור גישה.";
 "Webcam" = "מצלמת רשת";
 "Bottom Right" = "למטה מימין";
 "Bottom Left" = "למטה משמאל";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "הגדרות...";
-"macshot Settings" = "הגדרות macshot";
+"Lumashot Settings" = "הגדרות Lumashot";
 "Also open in Editor" = "פתח גם בעורך";
 "Hide controls" = "הסתר פקדים";
 "Hide recording controls" = "הסתר פקדי הקלטה";
@@ -495,13 +495,13 @@
 "Clear History?" = "לנקות את ההיסטוריה?";
 "This will permanently delete all screenshots from history." = "פעולה זו תמחק לצמיתות את כל צילומי המסך מההיסטוריה.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "לחץ על \"הגדר\" ולחץ על צירוף מקשים עם לפחות משנה אחד (⌘, ⌥, ⌃, ⇧) כדי להגדיר קיצור דרך.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "הקבצים מועלים לתיקייה \"macshot\" ב-Google Drive שלך. הכל נשאר פרטי — שום דבר אינו משותף באופן ציבורי.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "הקבצים מועלים לתיקייה \"Lumashot\" ב-Google Drive שלך. הכל נשאר פרטי — שום דבר אינו משותף באופן ציבורי.";
 
 "Pressure" = "לחץ";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "פתח וידאו...";
-"Choose a video to open in macshot editor" = "בחר וידאו לפתיחה בעורך macshot";
+"Choose a video to open in Lumashot editor" = "בחר וידאו לפתיחה בעורך Lumashot";
 "Click to add effects" = "לחץ להוספת אפקטים";
 "Add Zoom" = "הוסף זום";
 "Add Censor" = "הוסף צנזור";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "לכוד שוב את האזור שנבחר אחרון";
 "Screenshots only — captured window title (blank otherwise)" = "צילומי מסך בלבד — כותרת החלון שנלכד (ריק אחרת)";
 "Show available filename tokens" = "הצג אסימוני שם קובץ זמינים";
-"Enable macshot:// URL scheme" = "הפעל סכמת URL של macshot://";
+"Enable lumashot:// URL scheme" = "הפעל סכמת URL של lumashot://";
 "Show supported URL scheme commands" = "הצג פקודות סכמת URL נתמכות";
 "Start area capture" = "התחל לכידת אזור";
 "Start area recording" = "התחל הקלטת אזור";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "עצור את ההקלטה הנוכחית";
 "Supported URL Scheme Commands" = "פקודות סכמת URL נתמכות";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "סיומת הקובץ מתווספת אוטומטית. קווים נטויים ונקודתיים ב-{window} הופכים למקפים.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "הפעל את macshot מ-Raycast, Alfred, Shortcuts, או כל כלי שפותח כתובות URL.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "הפעל את Lumashot מ-Raycast, Alfred, Shortcuts, או כל כלי שפותח כתובות URL.";
 "URL scheme info" = "מידע על סכמת URL";
 "sec (0 = never)" = "שניות (0 = אף פעם)";

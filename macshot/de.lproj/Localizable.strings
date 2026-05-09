@@ -1,17 +1,17 @@
-/* Deutsch — macshot localization
+/* Deutsch — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Aus Zwischenablage öffnen";
 "Preferences..." = "Einstellungen ...";
 "Check for Updates..." = "Nach Updates suchen ...";
-"Quit macshot" = "macshot beenden";
+"Quit Lumashot" = "Lumashot beenden";
 "No recent captures" = "Keine letzten Aufnahmen";
 "Clear History" = "Verlauf löschen";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "In Zwischenablage kopieren";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot Einstellungen";
+"Lumashot Preferences" = "Lumashot Einstellungen";
 "General" = "Allgemein";
 "Tools" = "Werkzeuge";
 "Recording" = "Aufzeichnung";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Mauszeiger im Screenshot aufnehmen";
 "Use window title in saved filename" = "Fenstertitel im Dateinamen verwenden";
 "Hide menu bar icon" = "Menüleistensymbol ausblenden";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Kurzbefehle funktionieren weiterhin. Um das Symbol wieder anzuzeigen, starten Sie macshot neu.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Kurzbefehle funktionieren weiterhin. Um das Symbol wieder anzuzeigen, starten Sie Lumashot neu.";
 "Check for updates automatically" = "Automatisch nach Updates suchen";
 "Check for beta updates" = "Nach Beta-Updates suchen";
 "Thumbnail" = "Vorschaubild";
@@ -307,7 +307,7 @@
 "Video upload requires Google Drive or S3" = "Video-Upload erfordert Google Drive oder S3";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Version %@ (%@)";
 "Made by" = "Entwickelt von";
 "Licensed under the GPLv3" = "Lizenziert unter der GPLv3";
@@ -318,23 +318,23 @@
 "Copy an image to the clipboard first, then try again." = "Kopieren Sie zuerst ein Bild in die Zwischenablage und versuchen Sie es dann erneut.";
 "OK" = "OK";
 "Accessibility Access Required" = "Bedienungshilfen-Zugriff erforderlich";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot benötigt die Bedienungshilfen-Berechtigung, um in anderen Apps automatisch zu scrollen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen und versuchen Sie es erneut.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot benötigt die Bedienungshilfen-Berechtigung für Scroll-Aufnahmen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen und versuchen Sie es erneut.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot benötigt die Bedienungshilfen-Berechtigung, um in anderen Apps automatisch zu scrollen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen und versuchen Sie es erneut.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot benötigt die Bedienungshilfen-Berechtigung für Scroll-Aufnahmen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen und versuchen Sie es erneut.";
 "Open Settings" = "Einstellungen öffnen";
 "Cancel" = "Abbrechen";
 "Microphone Access Required" = "Mikrofonzugriff erforderlich";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot benötigt die Mikrofonberechtigung zur Sprachaufzeichnung. Öffnen Sie die Systemeinstellungen, um den Zugriff zu gewähren.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot benötigt die Mikrofonberechtigung zur Sprachaufzeichnung. Öffnen Sie die Systemeinstellungen, um den Zugriff zu gewähren.";
 "Upload to Google Drive?" = "Auf Google Drive hochladen?";
 "Upload to S3?" = "Auf S3 hochladen?";
 "Upload to imgbb.com?" = "Auf imgbb.com hochladen?";
 "Your screenshot will be uploaded." = "Ihr Screenshot wird hochgeladen.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Willkommen bei macshot";
-"macshot needs one permission" = "macshot benötigt eine Berechtigung";
+"Welcome to Lumashot" = "Willkommen bei Lumashot";
+"Lumashot needs one permission" = "Lumashot benötigt eine Berechtigung";
 "Screen Recording not yet granted" = "Bildschirmaufnahme noch nicht erlaubt";
 "Screen Recording granted!" = "Bildschirmaufnahme erlaubt!";
-"Enable macshot, then try taking a screenshot" = "Aktivieren Sie macshot und erstellen Sie dann einen Screenshot";
+"Enable Lumashot, then try taking a screenshot" = "Aktivieren Sie Lumashot und erstellen Sie dann einen Screenshot";
 "Open Screen Recording Settings" = "Bildschirmaufnahme-Einstellungen öffnen";
 "Continue" = "Weiter";
 
@@ -364,7 +364,7 @@
 "Path copied!" = "Pfad kopiert!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot Video-Editor";
+"Lumashot Video Editor" = "Lumashot Video-Editor";
 "%@ selected" = "%@ ausgewählt";
 "Exporting..." = "Exportieren …";
 "Export failed" = "Export fehlgeschlagen";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Eingabeüberwachung erforderlich";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot benötigt die Eingabeüberwachungs-Berechtigung, um Tastenanschläge während der Aufzeichnung anzuzeigen. Bitte gewähren Sie den Zugriff in den System Settings und versuchen Sie es erneut.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot benötigt die Bedienungshilfen-Berechtigung, um Tastenanschläge während der Aufzeichnung anzuzeigen. Bitte gewähren Sie den Zugriff in den System Settings und versuchen Sie es erneut.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot benötigt die Eingabeüberwachungs-Berechtigung, um Tastenanschläge während der Aufzeichnung anzuzeigen. Bitte gewähren Sie den Zugriff in den System Settings und versuchen Sie es erneut.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot benötigt die Bedienungshilfen-Berechtigung, um Tastenanschläge während der Aufzeichnung anzuzeigen. Bitte gewähren Sie den Zugriff in den System Settings und versuchen Sie es erneut.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Tastenanschläge anzeigen";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Webcam-Einblendung";
 "Camera Access Required" = "Kamerazugriff erforderlich";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot benötigt die Kameraberechtigung für die Webcam-Einblendung. Öffnen Sie die Systemeinstellungen, um den Zugriff zu gewähren.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot benötigt die Kameraberechtigung für die Webcam-Einblendung. Öffnen Sie die Systemeinstellungen, um den Zugriff zu gewähren.";
 "Webcam" = "Webcam";
 "Bottom Right" = "Unten rechts";
 "Bottom Left" = "Unten links";
@@ -443,7 +443,7 @@
 
 /* New strings */
 "Settings..." = "Einstellungen ...";
-"macshot Settings" = "macshot Einstellungen";
+"Lumashot Settings" = "Lumashot Einstellungen";
 "Also open in Editor" = "Auch im Editor öffnen";
 "Hide controls" = "Steuerung ausblenden";
 "Hide recording controls" = "Aufzeichnungssteuerung ausblenden";
@@ -493,13 +493,13 @@
 "Clear History?" = "Verlauf löschen?";
 "This will permanently delete all screenshots from history." = "Dadurch werden alle Screenshots dauerhaft aus dem Verlauf gelöscht.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Klicke auf \"Festlegen\" und drücke eine Tastenkombination mit mindestens einem Sonderzeichen (⌘, ⌥, ⌃, ⇧), um ein Kürzel festzulegen.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Dateien werden in einen \"macshot\"-Ordner in deinem Google Drive hochgeladen. Alles bleibt privat — nichts wird öffentlich geteilt.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Dateien werden in einen \"Lumashot\"-Ordner in deinem Google Drive hochgeladen. Alles bleibt privat — nichts wird öffentlich geteilt.";
 
 "Pressure" = "Druck";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Video öffnen ...";
-"Choose a video to open in macshot editor" = "Video auswählen, um es im macshot-Editor zu öffnen";
+"Choose a video to open in Lumashot editor" = "Video auswählen, um es im Lumashot-Editor zu öffnen";
 "Click to add effects" = "Klicken, um Effekte hinzuzufügen";
 "Add Zoom" = "Zoom hinzufügen";
 "Add Censor" = "Zensur hinzufügen";
@@ -545,7 +545,7 @@
 "Screenshots only — captured window title (blank otherwise)" = "Nur Screenshots — Titel des aufgenommenen Fensters (sonst leer)";
 "Show available filename tokens" = "Verfügbare Dateinametoken anzeigen";
 "Show supported URL scheme commands" = "Unterstützte URL-Schema-Befehle anzeigen";
-"Enable macshot:// URL scheme" = "macshot:// URL-Schema aktivieren";
+"Enable lumashot:// URL scheme" = "lumashot:// URL-Schema aktivieren";
 "Start area capture" = "Bereichsaufnahme starten";
 "Start area recording" = "Bereichsaufzeichnung starten";
 "Start full-screen recording" = "Vollbildaufzeichnung starten";
@@ -553,6 +553,6 @@
 "Stop the current recording" = "Aktuelle Aufzeichnung beenden";
 "Supported URL Scheme Commands" = "Unterstützte URL-Schema-Befehle";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Die Dateiendung wird automatisch angehängt. Schrägstriche und Doppelpunkte in {window} werden zu Bindestrichen.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "macshot aus Raycast, Alfred, Shortcuts oder jedem Tool, das URLs öffnet, auslösen.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Lumashot aus Raycast, Alfred, Shortcuts oder jedem Tool, das URLs öffnet, auslösen.";
 "URL scheme info" = "URL-Schema-Info";
 "sec (0 = never)" = "Sek. (0 = nie)";

@@ -1,17 +1,17 @@
-/* Suomi — macshot localization
+/* Suomi — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Avaa leikepoydalsta";
 "Preferences..." = "Asetukset...";
 "Check for Updates..." = "Tarkista paivitykset...";
-"Quit macshot" = "Lopeta macshot";
+"Quit Lumashot" = "Lopeta Lumashot";
 "No recent captures" = "Ei viimeaikaisia kaappauksia";
 "Clear History" = "Tyhjenna historia";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Kopioi leikepoydale";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot-asetukset";
+"Lumashot Preferences" = "Lumashot-asetukset";
 "General" = "Yleiset";
 "Tools" = "Tyokalut";
 "Recording" = "Nauhoitus";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Kaappaa hiiren osoitin kuvakaappaukseen";
 "Use window title in saved filename" = "Kayta ikkunan otsikkoa tiedostonimessa";
 "Hide menu bar icon" = "Piilota valikkopalkin kuvake";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "Pikanappaimet toimivat edelleen. Nayta kuvake uudelleen kaynnistamalla macshot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "Pikanappaimet toimivat edelleen. Nayta kuvake uudelleen kaynnistamalla Lumashot.";
 "Check for updates automatically" = "Tarkista paivitykset automaattisesti";
 "Check for beta updates" = "Tarkista beetapäivitykset";
 "Thumbnail" = "Pienoiskuva";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "Videon lataus vaatii Google Driven tai S3:n";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Versio %@ (%@)";
 "Made by" = "Tekija";
 "Licensed under the GPLv3" = "Lisensoitu GPLv3-lisenssilla";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Kopioi ensin kuva leikepoydale ja yrita sitten uudelleen.";
 "OK" = "OK";
 "Accessibility Access Required" = "Esteettomyysoikeus vaaditaan";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot tarvitsee esteettomyysoikeuden vierittaakseen muita sovelluksia automaattisesti. Myonna oikeus jarjestelman asetuksissa ja yrita uudelleen.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot tarvitsee Esteettömyys-luvan vierityskaappausta varten. Myönnä käyttöoikeus Järjestelmäasetuksista ja yritä uudelleen.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot tarvitsee esteettomyysoikeuden vierittaakseen muita sovelluksia automaattisesti. Myonna oikeus jarjestelman asetuksissa ja yrita uudelleen.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot tarvitsee Esteettömyys-luvan vierityskaappausta varten. Myönnä käyttöoikeus Järjestelmäasetuksista ja yritä uudelleen.";
 "Open Settings" = "Avaa asetukset";
 "Cancel" = "Peruuta";
 "Microphone Access Required" = "Mikrofonin kayttoikeus vaaditaan";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot tarvitsee mikrofonin kayttooikeuden äanittaakseen puhetta. Avaa jarjestelman asetukset myontaaksesi kayttooikeuden.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot tarvitsee mikrofonin kayttooikeuden äanittaakseen puhetta. Avaa jarjestelman asetukset myontaaksesi kayttooikeuden.";
 "Upload to Google Drive?" = "Ladataanko Google Driveen?";
 "Upload to S3?" = "Ladataanko S3:een?";
 "Upload to imgbb.com?" = "Ladataanko imgbb.com-palveluun?";
 "Your screenshot will be uploaded." = "Kuvakaappauksesi ladataan.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Tervetuloa macshot-sovellukseen";
-"macshot needs one permission" = "macshot tarvitsee yhden luvan";
+"Welcome to Lumashot" = "Tervetuloa Lumashot-sovellukseen";
+"Lumashot needs one permission" = "Lumashot tarvitsee yhden luvan";
 "Screen Recording not yet granted" = "Ruudun nauhoituslupaa ei ole viela myonnetty";
 "Screen Recording granted!" = "Ruudun nauhoituslupa myonnetty!";
-"Enable macshot, then try taking a screenshot" = "Ota macshot kayttoon ja kokeile kuvakaappausta";
+"Enable Lumashot, then try taking a screenshot" = "Ota Lumashot kayttoon ja kokeile kuvakaappausta";
 "Open Screen Recording Settings" = "Avaa ruudun nauhoitusasetukset";
 "Continue" = "Jatka";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Polku kopioitu!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot-videoeditori";
+"Lumashot Video Editor" = "Lumashot-videoeditori";
 "%@ selected" = "%@ valittu";
 "Exporting..." = "Viedaan...";
 "Export failed" = "Vienti epaonnistui";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Syötön seuranta vaaditaan";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot tarvitsee syötön seurannan luvan näyttääkseen näppäinpainallukset nauhoituksen aikana. Myönnä käyttöoikeus System Settings -asetuksista ja yritä uudelleen.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot tarvitsee esteettömyysoikeuden näyttääkseen näppäinpainallukset nauhoituksen aikana. Myönnä käyttöoikeus System Settings -asetuksista ja yritä uudelleen.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot tarvitsee syötön seurannan luvan näyttääkseen näppäinpainallukset nauhoituksen aikana. Myönnä käyttöoikeus System Settings -asetuksista ja yritä uudelleen.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot tarvitsee esteettömyysoikeuden näyttääkseen näppäinpainallukset nauhoituksen aikana. Myönnä käyttöoikeus System Settings -asetuksista ja yritä uudelleen.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Näytä näppäinpainallukset";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Webkameran peittokuva";
 "Camera Access Required" = "Kameran kayttooikeus vaaditaan";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot tarvitsee kameran kayttooikeuden webkameran peittokuvaa varten. Avaa jarjestelman asetukset myontaaksesi kayttooikeuden.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot tarvitsee kameran kayttooikeuden webkameran peittokuvaa varten. Avaa jarjestelman asetukset myontaaksesi kayttooikeuden.";
 "Webcam" = "Webkamera";
 "Bottom Right" = "Oikea alakulma";
 "Bottom Left" = "Vasen alakulma";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "Asetukset...";
-"macshot Settings" = "macshot-asetukset";
+"Lumashot Settings" = "Lumashot-asetukset";
 "Also open in Editor" = "Avaa my\U00F6s editorissa";
 "Hide controls" = "Piilota ohjaimet";
 "Hide recording controls" = "Piilota nauhoitusohjaimet";
@@ -495,13 +495,13 @@
 "Clear History?" = "Tyhjennetäänkö historia?";
 "This will permanently delete all screenshots from history." = "Tämä poistaa kaikki kuvakaappaukset historiasta pysyvästi.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Napsauta \"Aseta\" ja paina näppäinyhdistelmää, jossa on vähintään yksi muokkausnäppäin (⌘, ⌥, ⌃, ⇧) asettaaksesi pikakuvakkeen.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Tiedostot ladataan \"macshot\"-kansioon Google Drivessasi. Kaikki pysyy yksityisenä — mitään ei jaeta julkisesti.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "Tiedostot ladataan \"Lumashot\"-kansioon Google Drivessasi. Kaikki pysyy yksityisenä — mitään ei jaeta julkisesti.";
 
 "Pressure" = "Paine";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Avaa video...";
-"Choose a video to open in macshot editor" = "Valitse video avattavaksi macshot-editorissa";
+"Choose a video to open in Lumashot editor" = "Valitse video avattavaksi Lumashot-editorissa";
 "Click to add effects" = "Napsauta lisätäksesi tehosteita";
 "Add Zoom" = "Lisää zoomaus";
 "Add Censor" = "Lisää sensurointi";
@@ -554,7 +554,7 @@
 "Stop the current recording" = "Pysäytä nykyinen nauhoitus";
 "Supported URL Scheme Commands" = "Tuetut URL-skeeman komennot";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "Tiedostopääte lisätään automaattisesti. {window}-kentän vinoviivat ja kaksoispisteet muuttuvat viivoiksi.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Käynnistä macshot Raycastista, Alfredista, Shortcuts-sovelluksesta tai mistä tahansa työkalusta, joka avaa URL-osoitteita.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Käynnistä Lumashot Raycastista, Alfredista, Shortcuts-sovelluksesta tai mistä tahansa työkalusta, joka avaa URL-osoitteita.";
 "URL scheme info" = "URL-skeeman tiedot";
-"Enable macshot:// URL scheme" = "Ota macshot://-URL-skeema k\U00E4ytt\U00F6\U00F6n";
+"Enable lumashot:// URL scheme" = "Ota lumashot://-URL-skeema k\U00E4ytt\U00F6\U00F6n";
 "sec (0 = never)" = "s (0 = ei koskaan)";

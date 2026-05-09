@@ -1,17 +1,17 @@
-/* فارسی — macshot localization
+/* فارسی — Lumashot localization
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "باز کردن از کلیپ‌بورد";
 "Preferences..." = "تنظیمات...";
 "Check for Updates..." = "بررسی به‌روزرسانی‌ها...";
-"Quit macshot" = "خروج از macshot";
+"Quit Lumashot" = "خروج از Lumashot";
 "No recent captures" = "ضبط اخیری وجود ندارد";
 "Clear History" = "پاک کردن تاریخچه";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "کپی به کلیپ‌بورد";
 
 /* Preferences - General */
-"macshot Preferences" = "تنظیمات macshot";
+"Lumashot Preferences" = "تنظیمات Lumashot";
 "General" = "عمومی";
 "Tools" = "ابزارها";
 "Recording" = "ضبط ویدیو";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "ضبط نشانگر موس در تصویر صفحه";
 "Use window title in saved filename" = "استفاده از عنوان پنجره در نام فایل ذخیره‌شده";
 "Hide menu bar icon" = "پنهان کردن آیکون نوار منو";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "کلیدهای میانبر همچنان کار می‌کنند. برای نمایش مجدد آیکون، macshot را دوباره اجرا کنید.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "کلیدهای میانبر همچنان کار می‌کنند. برای نمایش مجدد آیکون، Lumashot را دوباره اجرا کنید.";
 "Check for updates automatically" = "بررسی خودکار به‌روزرسانی‌ها";
 "Check for beta updates" = "بررسی به‌روزرسانی‌های بتا";
 "Thumbnail" = "تصویر بندانگشتی";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "بارگذاری ویدیو نیاز به Google Drive یا S3 دارد";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "نسخه %@ (%@)";
 "Made by" = "ساخته شده توسط";
 "Licensed under the GPLv3" = "تحت مجوز GPLv3";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "ابتدا یک تصویر را به کلیپ‌بورد کپی کنید، سپس دوباره تلاش کنید.";
 "OK" = "تایید";
 "Accessibility Access Required" = "دسترسی به قابلیت‌های دسترسی‌پذیری لازم است";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "macshot برای پیمایش خودکار سایر برنامه‌ها به مجوز دسترسی‌پذیری نیاز دارد. لطفا دسترسی را در تنظیمات سیستم اعطا کنید و دوباره تلاش کنید.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "macshot برای ثبت پیمایشی به مجوز دسترس‌پذیری نیاز دارد. لطفاً در تنظیمات سیستم دسترسی بدهید و دوباره امتحان کنید.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "Lumashot برای پیمایش خودکار سایر برنامه‌ها به مجوز دسترسی‌پذیری نیاز دارد. لطفا دسترسی را در تنظیمات سیستم اعطا کنید و دوباره تلاش کنید.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "Lumashot برای ثبت پیمایشی به مجوز دسترس‌پذیری نیاز دارد. لطفاً در تنظیمات سیستم دسترسی بدهید و دوباره امتحان کنید.";
 "Open Settings" = "باز کردن تنظیمات";
 "Cancel" = "لغو";
 "Microphone Access Required" = "دسترسی به میکروفون لازم است";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "macshot برای ضبط صدای میکروفون به مجوز میکروفون نیاز دارد. تنظیمات سیستم را باز کنید تا دسترسی اعطا شود.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "Lumashot برای ضبط صدای میکروفون به مجوز میکروفون نیاز دارد. تنظیمات سیستم را باز کنید تا دسترسی اعطا شود.";
 "Upload to Google Drive?" = "بارگذاری به Google Drive؟";
 "Upload to S3?" = "بارگذاری به S3؟";
 "Upload to imgbb.com?" = "بارگذاری به imgbb.com؟";
 "Your screenshot will be uploaded." = "تصویر صفحه شما بارگذاری خواهد شد.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "به macshot خوش آمدید";
-"macshot needs one permission" = "macshot به یک مجوز نیاز دارد";
+"Welcome to Lumashot" = "به Lumashot خوش آمدید";
+"Lumashot needs one permission" = "Lumashot به یک مجوز نیاز دارد";
 "Screen Recording not yet granted" = "مجوز ضبط صفحه هنوز اعطا نشده";
 "Screen Recording granted!" = "مجوز ضبط صفحه اعطا شد!";
-"Enable macshot, then try taking a screenshot" = "macshot را فعال کنید، سپس تصویربرداری از صفحه را امتحان کنید";
+"Enable Lumashot, then try taking a screenshot" = "Lumashot را فعال کنید، سپس تصویربرداری از صفحه را امتحان کنید";
 "Open Screen Recording Settings" = "باز کردن تنظیمات ضبط صفحه";
 "Continue" = "ادامه";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "مسیر کپی شد!";
 
 /* Video Editor */
-"macshot Video Editor" = "ویرایشگر ویدیوی macshot";
+"Lumashot Video Editor" = "ویرایشگر ویدیوی Lumashot";
 "%@ selected" = "%@ انتخاب شده";
 "Exporting..." = "در حال خروجی گرفتن...";
 "Export failed" = "خروجی گرفتن ناموفق بود";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "نظارت بر ورودی لازم است";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot برای نمایش کلیدهای فشرده‌شده هنگام ضبط ویدیو به مجوز نظارت بر ورودی نیاز دارد. لطفا دسترسی را در System Settings اعطا کنید و دوباره تلاش کنید.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "macshot برای نمایش کلیدهای فشرده‌شده هنگام ضبط ویدیو به مجوز دسترسی‌پذیری نیاز دارد. لطفا دسترسی را در System Settings اعطا کنید و دوباره تلاش کنید.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot برای نمایش کلیدهای فشرده‌شده هنگام ضبط ویدیو به مجوز نظارت بر ورودی نیاز دارد. لطفا دسترسی را در System Settings اعطا کنید و دوباره تلاش کنید.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot برای نمایش کلیدهای فشرده‌شده هنگام ضبط ویدیو به مجوز دسترسی‌پذیری نیاز دارد. لطفا دسترسی را در System Settings اعطا کنید و دوباره تلاش کنید.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "نمایش کلیدهای فشرده‌شده";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "همپوشانی وب‌کم";
 "Camera Access Required" = "دسترسی به دوربین لازم است";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "macshot برای همپوشانی وب‌کم به مجوز دوربین نیاز دارد. تنظیمات سیستم را باز کنید تا دسترسی اعطا شود.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "Lumashot برای همپوشانی وب‌کم به مجوز دوربین نیاز دارد. تنظیمات سیستم را باز کنید تا دسترسی اعطا شود.";
 "Webcam" = "وب‌کم";
 "Bottom Right" = "پایین راست";
 "Bottom Left" = "پایین چپ";
@@ -443,7 +443,7 @@
 
 /* Settings */
 "Settings..." = "تنظیمات...";
-"macshot Settings" = "تنظیمات macshot";
+"Lumashot Settings" = "تنظیمات Lumashot";
 "Also open in Editor" = "باز کردن در ویرایشگر نیز";
 "Hide controls" = "پنهان کردن کنترل‌ها";
 "Hide recording controls" = "پنهان کردن کنترل‌های ضبط ویدیو";
@@ -495,13 +495,13 @@
 "Clear History?" = "پاک کردن تاریخچه؟";
 "This will permanently delete all screenshots from history." = "این کار تمام اسکرین‌شات‌ها را به‌طور دائمی از تاریخچه حذف می‌کند.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "روی \"تنظیم\" کلیک کنید و یک ترکیب کلید با حداقل یک کلید تغییردهنده (⌘, ⌥, ⌃, ⇧) را برای تعیین میانبر فشار دهید.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "فایل‌ها در پوشه‌ای به نام \"macshot\" در Google Drive شما بارگذاری می‌شوند. همه چیز خصوصی می‌ماند — هیچ چیز به‌صورت عمومی به اشتراک گذاشته نمی‌شود.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "فایل‌ها در پوشه‌ای به نام \"Lumashot\" در Google Drive شما بارگذاری می‌شوند. همه چیز خصوصی می‌ماند — هیچ چیز به‌صورت عمومی به اشتراک گذاشته نمی‌شود.";
 
 "Pressure" = "فشار";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "باز کردن ویدیو...";
-"Choose a video to open in macshot editor" = "ویدیویی را برای باز کردن در ویرایشگر macshot انتخاب کنید";
+"Choose a video to open in Lumashot editor" = "ویدیویی را برای باز کردن در ویرایشگر Lumashot انتخاب کنید";
 "Click to add effects" = "برای افزودن افکت کلیک کنید";
 "Add Zoom" = "افزودن زوم";
 "Add Censor" = "افزودن سانسور";
@@ -546,7 +546,7 @@
 "Re-capture the last selected area" = "ضبط مجدد آخرین ناحیه انتخاب‌شده";
 "Screenshots only — captured window title (blank otherwise)" = "فقط اسکرین‌شات — عنوان پنجره ضبط‌شده (در غیر این صورت خالی)";
 "Show available filename tokens" = "نمایش توکن‌های موجود نام فایل";
-"Enable macshot:// URL scheme" = "فعال‌سازی طرح URL با macshot://";
+"Enable lumashot:// URL scheme" = "فعال‌سازی طرح URL با lumashot://";
 "Show supported URL scheme commands" = "نمایش دستورات پشتیبانی‌شده طرح URL";
 "Start area capture" = "شروع ضبط ناحیه";
 "Start area recording" = "شروع ضبط ویدیوی ناحیه";
@@ -555,6 +555,6 @@
 "Stop the current recording" = "توقف ضبط ویدیوی جاری";
 "Supported URL Scheme Commands" = "دستورات پشتیبانی‌شده طرح URL";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "پسوند فایل به طور خودکار افزوده می‌شود. اسلش و دونقطه در {window} به خط تیره تبدیل می‌شوند.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "macshot را از Raycast، Alfred، Shortcuts یا هر ابزاری که URL باز می‌کند فعال کنید.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Lumashot را از Raycast، Alfred، Shortcuts یا هر ابزاری که URL باز می‌کند فعال کنید.";
 "URL scheme info" = "اطلاعات طرح URL";
 "sec (0 = never)" = "ثانیه (0 = هرگز)";

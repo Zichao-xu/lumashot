@@ -399,7 +399,7 @@ extension OverlayWindowController: OverlayViewDelegate {
                             previewImage: NSImage(contentsOf: url)
                         )
                         #if DEBUG
-                            NSLog("macshot: HDR screenshot saved to \(url.path) and copied to clipboard")
+                            NSLog("Lumashot: HDR screenshot saved to \(url.path) and copied to clipboard")
                         #endif
                     } else {
                         // Failure: play error sound

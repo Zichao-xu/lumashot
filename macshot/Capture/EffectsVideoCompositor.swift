@@ -109,8 +109,8 @@ final class EffectsVideoCompositor: NSObject, AVVideoCompositing {
 
     /// Guarded by `contextQueue`.
     private var renderContext: AVVideoCompositionRenderContext?
-    private let contextQueue = DispatchQueue(label: "macshot.effects.context")
-    private let renderQueue = DispatchQueue(label: "macshot.effects.render", qos: .userInitiated)
+    private let contextQueue = DispatchQueue(label: "Lumashot.effects.context")
+    private let renderQueue = DispatchQueue(label: "Lumashot.effects.render", qos: .userInitiated)
     private lazy var ciContext: CIContext = {
         // Blur/pixelate filters do per-pixel math and must happen in a linear
         // color space to avoid gamma shifts (sRGB working space "washes out"

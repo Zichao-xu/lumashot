@@ -177,7 +177,7 @@ enum ImageEncoder {
     /// Dedicated subfolder for the clipboard-paste temp file. Isolated so
     /// we can sweep it without worrying about matching user-configured
     /// filename templates. Created lazily by `clipboardTmpDirectory`.
-    private static let clipboardTmpSubfolder = "macshot-clipboard"
+    private static let clipboardTmpSubfolder = "Lumashot-clipboard"
 
     /// Path to the clipboard temp subfolder. Always exists after first
     /// access — created on demand with `createDirectory(withIntermediateDirectories: true)`.
@@ -226,14 +226,14 @@ enum ImageEncoder {
     /// a lossless PNG instead of the TIFF that NSImage.writeObjects provides.
     /// Also writes a temp file so Finder paste (Cmd+V in a folder) works
     /// and the pasted file has a nice date-stamped filename instead of
-    /// something like `macshot-clipboard.png`.
+    /// something like `Lumashot-clipboard.png`.
     ///
     /// Disk hygiene:
     ///   - At most ONE clipboard temp file exists at any time. The
     ///     previous copy's file is deleted just before the new one is
     ///     written — the pasteboard's file-URL reference is updated in
     ///     lockstep so no paste ever points at a deleted file.
-    ///   - The file lives in `tmp/macshot-clipboard/` so launch-time
+    ///   - The file lives in `tmp/Lumashot-clipboard/` so launch-time
     ///     cleanup can wipe the whole folder if we miss the delete for
     ///     any reason (crash, force-quit) without needing to match
     ///     user-controlled filename patterns.

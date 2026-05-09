@@ -8,6 +8,12 @@
 ### Added
 - **Local model download now shows progress bar and supports mirror sources.** Added `NSProgressIndicator` in the Settings UI to show download progress. Download implementation refactored to use `URLSessionDownloadDelegate` for real progress tracking. Added mirror sources for China mainland users: `hf-mirror.com` for HuggingFace models, `mirror.ghproxy.com` and `ghproxy.com` for GitHub llama.cpp binaries. Improved error messages with specific failure reasons (download failed, file too small, extraction failed, etc.). `TranslationService.swift`: `LocalModelService`, `DownloadTaskDelegate`. `SettingsWindowController.swift`: `localModelProgressIndicator`. Closes WorkBuddy session 2026-05-07.
 
+## [0.1.2-alpha] - 2026-05-09
+
+### Fixed
+- **Sparkle update feed now points to Lumashot.** Clean installs use `https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml` instead of the upstream feed, so update checks no longer offer upstream macshot builds.
+- **Product identity is now Lumashot throughout the app.** Bundle name, bundle identifier, privacy prompts, menus, About/Settings copy, URL scheme examples, and release packaging now use Lumashot identity.
+
 ## [4.1.0-beta.8] - 2026-05-03
 
 ### Fixed

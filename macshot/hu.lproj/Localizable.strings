@@ -1,17 +1,17 @@
-/* Magyar — macshot lokalizáció
+/* Magyar — Lumashot lokalizáció
  *
  * To add a new language:
- * 1. Create a new folder: macshot/<lang-code>.lproj/
+ * 1. Create a new folder: Lumashot/<lang-code>.lproj/
  * 2. Copy this file into that folder
  * 3. Translate all values (right side of = sign)
  * 4. Add the language to LanguageManager.availableLanguages in Services/LanguageManager.swift
- * 5. Add the language code to knownRegions in macshot.xcodeproj/project.pbxproj
+ * 5. Add the language code to knownRegions in Lumashot.xcodeproj/project.pbxproj
  * 6. Submit a pull request!
  *
  * Keys use the English text. Values should be the translation.
  * Format strings use %@ for strings, %d for integers.
  * Keep keyboard shortcuts (like ⌘C) untranslated.
- * Keep brand names (macshot, Google Drive, imgbb, S3) untranslated.
+ * Keep brand names (Lumashot, Google Drive, imgbb, S3) untranslated.
  */
 
 /* Menu Bar */
@@ -32,7 +32,7 @@
 "Open from Clipboard" = "Megnyitás vágólapról";
 "Preferences..." = "Beállítások...";
 "Check for Updates..." = "Frissítések keresése...";
-"Quit macshot" = "Kilépés a macshot-ból";
+"Quit Lumashot" = "Kilépés a Lumashot-ból";
 "No recent captures" = "Nincsenek legutóbbi rögzítések";
 "Clear History" = "Előzmények törlése";
 
@@ -171,7 +171,7 @@
 "Copy to clipboard" = "Másolás a vágólapra";
 
 /* Preferences - General */
-"macshot Preferences" = "macshot beállítások";
+"Lumashot Preferences" = "Lumashot beállítások";
 "General" = "Általános";
 "Tools" = "Eszközök";
 "Recording" = "Felvétel";
@@ -191,7 +191,7 @@
 "Capture mouse cursor in screenshot" = "Egérmutató rögzítése a képernyőképen";
 "Use window title in saved filename" = "Ablakcím használata a mentett fájlnévben";
 "Hide menu bar icon" = "Menüsor ikon elrejtése";
-"Hotkeys still work. To show the icon again, re-launch macshot." = "A gyorsbillentyűk továbbra is működnek. Az ikon újbóli megjelenítéséhez indítsd újra a macshot-ot.";
+"Hotkeys still work. To show the icon again, re-launch Lumashot." = "A gyorsbillentyűk továbbra is működnek. Az ikon újbóli megjelenítéséhez indítsd újra a Lumashot-ot.";
 "Check for updates automatically" = "Frissítések automatikus keresése";
 "Check for beta updates" = "Béta frissítések keresése";
 "Thumbnail" = "Bélyegkép";
@@ -308,7 +308,7 @@
 "Video upload requires Google Drive or S3" = "A videó feltöltéshez Google Drive vagy S3 szükséges";
 
 /* Preferences - About */
-"macshot" = "macshot";
+"Lumashot" = "Lumashot";
 "Version %@ (%@)" = "Verzió %@ (%@)";
 "Made by" = "Készítette";
 "Licensed under the GPLv3" = "GPLv3 licenc alatt";
@@ -319,23 +319,23 @@
 "Copy an image to the clipboard first, then try again." = "Előbb másolj egy képet a vágólapra, majd próbáld újra.";
 "OK" = "OK";
 "Accessibility Access Required" = "Akadálymentesítési hozzáférés szükséges";
-"macshot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "A macshot-nak Akadálymentesítési engedélyre van szüksége más alkalmazások automatikus görgetéséhez. Kérlek, adj hozzáférést a Rendszerbeállításokban, majd próbáld újra.";
-"macshot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "A macshot Kisegítő lehetőségek engedélyre van szüksége a görgetéses rögzítéshez. Kérjük, engedélyezze a hozzáférést a Rendszerbeállításokban, majd próbálja újra.";
+"Lumashot needs Accessibility permission to auto-scroll other apps. Please grant access in System Settings, then try again." = "A Lumashot-nak Akadálymentesítési engedélyre van szüksége más alkalmazások automatikus görgetéséhez. Kérlek, adj hozzáférést a Rendszerbeállításokban, majd próbáld újra.";
+"Lumashot needs Accessibility permission for scroll capture. Please grant access in System Settings, then try again." = "A Lumashot Kisegítő lehetőségek engedélyre van szüksége a görgetéses rögzítéshez. Kérjük, engedélyezze a hozzáférést a Rendszerbeállításokban, majd próbálja újra.";
 "Open Settings" = "Beállítások megnyitása";
 "Cancel" = "Mégse";
 "Microphone Access Required" = "Mikrofon hozzáférés szükséges";
-"macshot needs microphone permission to record voice audio. Open System Settings to grant access." = "A macshot-nak mikrofon engedélyre van szüksége a hangfelvételhez. Nyisd meg a Rendszerbeállításokat a hozzáférés megadásához.";
+"Lumashot needs microphone permission to record voice audio. Open System Settings to grant access." = "A Lumashot-nak mikrofon engedélyre van szüksége a hangfelvételhez. Nyisd meg a Rendszerbeállításokat a hozzáférés megadásához.";
 "Upload to Google Drive?" = "Feltöltés a Google Drive-ra?";
 "Upload to S3?" = "Feltöltés az S3-ra?";
 "Upload to imgbb.com?" = "Feltöltés az imgbb.com-ra?";
 "Your screenshot will be uploaded." = "A képernyőkép feltöltésre kerül.";
 
 /* Permission Onboarding */
-"Welcome to macshot" = "Üdvözöl a macshot";
-"macshot needs one permission" = "A macshot-nak egy engedélyre van szüksége";
+"Welcome to Lumashot" = "Üdvözöl a Lumashot";
+"Lumashot needs one permission" = "A Lumashot-nak egy engedélyre van szüksége";
 "Screen Recording not yet granted" = "Képernyőfelvétel engedélye még nem adott";
 "Screen Recording granted!" = "Képernyőfelvétel engedélyezve!";
-"Enable macshot, then try taking a screenshot" = "Engedélyezd a macshot-ot, majd próbálj képernyőképet készíteni";
+"Enable Lumashot, then try taking a screenshot" = "Engedélyezd a Lumashot-ot, majd próbálj képernyőképet készíteni";
 "Open Screen Recording Settings" = "Képernyőfelvétel beállításainak megnyitása";
 "Continue" = "Tovább";
 
@@ -365,7 +365,7 @@
 "Path copied!" = "Útvonal másolva!";
 
 /* Video Editor */
-"macshot Video Editor" = "macshot videószerkesztő";
+"Lumashot Video Editor" = "Lumashot videószerkesztő";
 "%@ selected" = "%@ kiválasztva";
 "Exporting..." = "Exportálás...";
 "Export failed" = "Exportálás sikertelen";
@@ -410,8 +410,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "Bevitelfigyelés szükséges";
-"macshot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "A macshot-nak Bevitelfigyelés engedélyre van szüksége a billentyűleütések megjelenítéséhez felvétel közben. Kérlek, adj hozzáférést a System Settings-ben, majd próbáld újra.";
-"macshot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "A macshot-nak Akadálymentesítési engedélyre van szüksége a billentyűleütések megjelenítéséhez felvétel közben. Kérlek, adj hozzáférést a System Settings-ben, majd próbáld újra.";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "A Lumashot-nak Bevitelfigyelés engedélyre van szüksége a billentyűleütések megjelenítéséhez felvétel közben. Kérlek, adj hozzáférést a System Settings-ben, majd próbáld újra.";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "A Lumashot-nak Akadálymentesítési engedélyre van szüksége a billentyűleütések megjelenítéséhez felvétel közben. Kérlek, adj hozzáférést a System Settings-ben, majd próbáld újra.";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "Billentyűleütések megjelenítése";
@@ -427,7 +427,7 @@
 /* Webcam Overlay */
 "Webcam Overlay" = "Webkamera átfedés";
 "Camera Access Required" = "Kamera hozzáférés szükséges";
-"macshot needs camera permission for the webcam overlay. Open System Settings to grant access." = "A macshot-nak kamera engedélyre van szüksége a webkamera átfedéshez. Nyisd meg a Rendszerbeállításokat a hozzáférés megadásához.";
+"Lumashot needs camera permission for the webcam overlay. Open System Settings to grant access." = "A Lumashot-nak kamera engedélyre van szüksége a webkamera átfedéshez. Nyisd meg a Rendszerbeállításokat a hozzáférés megadásához.";
 "Webcam" = "Webkamera";
 "Bottom Right" = "Jobb alsó";
 "Bottom Left" = "Bal alsó";
@@ -443,7 +443,7 @@
 
 /* New Strings */
 "Settings..." = "Beállítások...";
-"macshot Settings" = "macshot beállítások";
+"Lumashot Settings" = "Lumashot beállítások";
 "Also open in Editor" = "Megnyitás a szerkesztőben is";
 "Hide controls" = "Vezérlők elrejtése";
 "Hide recording controls" = "Felvételi vezérlők elrejtése";
@@ -493,13 +493,13 @@
 "Clear History?" = "Törli az előzményeket?";
 "This will permanently delete all screenshots from history." = "Ez véglegesen törli az összes képernyőképet az előzményekből.";
 "Click \"Set\" and press a key combination with at least one modifier (⌘, ⌥, ⌃, ⇧) to set a shortcut." = "Kattintson a \"Beállítás\" gombra, majd nyomjon meg egy billentyűkombinációt legalább egy módosítóbillentyűvel (⌘, ⌥, ⌃, ⇧) a gyorsbillentyű beállításához.";
-"Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "A fájlok a Google Drive-on lévő \"macshot\" mappába töltődnek fel. Minden privát marad — semmi nem kerül nyilvános megosztásra.";
+"Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly." = "A fájlok a Google Drive-on lévő \"Lumashot\" mappába töltődnek fel. Minden privát marad — semmi nem kerül nyilvános megosztásra.";
 
 "Pressure" = "Nyomás";
 
 /* Added for v4.1.0-beta.3 — video editor, effects, open-video, shortcuts help */
 "Open Video..." = "Videó megnyitása...";
-"Choose a video to open in macshot editor" = "Válassz videót a macshot szerkesztőben való megnyitáshoz";
+"Choose a video to open in Lumashot editor" = "Válassz videót a Lumashot szerkesztőben való megnyitáshoz";
 "Click to add effects" = "Kattints effektusok hozzáadásához";
 "Add Zoom" = "Nagyítás hozzáadása";
 "Add Censor" = "Cenzúra hozzáadása";
@@ -544,7 +544,7 @@
 "Re-capture the last selected area" = "Utoljára kiválasztott terület újbóli rögzítése";
 "Screenshots only — captured window title (blank otherwise)" = "Csak képernyőképeknél — rögzített ablak címe (egyébként üres)";
 "Show available filename tokens" = "Elérhető fájlnév tokenek megjelenítése";
-"Enable macshot:// URL scheme" = "macshot:// URL séma engedélyezése";
+"Enable lumashot:// URL scheme" = "lumashot:// URL séma engedélyezése";
 "Show supported URL scheme commands" = "Támogatott URL séma parancsok megjelenítése";
 "Start area capture" = "Terület rögzítés indítása";
 "Start area recording" = "Terület felvétel indítása";
@@ -553,6 +553,6 @@
 "Stop the current recording" = "Jelenlegi felvétel leállítása";
 "Supported URL Scheme Commands" = "Támogatott URL séma parancsok";
 "The file extension is appended automatically. Slashes and colons in {window} become dashes." = "A fájlkiterjesztés automatikusan hozzáadódik. A {window} perjeleiből és kettőspontjaiból kötőjel lesz.";
-"Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Indítsd el a macshot-ot Raycast, Alfred, Shortcuts, vagy bármilyen URL-eket megnyitó eszközből.";
+"Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs." = "Indítsd el a Lumashot-ot Raycast, Alfred, Shortcuts, vagy bármilyen URL-eket megnyitó eszközből.";
 "URL scheme info" = "URL séma információ";
 "sec (0 = never)" = "mp (0 = soha)";

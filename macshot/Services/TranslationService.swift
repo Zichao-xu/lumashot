@@ -98,7 +98,7 @@ enum TranslationService {
         set { UserDefaults.standard.set(newValue, forKey: "aiTranslationPrompt") }
     }
 
-    private static let keychainService = "com.sw33tlie.macshot.translation"
+    private static let keychainService = "com.zichao.lumashot.translation"
 
     static let availableLanguages: [(code: String, name: String)] = [
         ("en", "English"),
@@ -1056,7 +1056,7 @@ final class LocalModelService {
 
     private var baseDirectory: URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return appSupport.appendingPathComponent("macshot/LocalModel", isDirectory: true)
+        return appSupport.appendingPathComponent("Lumashot/LocalModel", isDirectory: true)
     }
 
     private var engineArchiveURL: URL {

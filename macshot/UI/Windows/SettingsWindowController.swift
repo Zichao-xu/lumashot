@@ -129,7 +129,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
             backing: .buffered,
             defer: false
         )
-        window.title = L("macshot Settings")
+        window.title = L("Lumashot Settings")
         window.center()
         window.isReleasedWhenClosed = false
         // Window is non-resizable (no .resizable in styleMask), so content size
@@ -196,16 +196,16 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         sep.translatesAutoresizingMaskIntoConstraints = false
 
         // Footer labels
-        let madeBy = NSTextField(labelWithString: "\(L("Made by")) sw33tLie")
+        let madeBy = NSTextField(labelWithString: "Based on upstream macshot by sw33tLie")
         madeBy.font = NSFont.systemFont(ofSize: 11)
         madeBy.textColor = .secondaryLabelColor
         madeBy.translatesAutoresizingMaskIntoConstraints = false
 
-        let linkBtn = NSButton(title: "github.com/sw33tLie/macshot", target: self, action: #selector(openGitHub))
+        let linkBtn = NSButton(title: "github.com/Zichao-xu/lumashot", target: self, action: #selector(openGitHub))
         linkBtn.bezelStyle = .inline
         linkBtn.isBordered = false
         linkBtn.font = NSFont.systemFont(ofSize: 11)
-        linkBtn.attributedTitle = NSAttributedString(string: "github.com/sw33tLie/macshot", attributes: [
+        linkBtn.attributedTitle = NSAttributedString(string: "github.com/Zichao-xu/lumashot", attributes: [
             .font: NSFont.systemFont(ofSize: 11),
             .foregroundColor: NSColor.linkColor,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -258,7 +258,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
             view.bottomAnchor.constraint(equalTo: container.bottomAnchor),
         ])
         currentTabID = id
-        window?.title = "\(L("macshot Settings")) — \(L(Self.tabDefs.first(where: { $0.id == id })?.label ?? ""))"
+        window?.title = "\(L("Lumashot Settings")) — \(L(Self.tabDefs.first(where: { $0.id == id })?.label ?? ""))"
         if id == "uploads" {
             reloadUploadsTab()
         }
@@ -413,13 +413,13 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.addArrangedSubview(indented(hideMenuBarIconCheckbox))
         stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
 
-        let hideNote = NSTextField(wrappingLabelWithString: L("Hotkeys still work. To show the icon again, re-launch macshot."))
+        let hideNote = NSTextField(wrappingLabelWithString: L("Hotkeys still work. To show the icon again, re-launch Lumashot."))
         hideNote.font = NSFont.systemFont(ofSize: 10)
         hideNote.textColor = .secondaryLabelColor
         stack.addArrangedSubview(indented(hideNote))
         stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
 
-        let urlSchemeCheckbox = NSButton(checkboxWithTitle: L("Enable macshot:// URL scheme"), target: self, action: #selector(urlSchemeChanged(_:)))
+        let urlSchemeCheckbox = NSButton(checkboxWithTitle: L("Enable lumashot:// URL scheme"), target: self, action: #selector(urlSchemeChanged(_:)))
         urlSchemeCheckbox.state = (UserDefaults.standard.object(forKey: "urlSchemeEnabled") as? Bool ?? true) ? .on : .off
 
         let urlSchemeInfoIcon = HoverPopoverIconView(
@@ -1427,7 +1427,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.addArrangedSubview(indented(gdriveSignInBtn))
         stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
 
-        let gdriveNote = NSTextField(wrappingLabelWithString: L("Files are uploaded to a \"macshot\" folder in your Google Drive. Everything stays private — nothing is shared publicly."))
+        let gdriveNote = NSTextField(wrappingLabelWithString: L("Files are uploaded to a \"Lumashot\" folder in your Google Drive. Everything stays private — nothing is shared publicly."))
         gdriveNote.font = NSFont.systemFont(ofSize: 10)
         gdriveNote.textColor = .secondaryLabelColor
         stack.addArrangedSubview(indented(gdriveNote))
@@ -1598,7 +1598,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.setCustomSpacing(12, after: icon)
 
         // App name
-        let name = NSTextField(labelWithString: "macshot")
+        let name = NSTextField(labelWithString: "Lumashot")
         name.font = NSFont.systemFont(ofSize: 22, weight: .bold)
         name.textColor = .labelColor
         stack.addArrangedSubview(name)
@@ -1648,7 +1648,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
                 var lines: [String] = []
                 let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
                 let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
-                lines.append("macshot \(version) (\(build))")
+                lines.append("Lumashot \(version) (\(build))")
                 lines.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
                 lines.append("")
                 lines.append("=== NSScreen Info ===")
@@ -1779,8 +1779,8 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         s3StatusLabel.textColor = .secondaryLabelColor
 
         // Upload a tiny test file
-        let testData = Data("macshot connection test".utf8)
-        let testKey = ".macshot_test_\(UUID().uuidString.prefix(8)).txt"
+        let testData = Data("Lumashot connection test".utf8)
+        let testKey = ".Lumashot_test_\(UUID().uuidString.prefix(8)).txt"
         S3Uploader.shared.upload(data: testData, filename: testKey, contentType: "text/plain") { [weak self] result in
             guard let self = self else { return }
             self.s3TestBtn.isEnabled = true
@@ -2277,7 +2277,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         LanguageManager.shared.currentLanguage = languages[idx].code
     }
     @objc private func openGitHub() {
-        if let url = URL(string: "https://github.com/sw33tLie/macshot") { NSWorkspace.shared.open(url) }
+        if let url = URL(string: "https://github.com/Zichao-xu/lumashot") { NSWorkspace.shared.open(url) }
     }
     @objc private func imageFormatChanged(_ sender: NSPopUpButton) {
         let formats = ["png", "jpeg", "heic", "webp"]
@@ -2597,25 +2597,25 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         if let existing = urlSchemeInfoPopover, existing.isShown { return }
 
         let commands: [(String, String)] = [
-            ("macshot://capture",             L("Start area capture")),
-            ("macshot://capture-fullscreen",  L("Capture the full screen")),
-            ("macshot://capture-last",        L("Re-capture the last selected area")),
-            ("macshot://quick-capture",       L("Quick capture (uses your Enter action)")),
-            ("macshot://ocr",                 L("Capture area and extract text")),
-            ("macshot://record",              L("Start area recording")),
-            ("macshot://record-fullscreen",   L("Start full-screen recording")),
-            ("macshot://stop-recording",      L("Stop the current recording")),
-            ("macshot://scroll-capture",      L("Start scroll capture")),
-            ("macshot://history",             L("Open the recent captures overlay")),
-            ("macshot://settings",            L("Open this settings window")),
-            ("macshot://open?file=/path.png", L("Open an image file in the editor")),
+            ("lumashot://capture",             L("Start area capture")),
+            ("lumashot://capture-fullscreen",  L("Capture the full screen")),
+            ("lumashot://capture-last",        L("Re-capture the last selected area")),
+            ("lumashot://quick-capture",       L("Quick capture (uses your Enter action)")),
+            ("lumashot://ocr",                 L("Capture area and extract text")),
+            ("lumashot://record",              L("Start area recording")),
+            ("lumashot://record-fullscreen",   L("Start full-screen recording")),
+            ("lumashot://stop-recording",      L("Stop the current recording")),
+            ("lumashot://scroll-capture",      L("Start scroll capture")),
+            ("lumashot://history",             L("Open the recent captures overlay")),
+            ("lumashot://settings",            L("Open this settings window")),
+            ("lumashot://open?file=/path.png", L("Open an image file in the editor")),
         ]
 
         let title = NSTextField(labelWithString: L("Supported URL Scheme Commands"))
         title.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
         title.translatesAutoresizingMaskIntoConstraints = false
 
-        let subtitle = NSTextField(wrappingLabelWithString: L("Trigger macshot from Raycast, Alfred, Shortcuts, or any tool that opens URLs."))
+        let subtitle = NSTextField(wrappingLabelWithString: L("Trigger Lumashot from Raycast, Alfred, Shortcuts, or any tool that opens URLs."))
         subtitle.font = NSFont.systemFont(ofSize: 11)
         subtitle.textColor = .secondaryLabelColor
         subtitle.preferredMaxLayoutWidth = 440
