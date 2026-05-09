@@ -33,6 +33,14 @@
 "Preferences..." = "偏好設定⋯";
 "Check for Updates..." = "檢查更新⋯";
 "Quit Lumashot" = "結束 Lumashot";
+"Unable to Check for Updates" = "無法檢查更新";
+"GitHub did not return update information." = "GitHub 沒有返回更新資訊。";
+"Lumashot is Up to Date" = "Lumashot 已是最新版本";
+"You are using the latest available Lumashot release." = "你正在使用目前可用的最新 Lumashot 版本。";
+"Lumashot %@ is Available" = "Lumashot %@ 已可用";
+"A newer Lumashot release is available on GitHub. Download the DMG to install it manually." = "GitHub 上有新的 Lumashot 版本。下載 DMG 後手動安裝。";
+"Download DMG" = "下載 DMG";
+"Later" = "稍後";
 "No recent captures" = "沒有最近的擷取";
 "Clear History" = "清除歷史記錄";
 

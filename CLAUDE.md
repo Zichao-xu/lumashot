@@ -258,7 +258,7 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 - **Color Opacity:** Adjustable per annotation via custom color picker
 - **Smooth Pencil Strokes:** Toggle in settings
 - **Zoom:** 0.1x–8x, scroll/pinch, pan, clickable label to edit percentage
-- **Sparkle Auto-Updates:** Automatic update checks via Sparkle framework
+- **GitHub Release Checks:** Automatic checks for newer GitHub Releases; prompts open the matching DMG for manual install
 - **Permission Onboarding:** First-run guide for granting Screen Recording permission
 
 ## Coding Conventions
@@ -267,7 +267,7 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 - **Use proper AppKit components:** NSPopover for popovers, NSView subclasses for toolbar buttons and strips, NSSlider/NSSegmentedControl/NSButton for controls, NSScrollView for editor zoom/pan, NSTextView for text editing. Avoid reimplementing standard UI components with manual `draw()` + coordinate hit-testing.
 - **Strict concurrency:** CI builds with Xcode 16+ and `-Owholemodule` which enforces strict Swift concurrency. Any code using `@MainActor`-isolated SwiftUI APIs (e.g. `ImageRenderer`) must itself be `@MainActor`. Always mark classes/functions that touch SwiftUI rendering with `@MainActor`. Calling `@MainActor`-isolated methods (e.g. on AppDelegate) from non-`@MainActor` classes requires `MainActor.assumeIsolated { }`. **Local Debug builds do NOT catch these errors.** Before tagging a release, always verify with a Release build: `xcodebuild -scheme macshot -configuration Release build 2>&1 | grep "error:"`
 - **Tool handler pattern:** New annotation tools should implement `AnnotationToolHandler` protocol in `UI/Tools/`, not add switch cases to OverlayView. The handler's `start`/`update`/`finish` methods use `AnnotationCanvas` to access shared state.
-- Apple frameworks: ScreenCaptureKit, Vision, CoreImage, AVFoundation + Sparkle for auto-updates + Swift-WebP for WebP encoding
+- Apple frameworks: ScreenCaptureKit, Vision, CoreImage, AVFoundation + Swift-WebP for WebP encoding
 - SF Symbols for toolbar icons
 - Minimal allocations during mouse tracking (reuse paths, avoid per-mouseMoved object creation)
 - `[weak self]` in all closures to avoid retain cycles
@@ -300,40 +300,27 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 
 ### Workflow: `.github/workflows/build-release.yml`
 
-CI triggers on tag push (`v*.*.*` or `v*.*.*-*`) or manual `workflow_dispatch`. The workflow builds, signs, notarizes, creates a DMG, updates Sparkle appcast, and creates a GitHub Release.
+CI triggers on tag push (`v*.*.*` or `v*.*.*-*`) or manual `workflow_dispatch`. The workflow builds an unsigned alpha DMG and creates a GitHub Release. Lumashot itself checks GitHub Releases and opens the matching DMG asset; it does not use Sparkle hot updates or appcast signing.
 
 ### Stable release
 
 1. **Add a CHANGELOG.md entry** for the new version — CI extracts it for GitHub Release notes.
 2. **Tag and push:** `git tag v3.8.0 && git push origin main --tags`
-3. CI handles the rest: DMG, GitHub Release, appcast update (replaces all items with just the new stable), website version bump, Homebrew cask update.
-4. Make sure tool version in the website page is updated too.
+3. CI handles the rest: DMG and GitHub Release.
+4. Make sure tool version in the website page is updated too when publishing a stable build.
 
 ### Beta release
 
 1. **Add a CHANGELOG.md entry** (e.g. `## [3.8.0-beta.3] - 2026-04-06`).
 2. **Tag with `-beta.N` suffix:** `git tag v3.8.0-beta.3 && git push origin v3.8.0-beta.3`
-3. CI auto-detects beta from the tag and:
-   - Adds `<sparkle:channel>beta</sparkle:channel>` to the appcast item (invisible to stable users)
-   - Preserves the existing stable item in the appcast
-   - Marks the GitHub Release as **pre-release**
-   - **Skips** Homebrew tap and cask updates
-   - **Skips** website version update
+3. CI auto-detects pre-release builds from the tag suffix and marks the GitHub Release as **pre-release**.
 
-Beta users opt in via Preferences > "Check for beta updates". This sets `allowedChannels(for:)` to `["beta"]` in `SPUUpdaterDelegate`.
+### GitHub Release checking
 
-### Sparkle versioning
-
-- `sparkle:version` (what Sparkle compares) = `github.run_number` — a monotonically increasing integer per CI build. This avoids all semver/pre-release comparison issues.
-- `sparkle:shortVersionString` (what the user sees) = the human-readable version from the tag (e.g. `3.8.0-beta.3`).
-- `MARKETING_VERSION` = tag version (display). `CURRENT_PROJECT_VERSION` = run number (build number).
-- The stable appcast item from older builds still uses the old version string (e.g. `3.7.0`) for `sparkle:version`. Sparkle's comparator parses `3.7.0` as `3` when compared to a plain integer, so any run number > 3 is seen as newer. This works.
-
-### Appcast safety
-
-- CI validates the generated appcast XML with `python3 ET.parse()` before committing. If invalid, the build fails and the broken XML never reaches users.
-- Appcast is served from `https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml` (CDN-cached, ~5 min TTL).
-- Stable item extraction uses `python3 xml.etree.ElementTree` with `ET.register_namespace('sparkle', ...)` to preserve the `sparkle:` prefix.
+- The app checks `https://api.github.com/repos/Zichao-xu/lumashot/releases` when automatic update checks are enabled.
+- Current alpha builds poll every 10 minutes for fast validation.
+- A release is offered only when its semver tag is newer than the app version and it has a matching `Lumashot-darwin-arm64-<version>.dmg` asset.
+- The app opens the DMG asset URL in the browser. It never downloads, installs, or replaces itself.
 
 ### Manual trigger (fallback)
 

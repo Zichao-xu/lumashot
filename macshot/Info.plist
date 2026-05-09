@@ -49,15 +49,5 @@
 	<string>Lumashot can record microphone audio during screen recordings.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Lumashot can show a webcam overlay during screen recordings.</string>
-	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>+5RTT9lGyoeOYAYuNfCdPhxugmruYvRDyFXgk6VPY1c=</string>
-	<key>SUScheduledCheckInterval</key>
-	<integer>86400</integer>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUEnableInstallerLauncherService</key>
-	<true/>
 </dict>
 </plist>

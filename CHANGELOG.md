@@ -11,7 +11,7 @@
 ## [0.1.2-alpha] - 2026-05-09
 
 ### Fixed
-- **Sparkle update feed now points to Lumashot.** Clean installs use `https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml` instead of the upstream feed, so update checks no longer offer upstream macshot builds.
+- **Automatic update checks now use GitHub Releases instead of Sparkle.** Lumashot checks `Zichao-xu/lumashot` about every 10 minutes, prompts only when a newer release has a matching DMG asset, and opens that DMG link directly for manual installation. No Sparkle appcast or hot-update installer is used.
 - **Product identity is now Lumashot throughout the app.** Bundle name, bundle identifier, privacy prompts, menus, About/Settings copy, URL scheme examples, and release packaging now use Lumashot identity.
 
 ## [4.1.0-beta.8] - 2026-05-03

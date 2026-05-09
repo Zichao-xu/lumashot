@@ -32,6 +32,14 @@
 "Settings..." = "Settings...";
 "Check for Updates..." = "Check for Updates...";
 "Quit Lumashot" = "Quit Lumashot";
+"Unable to Check for Updates" = "Unable to Check for Updates";
+"GitHub did not return update information." = "GitHub did not return update information.";
+"Lumashot is Up to Date" = "Lumashot is Up to Date";
+"You are using the latest available Lumashot release." = "You are using the latest available Lumashot release.";
+"Lumashot %@ is Available" = "Lumashot %@ is Available";
+"A newer Lumashot release is available on GitHub. Download the DMG to install it manually." = "A newer Lumashot release is available on GitHub. Download the DMG to install it manually.";
+"Download DMG" = "Download DMG";
+"Later" = "Later";
 "No recent captures" = "No recent captures";
 "Clear History" = "Clear History";
 

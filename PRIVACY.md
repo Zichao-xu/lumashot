@@ -38,9 +38,10 @@ Lumashot integrates with the following optional third-party services. Use of the
 - **Data sent:** The image file you choose to upload.
 - **imgbb's privacy policy:** [https://imgbb.com/privacy](https://imgbb.com/privacy)
 
-### Sparkle (auto-updates)
-- **Purpose:** Check for and install Lumashot updates.
-- **Data sent:** A request to `https://raw.githubusercontent.com/Zichao-xu/lumashot/main/appcast.xml` to check for new versions. No personal data is included in the request.
+### GitHub Releases update checks
+- **Purpose:** Check whether a newer Lumashot DMG has been published.
+- **Data sent:** When automatic update checks are enabled, Lumashot requests `https://api.github.com/repos/Zichao-xu/lumashot/releases` about every 10 minutes. No telemetry payload is sent by Lumashot; GitHub receives the standard metadata that accompanies any HTTPS request.
+- **Install behavior:** Lumashot does not auto-install updates. If a newer release is available, it opens the matching DMG download link in your browser.
 
 ## Permissions
 

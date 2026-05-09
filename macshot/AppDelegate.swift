@@ -1,15 +1,14 @@
 import Cocoa
 import Carbon
-import Sparkle
 import UniformTypeIdentifiers
 import AVFoundation
 import WebP
 
 @MainActor
-class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var statusItem: NSStatusItem!
-    private var updaterController: SPUStandardUpdaterController!
+    private var releaseUpdateChecker: GitHubReleaseUpdateChecker!
     private var overlayControllers: [OverlayWindowController] = []
     private var settingsController: SettingsWindowController?
     private var onboardingController: PermissionOnboardingController?
@@ -82,9 +81,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         // something references ScreenshotHistory.shared.
         _ = ScreenshotHistory.shared
 
-        updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: self, userDriverDelegate: nil)
+        releaseUpdateChecker = GitHubReleaseUpdateChecker()
         setupMainMenu()
         setupStatusBar()
+        releaseUpdateChecker.start()
         if UserDefaults.standard.bool(forKey: "hideMenuBarIcon") {
             setMenuBarIconVisible(false)
         }
@@ -211,7 +211,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
     }
 
     /// If the app is running from a DMG volume or a translocated path,
-    /// offer to move it to /Applications for proper operation (auto-updates,
+    /// offer to move it to /Applications for proper operation (update checks,
     /// persistent preferences, no translocation issues).
     private func promptToMoveToApplicationsIfNeeded() {
         let bundlePath = Bundle.main.bundlePath
@@ -222,7 +222,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
         let alert = NSAlert()
         alert.messageText = "Move to Applications folder?"
-        alert.informativeText = "Lumashot is running from a disk image. Move it to your Applications folder for auto-updates and best experience."
+        alert.informativeText = "Lumashot is running from a disk image. Move it to your Applications folder for update checks and best experience."
         alert.addButton(withTitle: "Move to Applications")
         alert.addButton(withTitle: "Not Now")
         alert.showsSuppressionButton = true
@@ -505,7 +505,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
     /// The app that was active before Lumashot showed its overlay.
     private var previousApp: NSRunningApplication?
 
-    /// Titled Lumashot windows (editors, preferences, Sparkle, etc.) that were
+    /// Titled Lumashot windows (editors, preferences, update alerts, etc.) that were
     /// visible when capture started. We `orderOut` them so `NSApp.activate`
     /// during capture can't drag them in front of the user's frontmost app,
     /// then `orderFront` them when the overlay dismisses. Kept in the order
@@ -660,7 +660,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         // Clean up stale overlays without consuming previousApp — we just set it.
         dismissOverlays(refocusPreviousApp: false)
 
-        // Hide any non-overlay titled windows (editors, preferences, Sparkle
+        // Hide any non-overlay titled windows (editors, preferences, update
         // dialogs). Without this, `NSApp.activate` inside performCapture drags
         // every visible app-owned window in front of the user's frontmost app
         // and those windows end up in the screenshot. Restored in
@@ -1394,17 +1394,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
     @objc private func checkForUpdates() {
         NSApp.activate(ignoringOtherApps: true)
-        updaterController.checkForUpdates(nil)
+        releaseUpdateChecker.checkNow(presentNoUpdate: true)
     }
 
     @objc private func quitApp() {
         NSApp.terminate(nil)
-    }
-
-    // MARK: - SPUUpdaterDelegate
-
-    func allowedChannels(for updater: SPUUpdater) -> Set<String> {
-        UserDefaults.standard.bool(forKey: "betaUpdatesEnabled") ? ["beta"] : []
     }
 }
 
