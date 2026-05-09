@@ -76,7 +76,7 @@
 "Number / Counter" = "编号 / 计数器";
 "Stamp / Emoji" = "图章 / 表情";
 "Censor" = "遮挡";
-"Censor (Pixelate / Blur / Solid)" = "遮挡（像素化 / 模糊 / 纯色）";
+"Censor (Pixelate / Blur / Solid)" = "遮挡（马赛克 / 模糊 / 纯色）";
 "Measure" = "测量";
 "Measure (px)" = "测量 (px)";
 "Magnify (Loupe)" = "放大镜";
@@ -89,6 +89,7 @@
 "Copy to Clipboard" = "拷贝到剪贴板";
 "Save to File" = "存储到文件";
 "Save to" = "存储到";
+"Save to..." = "存储到...";
 "Open in Editor Window" = "在编辑器窗口中打开";
 "Pin on Screen" = "固定在屏幕上";
 "Pin" = "固定";
@@ -133,9 +134,11 @@
 "Load Image" = "加载图片";
 "Gradient Style" = "渐变样式";
 "On" = "开";
+"HDR" = "HDR";
+"HDR capture applies to the next screenshot on supported Macs." = "HDR 会从下一次截图开始生效（需要支持的 Mac）。";
 "Text Only" = "仅文字";
 "All Text" = "全部文字";
-"PII" = "PII";
+"PII" = "隐私信息";
 "Faces" = "面部";
 "People" = "人物";
 "Confirm before upload" = "上传前确认";
@@ -341,6 +344,7 @@
 
 /* OCR Window */
 "Text Recognition" = "文字识别";
+"Auto" = "自动";
 "Translate to:" = "翻译为:";
 "%d chars · %d words" = "%d 个字符 · %d 个词";
 "Copy  ⌘↩" = "拷贝  ⌘↩";
@@ -448,11 +452,12 @@
 "Hide controls" = "隐藏控制";
 "Hide recording controls" = "隐藏录制控制";
 "Stop recording from the menu bar icon instead." = "改为从菜单栏图标停止录制。";
-"Pixelate" = "像素化";
+"Pixelate" = "马赛克";
 "Blur" = "模糊";
 "Solid" = "纯色";
 "Erase" = "擦除";
 "Done" = "完成";
+"More" = "更多";
 "Do nothing" = "不执行任何操作";
 "Overlay / Editor Shortcuts" = "覆盖层 / 编辑器快捷键";
 "Set" = "设置";
@@ -542,7 +547,7 @@
 "Open an image file in the editor" = "在编辑器中打开图片文件";
 "Open the recent captures overlay" = "打开最近捕获覆盖层";
 "Open this settings window" = "打开此设置窗口";
-"Quick capture (uses your Enter action)" = "快速捕获（使用您的回车操作）";
+"Quick capture (uses your Enter action)" = "快速捕获（使用“快速捕获”设置）";
 "Re-capture the last selected area" = "重新捕获上次选定的区域";
 "Screenshots only — captured window title (blank otherwise)" = "仅截图 — 捕获的窗口标题（否则为空）";
 "Show available filename tokens" = "显示可用的文件名标记";
@@ -558,3 +563,39 @@
 "URL scheme info" = "URL scheme 信息";
 "Enable macshot:// URL scheme" = "启用 macshot:// URL scheme";
 "sec (0 = never)" = "秒（0 = 永不）";
+
+/* AI translation */
+"AI Model (OpenAI-compatible)" = "AI 模型（兼容 OpenAI）";
+"Apple works offline when language packs are installed. Google is quick. AI Model uses an OpenAI-compatible chat completions endpoint." = "安装语言包后 Apple 翻译可离线使用。Google 翻译响应较快。AI 模型使用兼容 OpenAI 的 chat completions 接口。";
+"AI Base URL:" = "AI Base URL:";
+"Optional for local models" = "本地模型可留空";
+"AI API Key:" = "AI API Key:";
+"Open API Keys…" = "打开 API Keys…";
+"AI Model:" = "AI 模型:";
+"AI Prompt:" = "AI 提示词:";
+"API keys are stored in Keychain. Examples: https://api.openai.com/v1, http://localhost:11434/v1, https://api.deepseek.com/v1. The app posts to /chat/completions." = "API Key 会存储在钥匙串中。示例: https://api.openai.com/v1、http://localhost:11434/v1、https://api.deepseek.com/v1。应用会请求 /chat/completions。";
+"Translate accurately and naturally. Preserve names, numbers, code, URLs, markdown, and original line intent. Return only the translation." = "请准确、自然地翻译。保留名称、数字、代码、URL、Markdown 和原始换行意图。只返回译文。";
+"AI translation model is not configured." = "尚未配置 AI 翻译模型。";
+"Invalid AI translation base URL." = "AI 翻译 Base URL 无效。";
+"Could not encode AI translation request." = "无法编码 AI 翻译请求。";
+"AI translation failed (%d): %@" = "AI 翻译失败（%d）: %@";
+"AI translation returned %d result(s), expected %d." = "AI 翻译返回了 %d 条结果，应为 %d 条。";
+"Local Model" = "本地模型";
+"Local Model:" = "本地模型:";
+"Download Local Model" = "下载本地模型";
+"Downloading…" = "正在下载…";
+"Start Local Model" = "启动本地模型";
+"Downloading local model assets…" = "正在下载本地模型资源…";
+"Local model running: %@" = "本地模型正在运行: %@";
+"Local model ready: %@" = "本地模型已就绪: %@";
+"Local model runtime installed. Model download required." = "本地模型运行器已安装，还需要下载模型。";
+"Local model not installed. Download size: about %@." = "本地模型未安装。下载大小约 %@。";
+"Local model is not installed. Click Download Local Model first." = "本地模型尚未安装。请先点击“下载本地模型”。";
+"Could not extract local model runtime." = "无法解压本地模型运行器。";
+"Local model server timed out while starting." = "本地模型服务启动超时。";
+"Local model server exited with code %d." = "本地模型服务已退出，退出码 %d。";
+"No local model log was captured." = "没有捕获到本地模型日志。";
+"Could not read local model log." = "无法读取本地模型日志。";
+"Local Model Failed" = "本地模型失败";
+"HDR capture applies to this screenshot on supported Macs." = "HDR 仅应用于本次截图（需要支持的 Mac）。";
+"HDR output enabled - confirm to save HEIC" = "HDR 输出已开启 - 确认后保存 HEIC";

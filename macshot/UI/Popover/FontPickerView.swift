@@ -107,7 +107,9 @@ class FontPickerView: NSScrollView {
 
             if isSelected {
                 ToolbarLayout.accentColor.withAlphaComponent(0.3).setFill()
-                NSBezierPath(roundedRect: rowRect.insetBy(dx: 4, dy: 1), xRadius: 4, yRadius: 4).fill()
+                ToolbarLayout.continuousRoundedPath(
+                    in: rowRect.insetBy(dx: 4, dy: 1),
+                    radius: ToolbarLayout.popoverSelectionCornerRadius).fill()
             }
 
             // Checkmark on the left for selected

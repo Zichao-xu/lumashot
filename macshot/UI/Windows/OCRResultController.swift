@@ -98,13 +98,13 @@ class OCRResultController: NSObject {
         header.addSubview(langLabel)
 
         let popup = NSPopUpButton(frame: NSRect(x: 106, y: (headerH - 24) / 2, width: 160, height: 24), pullsDown: false)
-        for lang in TranslationService.availableLanguages {
+        for lang in TranslationService.targetLanguageOptions {
             popup.addItem(withTitle: lang.name)
             popup.lastItem?.representedObject = lang.code
         }
         // Select saved language
         let savedCode = TranslationService.targetLanguage
-        if let idx = TranslationService.availableLanguages.firstIndex(where: { $0.code == savedCode }) {
+        if let idx = TranslationService.targetLanguageOptions.firstIndex(where: { $0.code == savedCode }) {
             popup.selectItem(at: idx)
         }
         popup.target = self

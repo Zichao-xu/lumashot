@@ -952,7 +952,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         stashedBackgroundWindows.removeAll()
     }
 
-    func showFloatingThumbnail(image: NSImage, annotationData: CaptureAnnotationData? = nil, historyEntryID: String? = nil) {
+    func showFloatingThumbnail(
+        image: NSImage,
+        annotationData: CaptureAnnotationData? = nil,
+        historyEntryID: String? = nil,
+        representedFileURL: URL? = nil
+    ) {
         let enabled = UserDefaults.standard.object(forKey: "showFloatingThumbnail") as? Bool ?? true
         guard enabled else { return }
 
@@ -975,7 +980,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
             yOrigin = topFrame.maxY + gap
         }
 
-        let controller = FloatingThumbnailController(image: image)
+        let controller = FloatingThumbnailController(image: image, representedFileURL: representedFileURL)
         controller.historyEntryID = historyEntryID
         controller.onDismiss = { [weak self] in
             self?.thumbnailControllers.removeAll { $0 === controller }
@@ -983,12 +988,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         }
         controller.onCopy = { [weak self] in
             guard let self = self else { return }
-            ImageEncoder.copyToClipboard(image)
+            if let representedFileURL {
+                self.copyFileURLToClipboard(representedFileURL)
+            } else {
+                ImageEncoder.copyToClipboard(image)
+            }
             self.playCopySound()
         }
         controller.onSave = { [weak self] in
             guard let self = self else { return }
-            self.saveImageToFile(image)
+            if let representedFileURL {
+                self.saveFileURLToFile(representedFileURL)
+            } else {
+                self.saveImageToFile(image)
+            }
         }
         controller.onPin = { [weak self] in
             guard let self = self else { return }
@@ -1028,15 +1041,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
     }
 
     private func saveAllThumbnailsToFolder() {
-        let images = thumbnailControllers.map { $0.image }
-        guard !images.isEmpty else { return }
+        let items = thumbnailControllers.map { (image: $0.image, fileURL: $0.representedFileURL) }
+        guard !items.isEmpty else { return }
 
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
         panel.prompt = "Save Here"
-        panel.message = "Choose a folder to save \(images.count) screenshot\(images.count == 1 ? "" : "s")"
+        panel.message = "Choose a folder to save \(items.count) screenshot\(items.count == 1 ? "" : "s")"
         panel.level = .floating
 
         panel.begin { [weak self] response in
@@ -1047,9 +1060,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
             let batchDate = Date()
 
             DispatchQueue.global(qos: .userInitiated).async {
-                for (i, image) in images.enumerated() {
-                    guard let data = ImageEncoder.encode(image) else { continue }
+                for (i, item) in items.enumerated() {
                     let base = FilenameFormatter.format(template: template, index: i + 1, date: batchDate)
+                    if let sourceURL = item.fileURL {
+                        let ext = sourceURL.pathExtension.isEmpty ? "heic" : sourceURL.pathExtension
+                        let fileURL = dirURL.appendingPathComponent("\(base).\(ext)")
+                        try? FileManager.default.removeItem(at: fileURL)
+                        try? FileManager.default.copyItem(at: sourceURL, to: fileURL)
+                        continue
+                    }
+
+                    guard let data = ImageEncoder.encode(item.image) else { continue }
                     let filename = "\(base).\(ImageEncoder.fileExtension)"
                     let fileURL = dirURL.appendingPathComponent(filename)
                     try? data.write(to: fileURL)
@@ -1100,6 +1121,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
             if response == .OK, let url = savePanel.url {
                 try? imageData.write(to: url)
                 SaveDirectoryAccess.save(url: url.deletingLastPathComponent())
+            }
+        }
+    }
+
+    private func copyFileURLToClipboard(_ url: URL) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        if !pasteboard.writeObjects([url as NSURL]) {
+            pasteboard.declareTypes([.fileURL], owner: nil)
+            pasteboard.setString(url.absoluteString, forType: .fileURL)
+        } else {
+            pasteboard.setString(url.absoluteString, forType: .fileURL)
+        }
+    }
+
+    private func saveFileURLToFile(_ sourceURL: URL) {
+        let savePanel = NSSavePanel()
+        if let type = UTType(filenameExtension: sourceURL.pathExtension) {
+            savePanel.allowedContentTypes = [type]
+        }
+        let ext = sourceURL.pathExtension.isEmpty ? "heic" : sourceURL.pathExtension
+        savePanel.nameFieldStringValue = FilenameFormatter.defaultImageFilename(fileExtension: ext)
+        savePanel.directoryURL = SaveDirectoryAccess.directoryHint()
+        savePanel.canCreateDirectories = true
+        savePanel.begin { [weak self] response in
+            guard response == .OK, let url = savePanel.url else { return }
+            do {
+                if FileManager.default.fileExists(atPath: url.path) {
+                    try FileManager.default.removeItem(at: url)
+                }
+                try FileManager.default.copyItem(at: sourceURL, to: url)
+                SaveDirectoryAccess.save(url: url.deletingLastPathComponent())
+                self?.playCopySound()
+            } catch {
+                NSSound.beep()
             }
         }
     }
@@ -1391,6 +1447,14 @@ extension AppDelegate: OverlayWindowControllerDelegate {
                     DetachedEditorWindowController.open(image: image, historyEntryID: entryID, disableBeautify: true)
                 }
             }
+        }
+    }
+
+    func overlayDidCaptureHDRFile(_ controller: OverlayWindowController, fileURL: URL, previewImage: NSImage?) {
+        dismissOverlays()
+        guard let image = previewImage ?? NSImage(contentsOf: fileURL) else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.showFloatingThumbnail(image: image, representedFileURL: fileURL)
         }
     }
 

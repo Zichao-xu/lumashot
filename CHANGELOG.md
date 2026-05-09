@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+- **HDR toggle button now has correct size (36px) and position (below the Done/checkmark button).** Changed HDR button role from `.auxiliary` to `.normal` so its height matches the toolbar height (36px instead of 52px). Repositioned HDR button to appear below the checkmark (Done) button with right edges aligned, instead of overlapping vertically. `OverlayView.swift`: `createOrUpdateToolbar()`, `updateHDRButtonState()`, `repositionToolbars()`. Closes WorkBuddy session 2026-05-07.
+
+### Added
+- **Local model download now shows progress bar and supports mirror sources.** Added `NSProgressIndicator` in the Settings UI to show download progress. Download implementation refactored to use `URLSessionDownloadDelegate` for real progress tracking. Added mirror sources for China mainland users: `hf-mirror.com` for HuggingFace models, `mirror.ghproxy.com` and `ghproxy.com` for GitHub llama.cpp binaries. Improved error messages with specific failure reasons (download failed, file too small, extraction failed, etc.). `TranslationService.swift`: `LocalModelService`, `DownloadTaskDelegate`. `SettingsWindowController.swift`: `localModelProgressIndicator`. Closes WorkBuddy session 2026-05-07.
+
 ## [4.1.0-beta.8] - 2026-05-03
 
 ### Fixed

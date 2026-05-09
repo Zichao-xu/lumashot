@@ -85,6 +85,9 @@ enum PopoverHelper {
     private static func cursorWrapped(_ contentView: NSView) -> NSView {
         let wrapper = ArrowCursorView(frame: contentView.frame)
         wrapper.appearance = ToolbarLayout.appearance
+        wrapper.wantsLayer = true
+        wrapper.layer?.cornerRadius = ToolbarLayout.popoverContentCornerRadius
+        ToolbarLayout.applyContinuousCornerCurve(to: wrapper.layer)
         wrapper.addSubview(contentView)
         contentView.frame.origin = .zero
         return wrapper

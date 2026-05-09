@@ -636,6 +636,15 @@ private class AddCaptureOverlayHandler: NSObject, OverlayWindowControllerDelegat
         }
     }
 
+    func overlayDidCaptureHDRFile(_ controller: OverlayWindowController, fileURL: URL, previewImage: NSImage?) {
+        dismissOverlays()
+        if let image = previewImage ?? NSImage(contentsOf: fileURL) {
+            onCapture?(image)
+        } else {
+            onCancel?()
+        }
+    }
+
     func overlayDidRequestPin(_ controller: OverlayWindowController, image: NSImage) {
         dismissOverlays()
         onCapture?(image)

@@ -108,11 +108,11 @@ class ColorPickerView: NSView {
             let r = NSRect(x: x, y: y, width: swatchSize, height: swatchSize)
 
             color.setFill()
-            NSBezierPath(roundedRect: r, xRadius: 4, yRadius: 4).fill()
+            ToolbarLayout.continuousRoundedPath(in: r, radius: ToolbarLayout.swatchCornerRadius).fill()
 
             if colorsMatch(selectedColor, color) {
                 ToolbarLayout.iconColor.setStroke()
-                let border = NSBezierPath(roundedRect: r.insetBy(dx: -1, dy: -1), xRadius: 5, yRadius: 5)
+                let border = ToolbarLayout.continuousRoundedPath(in: r.insetBy(dx: -1, dy: -1), radius: 6)
                 border.lineWidth = 2
                 border.stroke()
             }
@@ -200,7 +200,7 @@ class ColorPickerView: NSView {
         // Checkerboard
         let checkSize = rect.height / 2
         NSGraphicsContext.saveGraphicsState()
-        NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4).addClip()
+        ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius).addClip()
         let cols = Int(ceil(rect.width / checkSize))
         for ci in 0...cols {
             for ri in 0...1 {
@@ -212,12 +212,12 @@ class ColorPickerView: NSView {
         NSGraphicsContext.restoreGraphicsState()
 
         // Gradient overlay
-        let path = NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4)
+        let path = ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius)
         NSGradient(starting: selectedColor.withAlphaComponent(0), ending: selectedColor.withAlphaComponent(1))?.draw(in: path, angle: 0)
 
         // Border
         ToolbarLayout.iconColor.withAlphaComponent(0.3).setStroke()
-        let border = NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4)
+        let border = ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius, inset: 0.5)
         border.lineWidth = 0.5
         border.stroke()
 
@@ -226,9 +226,9 @@ class ColorPickerView: NSView {
         let thumbH = rect.height + 4
         let thumbRect = NSRect(x: thumbX - 4, y: rect.midY - thumbH / 2, width: 8, height: thumbH)
         ToolbarLayout.iconColor.setFill()
-        NSBezierPath(roundedRect: thumbRect, xRadius: 3, yRadius: 3).fill()
+        ToolbarLayout.continuousRoundedPath(in: thumbRect, radius: 3).fill()
         NSColor.black.withAlphaComponent(0.3).setStroke()
-        NSBezierPath(roundedRect: thumbRect, xRadius: 3, yRadius: 3).stroke()
+        ToolbarLayout.continuousRoundedPath(in: thumbRect, radius: 3, inset: 0.5).stroke()
 
         // Label
         let label = "\(Int(opacity * 100))%" as NSString
@@ -268,7 +268,7 @@ class ColorPickerView: NSView {
         }
 
         NSGraphicsContext.saveGraphicsState()
-        NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4).addClip()
+        ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius).addClip()
         NSGraphicsContext.current?.imageInterpolation = .high
         cachedGradientImage!.draw(in: rect, from: .zero, operation: .sourceOver, fraction: 1)
         NSGraphicsContext.restoreGraphicsState()
@@ -276,21 +276,21 @@ class ColorPickerView: NSView {
 
     private func drawBrightnessSlider(in rect: NSRect) {
         let currentHS = NSColor(calibratedHue: hue, saturation: saturation, brightness: 1, alpha: 1)
-        let path = NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4)
+        let path = ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius)
         NSGradient(starting: .black, ending: currentHS)?.draw(in: path, angle: 0)
 
         let bx = rect.minX + brightness * rect.width
         let thumbH = rect.height + 4
         let thumbRect = NSRect(x: bx - 4, y: rect.midY - thumbH / 2, width: 8, height: thumbH)
         ToolbarLayout.iconColor.setFill()
-        NSBezierPath(roundedRect: thumbRect, xRadius: 3, yRadius: 3).fill()
+        ToolbarLayout.continuousRoundedPath(in: thumbRect, radius: 3).fill()
         NSColor.black.withAlphaComponent(0.3).setStroke()
-        NSBezierPath(roundedRect: thumbRect, xRadius: 3, yRadius: 3).stroke()
+        ToolbarLayout.continuousRoundedPath(in: thumbRect, radius: 3, inset: 0.5).stroke()
     }
 
     private func drawHexDisplay(in rect: NSRect) {
         NSColor(white: 0.2, alpha: 0.8).setFill()
-        NSBezierPath(roundedRect: rect, xRadius: 4, yRadius: 4).fill()
+        ToolbarLayout.continuousRoundedPath(in: rect, radius: ToolbarLayout.swatchCornerRadius).fill()
 
         // Preview circle
         let circleSize: CGFloat = 12

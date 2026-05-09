@@ -83,6 +83,15 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
     private var localMonitor: Any?
     private weak var uploadsStack: NSStackView?
     private var providerPopup: NSPopUpButton!
+    private var translationEnginePopup: NSPopUpButton!
+    private var aiBaseURLField: NSTextField!
+    private var aiAPIKeyField: NSSecureTextField!
+    private var aiModelField: NSTextField!
+    private var aiPromptField: NSTextField!
+    private var localModelStatusLabel: NSTextField!
+    private var localModelActionButton: NSButton!
+    private var localModelProgressIndicator: NSProgressIndicator!
+    private var localModelObserver: NSObjectProtocol?
     private var gdriveSignInBtn: NSButton!
     private var gdriveStatusLabel: NSTextField!
     // S3 tab controls
@@ -133,6 +142,12 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
     }
 
     required init?(coder: NSCoder) { fatalError() }
+
+    deinit {
+        if let observer = localModelObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
 
     // MARK: - Top-level layout
 
@@ -492,13 +507,13 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.addArrangedSubview(sectionHeader(L("Capture")))
         stack.setCustomSpacing(10, after: stack.arrangedSubviews.last!)
 
-        // Enter key action
+        // Quick Capture action
         quickModePopup = NSPopUpButton()
         quickModePopup.addItems(withTitles: [L("Save to file"), L("Copy to clipboard"), L("Save + copy to clipboard"), L("Do nothing")])
         quickModePopup.target = self
         quickModePopup.action = #selector(quickModeChanged(_:))
 
-        stack.addArrangedSubview(labeledRow(L("Enter / Quick Capture:"), controls: [quickModePopup]))
+        stack.addArrangedSubview(labeledRow("\(L("Quick Capture")):", controls: [quickModePopup]))
         stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
 
         quickCaptureOpenEditorCheckbox = NSButton(checkboxWithTitle: L("Also open in Editor"), target: self, action: #selector(quickCaptureOpenEditorChanged(_:)))
@@ -698,35 +713,122 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.setCustomSpacing(20, after: stack.arrangedSubviews.last!)
 
         // ── Translation ──────────────────────────────────────
+        stack.addArrangedSubview(sectionHeader(L("Translation")))
+        stack.setCustomSpacing(10, after: stack.arrangedSubviews.last!)
+
+        translationEnginePopup = NSPopUpButton()
         if TranslationService.appleTranslationAvailable {
-            stack.addArrangedSubview(sectionHeader(L("Translation")))
-            stack.setCustomSpacing(10, after: stack.arrangedSubviews.last!)
+            addTranslationEngineItem(title: L("Apple (on-device)"), provider: .apple)
+        }
+        addTranslationEngineItem(title: L("Google Translate"), provider: .google)
+        addTranslationEngineItem(title: L("AI Model (OpenAI-compatible)"), provider: .ai)
+        addTranslationEngineItem(title: L("Local Model"), provider: .local)
+        selectTranslationEngine(TranslationService.provider)
+        translationEnginePopup.target = self
+        translationEnginePopup.action = #selector(translationProviderChanged(_:))
+        stack.addArrangedSubview(labeledRow(L("Engine:"), controls: [translationEnginePopup]))
+        stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
 
-            let translationProviderPopup = NSPopUpButton()
-            translationProviderPopup.addItems(withTitles: [
-                L("Apple (on-device)"),
-                L("Google Translate"),
-            ])
-            translationProviderPopup.selectItem(at: TranslationService.provider == .apple ? 0 : 1)
-            translationProviderPopup.target = self
-            translationProviderPopup.action = #selector(translationProviderChanged(_:))
-            stack.addArrangedSubview(labeledRow(L("Engine:"), controls: [translationProviderPopup]))
-            stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
+        let providerNote = NSTextField(wrappingLabelWithString: L("Apple works offline when language packs are installed. Google is quick. AI Model uses an OpenAI-compatible chat completions endpoint."))
+        providerNote.font = NSFont.systemFont(ofSize: 10)
+        providerNote.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(indented(providerNote))
+        stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
 
-            let providerNote = NSTextField(wrappingLabelWithString: L("Apple translation is faster and works offline. Google Translate supports more languages."))
-            providerNote.font = NSFont.systemFont(ofSize: 10)
-            providerNote.textColor = .secondaryLabelColor
-            stack.addArrangedSubview(indented(providerNote))
-            stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
-
+        if TranslationService.appleTranslationAvailable {
             let downloadLink = NSButton(title: L("Download language packs in System Settings…"), target: self, action: #selector(openTranslationSettings))
             downloadLink.bezelStyle = .inline
             downloadLink.isBordered = false
             downloadLink.contentTintColor = .linkColor
             downloadLink.font = NSFont.systemFont(ofSize: 10)
             stack.addArrangedSubview(indented(downloadLink))
-            stack.setCustomSpacing(20, after: stack.arrangedSubviews.last!)
+            stack.setCustomSpacing(12, after: stack.arrangedSubviews.last!)
         }
+
+        aiBaseURLField = NSTextField()
+        aiBaseURLField.placeholderString = TranslationService.defaultAIBaseURL
+        aiBaseURLField.stringValue = TranslationService.aiBaseURL
+        aiBaseURLField.font = NSFont.monospacedSystemFont(ofSize: 11, weight: .regular)
+        aiBaseURLField.target = self
+        aiBaseURLField.action = #selector(aiTranslationFieldChanged(_:))
+        aiBaseURLField.delegate = self
+        aiBaseURLField.widthAnchor.constraint(greaterThanOrEqualToConstant: 260).isActive = true
+        stack.addArrangedSubview(labeledRow(L("AI Base URL:"), controls: [aiBaseURLField]))
+        stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
+
+        aiAPIKeyField = NSSecureTextField()
+        aiAPIKeyField.placeholderString = L("Optional for local models")
+        aiAPIKeyField.stringValue = TranslationService.aiAPIKey
+        aiAPIKeyField.font = NSFont.monospacedSystemFont(ofSize: 11, weight: .regular)
+        aiAPIKeyField.target = self
+        aiAPIKeyField.action = #selector(aiTranslationFieldChanged(_:))
+        aiAPIKeyField.delegate = self
+        aiAPIKeyField.widthAnchor.constraint(greaterThanOrEqualToConstant: 260).isActive = true
+        let openOpenAIKeysButton = NSButton(title: L("Open API Keys…"), target: self, action: #selector(openOpenAIAPIKeys))
+        openOpenAIKeysButton.bezelStyle = .rounded
+        stack.addArrangedSubview(labeledRow(L("AI API Key:"), controls: [aiAPIKeyField, openOpenAIKeysButton]))
+        stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
+
+        aiModelField = NSTextField()
+        aiModelField.placeholderString = TranslationService.defaultAIModel
+        aiModelField.stringValue = TranslationService.aiModel
+        aiModelField.font = NSFont.monospacedSystemFont(ofSize: 11, weight: .regular)
+        aiModelField.target = self
+        aiModelField.action = #selector(aiTranslationFieldChanged(_:))
+        aiModelField.delegate = self
+        aiModelField.widthAnchor.constraint(greaterThanOrEqualToConstant: 260).isActive = true
+        stack.addArrangedSubview(labeledRow(L("AI Model:"), controls: [aiModelField]))
+        stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
+
+        aiPromptField = NSTextField()
+        aiPromptField.placeholderString = TranslationService.defaultAIPrompt
+        aiPromptField.stringValue = TranslationService.aiPrompt
+        aiPromptField.target = self
+        aiPromptField.action = #selector(aiTranslationFieldChanged(_:))
+        aiPromptField.delegate = self
+        aiPromptField.widthAnchor.constraint(greaterThanOrEqualToConstant: 260).isActive = true
+        stack.addArrangedSubview(labeledRow(L("AI Prompt:"), controls: [aiPromptField]))
+        stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
+
+        let aiNote = NSTextField(wrappingLabelWithString: L("API keys are stored in Keychain. Examples: https://api.openai.com/v1, http://localhost:11434/v1, https://api.deepseek.com/v1. The app posts to /chat/completions."))
+        aiNote.font = NSFont.systemFont(ofSize: 10)
+        aiNote.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(indented(aiNote))
+        stack.setCustomSpacing(20, after: stack.arrangedSubviews.last!)
+
+        localModelActionButton = NSButton(title: LocalModelService.shared.installButtonTitle, target: self, action: #selector(localModelAction(_:)))
+        localModelActionButton.bezelStyle = .rounded
+        stack.addArrangedSubview(labeledRow(L("Local Model:"), controls: [localModelActionButton]))
+        stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
+
+        localModelProgressIndicator = NSProgressIndicator()
+        localModelProgressIndicator.style = .bar
+        localModelProgressIndicator.isIndeterminate = false
+        localModelProgressIndicator.minValue = 0
+        localModelProgressIndicator.maxValue = 100
+        localModelProgressIndicator.isHidden = true
+        localModelProgressIndicator.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(indented(localModelProgressIndicator))
+        NSLayoutConstraint.activate([
+            localModelProgressIndicator.widthAnchor.constraint(equalToConstant: 300)
+        ])
+        stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
+
+        localModelStatusLabel = NSTextField(wrappingLabelWithString: LocalModelService.shared.statusText)
+        localModelStatusLabel.font = NSFont.systemFont(ofSize: 10)
+        localModelStatusLabel.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(indented(localModelStatusLabel))
+        stack.setCustomSpacing(20, after: stack.arrangedSubviews.last!)
+
+        localModelObserver = NotificationCenter.default.addObserver(
+            forName: LocalModelService.statusChangedNotification,
+            object: LocalModelService.shared,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateLocalModelControls()
+        }
+
+        updateAITranslationControlsEnabled()
 
         finalizeSettingsStack(scroll: scroll, stack: stack)
         return scroll
@@ -1839,6 +1941,50 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         return row
     }
 
+    private func addTranslationEngineItem(title: String, provider: TranslationProvider) {
+        translationEnginePopup.addItem(withTitle: title)
+        translationEnginePopup.lastItem?.representedObject = provider.rawValue
+    }
+
+    private func selectTranslationEngine(_ provider: TranslationProvider) {
+        let items = translationEnginePopup.itemArray
+        if let index = items.firstIndex(where: { ($0.representedObject as? String) == provider.rawValue }) {
+            translationEnginePopup.selectItem(at: index)
+        } else if let googleIndex = items.firstIndex(where: { ($0.representedObject as? String) == TranslationProvider.google.rawValue }) {
+            translationEnginePopup.selectItem(at: googleIndex)
+            TranslationService.provider = .google
+        }
+    }
+
+    private func saveAITranslationSettings() {
+        TranslationService.aiBaseURL = aiBaseURLField?.stringValue ?? ""
+        TranslationService.aiAPIKey = aiAPIKeyField?.stringValue ?? ""
+        TranslationService.aiModel = aiModelField?.stringValue ?? ""
+        TranslationService.aiPrompt = aiPromptField?.stringValue ?? ""
+    }
+
+    private func updateAITranslationControlsEnabled() {
+        let aiSelected = TranslationService.provider == .ai
+        let localSelected = TranslationService.provider == .local
+        let controls: [NSControl?] = [aiBaseURLField, aiAPIKeyField, aiModelField, aiPromptField]
+        for control in controls {
+            control?.isEnabled = aiSelected
+        }
+        localModelActionButton?.isEnabled = localSelected && !LocalModelService.shared.isInstalling
+        localModelStatusLabel?.textColor = localSelected ? .secondaryLabelColor : .tertiaryLabelColor
+        updateLocalModelControls()
+    }
+
+    private func updateLocalModelControls() {
+        localModelActionButton?.title = LocalModelService.shared.installButtonTitle
+        localModelActionButton?.isEnabled = TranslationService.provider == .local && !LocalModelService.shared.isInstalling
+        localModelStatusLabel?.stringValue = LocalModelService.shared.statusText
+        // Hide progress bar when not installing
+        if !LocalModelService.shared.isInstalling {
+            localModelProgressIndicator?.isHidden = true
+        }
+    }
+
     /// Two-column grid of checkboxes in a rounded box, fills parent width.
     private func makeToggleGrid(items: [(tag: Int, label: String)],
                                  defaultsKey: String,
@@ -2012,6 +2158,13 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         updateQualityVisibility()
 
         imgbbKeyField.stringValue = UserDefaults.standard.string(forKey: "imgbbAPIKey") ?? ""
+
+        selectTranslationEngine(TranslationService.provider)
+        aiBaseURLField.stringValue = TranslationService.aiBaseURL
+        aiAPIKeyField.stringValue = TranslationService.aiAPIKey
+        aiModelField.stringValue = TranslationService.aiModel
+        aiPromptField.stringValue = TranslationService.aiPrompt
+        updateAITranslationControlsEnabled()
 
         // Recording
         let recFPS = UserDefaults.standard.integer(forKey: "recordingFPS")
@@ -2543,12 +2696,78 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
     }
 
     @objc private func translationProviderChanged(_ sender: NSPopUpButton) {
-        TranslationService.provider = sender.indexOfSelectedItem == 0 ? .apple : .google
+        if let raw = sender.selectedItem?.representedObject as? String,
+           let provider = TranslationProvider(rawValue: raw) {
+            TranslationService.provider = provider
+        }
+        updateAITranslationControlsEnabled()
+    }
+
+    @objc private func aiTranslationFieldChanged(_ sender: NSTextField) {
+        saveAITranslationSettings()
+    }
+
+    @objc private func localModelAction(_ sender: NSButton) {
+        sender.isEnabled = false
+        localModelProgressIndicator.isHidden = false
+        localModelProgressIndicator.doubleValue = 0
+
+        // Connect progress handler
+        LocalModelService.shared.downloadProgressHandler = { [weak self] progress in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                let percentage = progress.totalBytes > 0 ? Double(progress.bytesWritten) / Double(progress.totalBytes) * 100 : 0
+                self.localModelProgressIndicator.doubleValue = percentage
+                self.localModelStatusLabel.stringValue = String(format: L("Downloading %@: %.0f%%"), progress.fileName, percentage)
+            }
+        }
+
+        if LocalModelService.shared.isReady {
+            LocalModelService.shared.start { [weak self] result in
+                self?.updateLocalModelControls()
+                if case .failure(let error) = result {
+                    self?.showLocalModelError(error)
+                }
+            }
+        } else {
+            LocalModelService.shared.install { [weak self] result in
+                self?.updateLocalModelControls()
+                switch result {
+                case .failure(let error):
+                    self?.showLocalModelError(error)
+                case .success:
+                    LocalModelService.shared.start { startResult in
+                        self?.updateLocalModelControls()
+                        if case .failure(let error) = startResult {
+                            self?.showLocalModelError(error)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @objc private func openTranslationSettings() {
         if let url = URL(string: "x-apple.systempreferences:com.apple.Localization.Settings.extension?Translation") {
             NSWorkspace.shared.open(url)
+        }
+    }
+
+    @objc private func openOpenAIAPIKeys() {
+        if let url = URL(string: "https://platform.openai.com/api-keys") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
+    private func showLocalModelError(_ error: Error) {
+        let alert = NSAlert()
+        alert.messageText = L("Local Model Failed")
+        alert.informativeText = error.localizedDescription
+        alert.alertStyle = .warning
+        if let window = self.window {
+            alert.beginSheetModal(for: window)
+        } else {
+            alert.runModal()
         }
     }
 
@@ -2579,6 +2798,8 @@ extension SettingsWindowController: NSTextFieldDelegate {
         } else if field === recordingFilenameTemplateField {
             UserDefaults.standard.set(field.stringValue, forKey: FilenameFormatter.recordingUserDefaultsKey)
             updateRecordingFilenamePreview()
+        } else if field === aiBaseURLField || field === aiAPIKeyField || field === aiModelField || field === aiPromptField {
+            saveAITranslationSettings()
         }
     }
 

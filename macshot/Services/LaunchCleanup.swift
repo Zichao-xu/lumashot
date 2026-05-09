@@ -207,7 +207,7 @@ private struct ScratchDirectoryCleaner: LaunchCleaner {
 
 /// Sweeps everything in `tmp/macshot-clipboard/` older than 24 hours.
 ///
-/// `ImageEncoder.copyToClipboard` writes a date-stamped PNG here and
+/// `ImageEncoder.copyToClipboard` writes a date-stamped image file here and
 /// deletes the previous one on the next copy — at most one file ever
 /// lives here during normal use. This sweeper is a backstop for the
 /// case where macshot crashed or force-quit between writes, leaving an

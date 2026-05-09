@@ -6,6 +6,7 @@ class FloatingThumbnailController: NSObject, NSDraggingSource {
     private var window: NSPanel?
     private var dismissTask: DispatchWorkItem?
     private(set) var image: NSImage
+    private(set) var representedFileURL: URL?
     private var thumbnailView: ThumbnailView?
     /// History entry ID — used to match and update the thumbnail when the editor saves.
     var historyEntryID: String?
@@ -24,8 +25,9 @@ class FloatingThumbnailController: NSObject, NSDraggingSource {
     var onCloseAll: (() -> Void)?
     var onSaveAll:  (() -> Void)?
 
-    init(image: NSImage) {
+    init(image: NSImage, representedFileURL: URL? = nil) {
         self.image = image
+        self.representedFileURL = representedFileURL
         super.init()
     }
 
@@ -180,6 +182,14 @@ class FloatingThumbnailController: NSObject, NSDraggingSource {
 
     private func startDrag(event: NSEvent) {
         guard let view = thumbnailView else { return }
+        if let representedFileURL {
+            let draggingItem = NSDraggingItem(pasteboardWriter: representedFileURL as NSURL)
+            draggingItem.setDraggingFrame(view.bounds, contents: image)
+            view.beginDraggingSession(with: [draggingItem], event: event, source: self)
+            dismissTask?.cancel()
+            return
+        }
+
         guard let encodedData = ImageEncoder.encode(image) else { return }
 
         let tempURL = TmpScratchDirectory.makeURL(filename: FilenameFormatter.defaultImageFilename())

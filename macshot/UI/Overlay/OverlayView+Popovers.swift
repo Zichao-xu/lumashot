@@ -3,6 +3,71 @@ import UniformTypeIdentifiers
 
 extension OverlayView {
 
+    func showMoreActionsPopover(anchorView: NSView? = nil, anchorRect: NSRect = .zero) {
+        if PopoverHelper.isVisible {
+            PopoverHelper.dismiss()
+            return
+        }
+
+        let actions = ToolbarLayout.overflowButtons(
+            selectedTool: currentTool,
+            beautifyEnabled: beautifyEnabled,
+            beautifyStyleIndex: beautifyStyleIndex,
+            hasAnnotations: annotations.contains { $0.isMovable },
+            translateEnabled: translateEnabled,
+            isEditorMode: isEditorMode,
+            effectsActive: effectsActive
+        )
+        guard !actions.isEmpty else { return }
+
+        let picker = ListPickerView()
+        picker.items = actions.map { button in
+            .init(
+                title: button.tooltip,
+                isSelected: button.isSelected,
+                icon: ToolbarButtonView.menuIcon(named: button.sfSymbol, color: button.tintColor))
+        }
+        picker.onSelect = { [weak self] idx in
+            guard let self = self, idx < actions.count else { return }
+            let action = actions[idx].action
+            PopoverHelper.dismiss()
+            self.handleToolbarAction(action)
+        }
+
+        let preferred = picker.preferredSize
+        picker.setFrameSize(preferred)
+        let contentH = preferred.height
+        let maxH: CGFloat = 360
+        let needsScroller = contentH > maxH
+        let size = NSSize(width: preferred.width + (needsScroller ? 14 : 0), height: min(maxH, contentH))
+        let contentView: NSView
+        if contentH > maxH {
+            let scrollView = NSScrollView(frame: NSRect(origin: .zero, size: size))
+            scrollView.hasVerticalScroller = true
+            scrollView.hasHorizontalScroller = false
+            scrollView.drawsBackground = false
+            scrollView.documentView = picker
+            contentView = scrollView
+        } else {
+            contentView = picker
+        }
+
+        if let anchor = anchorView {
+            PopoverHelper.show(
+                contentView, size: size, relativeTo: anchor.bounds, of: anchor, preferredEdge: .maxY)
+        } else if anchorRect != .zero {
+            PopoverHelper.showAtPoint(
+                contentView, size: size,
+                at: NSPoint(x: anchorRect.midX, y: anchorRect.midY),
+                in: self, preferredEdge: .maxY)
+        } else {
+            PopoverHelper.showAtPoint(
+                contentView, size: size,
+                at: NSPoint(x: bounds.midX, y: bounds.midY),
+                in: self, preferredEdge: .maxY)
+        }
+    }
+
     func showUploadConfirmPopover(anchorRect: NSRect, anchorView: NSView? = nil) {
         if PopoverHelper.isVisible {
             PopoverHelper.dismiss()
@@ -82,7 +147,7 @@ extension OverlayView {
             PopoverHelper.dismiss()
             return
         }
-        let languages = TranslationService.availableLanguages
+        let languages = TranslationService.targetLanguageOptions
         let currentCode = TranslationService.targetLanguage
 
         let showPopover: ([String: Bool]?) -> Void = { [weak self] appleAvailability in
@@ -90,7 +155,9 @@ extension OverlayView {
             // When Apple Translation is active, only show installed languages
             let filteredLanguages: [(code: String, name: String)]
             if let avail = appleAvailability {
-                filteredLanguages = languages.filter { avail[$0.code] == true }
+                filteredLanguages = languages.filter {
+                    $0.code == TranslationService.automaticTargetLanguageCode || avail[$0.code] == true
+                }
             } else {
                 filteredLanguages = languages
             }
@@ -591,7 +658,9 @@ extension OverlayView {
         } else {
             PopoverHelper.showAtPoint(
                 picker, size: size,
-                at: NSPoint(x: anchorRect.midX, y: anchorRect.midY),
+                at: anchorRect == .zero
+                    ? NSPoint(x: bounds.midX, y: bounds.midY)
+                    : NSPoint(x: anchorRect.midX, y: anchorRect.midY),
                 in: self, preferredEdge: .maxY)
         }
     }

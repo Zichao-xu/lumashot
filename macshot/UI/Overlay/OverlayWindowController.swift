@@ -13,6 +13,7 @@ struct CaptureAnnotationData {
 protocol OverlayWindowControllerDelegate: AnyObject {
     func overlayDidCancel(_ controller: OverlayWindowController)
     func overlayDidConfirm(_ controller: OverlayWindowController, capturedImage: NSImage?, annotationData: CaptureAnnotationData?)
+    func overlayDidCaptureHDRFile(_ controller: OverlayWindowController, fileURL: URL, previewImage: NSImage?)
     func overlayDidRequestPin(_ controller: OverlayWindowController, image: NSImage)
     func overlayDidRequestOCR(_ controller: OverlayWindowController, text: String, image: NSImage?)
     func overlayDidRequestUpload(_ controller: OverlayWindowController, image: NSImage)
@@ -59,6 +60,31 @@ class OverlayWindowController {
     var sessionRecordingDelay: Int? { overlayView?.sessionRecordingDelay }
     var sessionHideRecordingHUD: Bool? { overlayView?.sessionHideRecordingHUD }
 
+    /// HDR output mode for this capture session. The normal area capture overlay
+    /// owns this state, and the toolbar HDR button decides the output format.
+    var isHDRCaptureMode: Bool = OverlayWindowController.defaultHDRCaptureMode {
+        didSet {
+            overlayView?.isHDRCaptureMode = isHDRCaptureMode
+        }
+    }
+
+    func enableHDRCaptureMode() {
+        isHDRCaptureMode = true
+        overlayView?.isHDRCaptureMode = true
+    }
+
+    private var shouldCaptureHDR: Bool {
+        let savedPreference = UserDefaults.standard.object(forKey: "captureHDREnabled") as? Bool ?? false
+        if let overlayView {
+            return overlayView.isHDRCaptureMode || savedPreference
+        }
+        return isHDRCaptureMode || savedPreference
+    }
+
+    private static var defaultHDRCaptureMode: Bool {
+        UserDefaults.standard.object(forKey: "captureHDREnabled") as? Bool ?? false
+    }
+
     init(capture: ScreenCapture) {
         let screen = capture.screen
         self.screen = screen
@@ -103,7 +129,10 @@ class OverlayWindowController {
     /// Set the screenshot after the overlay is visible.
     func setScreenshot(_ image: CGImage) {
         let nsImage = NSImage(cgImage: image, size: screen.frame.size)
+        let currentHDRMode = overlayView?.isHDRCaptureMode ?? isHDRCaptureMode
+        isHDRCaptureMode = currentHDRMode
         overlayView?.screenshotImage = nsImage
+        overlayView?.isHDRCaptureMode = currentHDRMode
         // Enable interaction now that the screenshot is ready.
         overlayWindow?.ignoresMouseEvents = false
         overlayWindow?.makeKeyAndOrderFront(nil)
@@ -114,6 +143,7 @@ class OverlayWindowController {
 
     func showOverlay() {
         guard let window = overlayWindow else { return }
+        overlayView?.isHDRCaptureMode = isHDRCaptureMode
         if overlayView?.screenshotImage != nil {
             // Screenshot already set (sync init path) — interactive immediately.
             if let view = overlayView { view.displayIfNeeded() }
@@ -305,6 +335,17 @@ class OverlayWindowController {
         ImageEncoder.copyToClipboard(image)
     }
 
+    private func copyHDRFileURLToClipboard(_ url: URL) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        if !pasteboard.writeObjects([url as NSURL]) {
+            pasteboard.declareTypes([.fileURL], owner: nil)
+            pasteboard.setString(url.absoluteString, forType: .fileURL)
+        } else {
+            pasteboard.setString(url.absoluteString, forType: .fileURL)
+        }
+    }
+
 }
 
 // MARK: - OverlayViewDelegate
@@ -328,6 +369,48 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidConfirm() {
+        // HDR capture mode: save directly to HDR HEIC file, bypass annotation workflow
+        if shouldCaptureHDR {
+            let selectionRect = overlayView?.selectionRect ?? .zero
+            let globalRect = NSRect(
+                x: screen.frame.origin.x + selectionRect.origin.x,
+                y: screen.frame.origin.y + selectionRect.origin.y,
+                width: selectionRect.width,
+                height: selectionRect.height
+            )
+
+            NSPasteboard.general.clearContents()
+            dismiss()
+
+            HDRCaptureManager.saveHDRScreenshot(
+                screen: screen,
+                rect: globalRect,
+                showsCursor: UserDefaults.standard.bool(forKey: "captureCursor")
+            ) { [weak self] resultURL in
+                DispatchQueue.main.async {
+                    guard let self else { return }
+                    if let url = resultURL {
+                        // Success: copy .heic file to clipboard (not image data) to preserve HDR
+                        self.copyHDRFileURLToClipboard(url)
+                        self.playCopySound()
+                        self.overlayDelegate?.overlayDidCaptureHDRFile(
+                            self,
+                            fileURL: url,
+                            previewImage: NSImage(contentsOf: url)
+                        )
+                        #if DEBUG
+                            NSLog("macshot: HDR screenshot saved to \(url.path) and copied to clipboard")
+                        #endif
+                    } else {
+                        // Failure: play error sound
+                        NSSound.beep()
+                        self.overlayDelegate?.overlayDidCancel(self)
+                    }
+                }
+            }
+            return
+        }
+
         // Snapshot post-processing config before dismissing (view will be torn down)
         let hasEffects = overlayView?.effectsActive ?? false
         let effectsCfg = overlayView?.effectsConfig ?? ImageEffectsConfig()
@@ -699,6 +782,11 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidRequestQuickSave() {
+        if shouldCaptureHDR {
+            overlayViewDidConfirm()
+            return
+        }
+
         // Snapshot post-processing config before dismissing
         let hasEffects = overlayView?.effectsActive ?? false
         let effectsCfg = overlayView?.effectsConfig ?? ImageEffectsConfig()
@@ -760,6 +848,11 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidRequestFileSave() {
+        if shouldCaptureHDR {
+            overlayViewDidConfirm()
+            return
+        }
+
         // Snapshot post-processing config before dismissing
         let hasEffects = overlayView?.effectsActive ?? false
         let effectsCfg = overlayView?.effectsConfig ?? ImageEffectsConfig()
@@ -808,6 +901,11 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidRequestSave() {
+        if shouldCaptureHDR {
+            requestHDRFileSave()
+            return
+        }
+
         guard var image = captureRegion() else { return }
         image = applyBeautifyIfNeeded(image) ?? image
         guard let imageData = ImageEncoder.encode(image) else { return }
@@ -816,6 +914,7 @@ extension OverlayWindowController: OverlayViewDelegate {
         savePanel.allowedContentTypes = [ImageEncoder.utType]
         savePanel.nameFieldStringValue = FilenameFormatter.defaultImageFilename(windowTitle: capturedWindowTitle)
         savePanel.level = NSWindow.Level(258)
+        savePanel.canCreateDirectories = true
 
         savePanel.directoryURL = SaveDirectoryAccess.directoryHint()
 
@@ -831,6 +930,56 @@ extension OverlayWindowController: OverlayViewDelegate {
                 self.overlayWindow?.makeKeyAndOrderFront(nil)
                 if let view = self.overlayView {
                     self.overlayWindow?.makeFirstResponder(view)
+                }
+            }
+        }
+    }
+
+    private func requestHDRFileSave() {
+        let selectionRect = overlayView?.selectionRect ?? .zero
+        let globalRect = NSRect(
+            x: screen.frame.origin.x + selectionRect.origin.x,
+            y: screen.frame.origin.y + selectionRect.origin.y,
+            width: selectionRect.width,
+            height: selectionRect.height
+        )
+
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.heic]
+        savePanel.nameFieldStringValue = FilenameFormatter.defaultImageFilename(
+            windowTitle: capturedWindowTitle,
+            fileExtension: "heic"
+        )
+        savePanel.level = NSWindow.Level(258)
+        savePanel.canCreateDirectories = true
+        savePanel.directoryURL = SaveDirectoryAccess.directoryHint()
+
+        savePanel.begin { [weak self] response in
+            guard let self else { return }
+            guard response == .OK, let url = savePanel.url else {
+                self.overlayWindow?.makeKeyAndOrderFront(nil)
+                if let view = self.overlayView {
+                    self.overlayWindow?.makeFirstResponder(view)
+                }
+                return
+            }
+
+            self.dismiss()
+            HDRCaptureManager.saveHDRScreenshot(
+                screen: self.screen,
+                rect: globalRect,
+                showsCursor: UserDefaults.standard.bool(forKey: "captureCursor"),
+                outputURL: url
+            ) { [weak self] resultURL in
+                DispatchQueue.main.async {
+                    guard let self else { return }
+                    if resultURL != nil {
+                        SaveDirectoryAccess.save(url: url.deletingLastPathComponent())
+                        self.playCopySound()
+                    } else {
+                        NSSound.beep()
+                    }
+                    self.overlayDelegate?.overlayDidCancel(self)
                 }
             }
         }

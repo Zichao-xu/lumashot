@@ -42,7 +42,9 @@ class EmojiPickerView: NSView {
             let tabRect = NSRect(x: padding + CGFloat(i) * tabW, y: tabY, width: tabW, height: tabH)
             if i == categoryIndex {
                 ToolbarLayout.accentColor.withAlphaComponent(0.3).setFill()
-                NSBezierPath(roundedRect: tabRect.insetBy(dx: 2, dy: 2), xRadius: 5, yRadius: 5).fill()
+                ToolbarLayout.continuousRoundedPath(
+                    in: tabRect.insetBy(dx: 2, dy: 2),
+                    radius: ToolbarLayout.popoverSelectionCornerRadius).fill()
             }
             let tabStr = cat.0 as NSString
             let tabAttrs: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: 16)]

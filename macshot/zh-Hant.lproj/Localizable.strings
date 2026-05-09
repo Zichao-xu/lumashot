@@ -89,6 +89,7 @@
 "Copy to Clipboard" = "拷貝至剪貼簿";
 "Save to File" = "儲存至檔案";
 "Save to" = "儲存至";
+"Save to..." = "儲存至...";
 "Open in Editor Window" = "在編輯器視窗中開啟";
 "Pin on Screen" = "釘選在螢幕上";
 "Pin" = "釘選";
@@ -133,6 +134,8 @@
 "Load Image" = "載入影像";
 "Gradient Style" = "漸層樣式";
 "On" = "開啟";
+"HDR" = "HDR";
+"HDR capture applies to the next screenshot on supported Macs." = "HDR 會從下一次截圖開始生效（需要支援的 Mac）。";
 "Text Only" = "僅文字";
 "All Text" = "全部文字";
 "PII" = "個資";
@@ -341,6 +344,7 @@
 
 /* OCR Window */
 "Text Recognition" = "文字辨識";
+"Auto" = "自動";
 "Translate to:" = "翻譯為：";
 "%d chars · %d words" = "%d 字元 · %d 詞";
 "Copy  ⌘↩" = "拷貝  ⌘↩";
@@ -453,6 +457,7 @@
 "Solid" = "填色";
 "Erase" = "清除";
 "Done" = "完成";
+"More" = "更多";
 "Do nothing" = "不執行任何動作";
 "Overlay / Editor Shortcuts" = "覆蓋層 / 編輯器快捷鍵";
 "Set" = "設定";
@@ -542,7 +547,7 @@
 "Open an image file in the editor" = "在編輯器中開啟影像檔案";
 "Open the recent captures overlay" = "開啟最近擷取的覆蓋層";
 "Open this settings window" = "開啟此設定視窗";
-"Quick capture (uses your Enter action)" = "快速擷取（使用您的 Enter 動作）";
+"Quick capture (uses your Enter action)" = "快速擷取（使用「快速擷取」設定）";
 "Re-capture the last selected area" = "重新擷取上次選取的區域";
 "Screenshots only — captured window title (blank otherwise)" = "僅螢幕截圖 — 已擷取的視窗標題（否則為空白）";
 "Show available filename tokens" = "顯示可用的檔案名稱代碼";
@@ -558,3 +563,39 @@
 "URL scheme info" = "URL scheme 資訊";
 "Enable macshot:// URL scheme" = "啟用 macshot:// URL scheme";
 "sec (0 = never)" = "秒（0 = 永不）";
+
+/* AI translation */
+"AI Model (OpenAI-compatible)" = "AI 模型（相容 OpenAI）";
+"Apple works offline when language packs are installed. Google is quick. AI Model uses an OpenAI-compatible chat completions endpoint." = "安裝語言包後 Apple 翻譯可離線使用。Google 翻譯反應較快。AI 模型使用相容 OpenAI 的 chat completions 端點。";
+"AI Base URL:" = "AI Base URL：";
+"Optional for local models" = "本機模型可留空";
+"AI API Key:" = "AI API Key：";
+"Open API Keys…" = "開啟 API Keys…";
+"AI Model:" = "AI 模型：";
+"AI Prompt:" = "AI 提示詞：";
+"API keys are stored in Keychain. Examples: https://api.openai.com/v1, http://localhost:11434/v1, https://api.deepseek.com/v1. The app posts to /chat/completions." = "API Key 會儲存在鑰匙圈中。範例：https://api.openai.com/v1、http://localhost:11434/v1、https://api.deepseek.com/v1。應用程式會請求 /chat/completions。";
+"Translate accurately and naturally. Preserve names, numbers, code, URLs, markdown, and original line intent. Return only the translation." = "請準確、自然地翻譯。保留名稱、數字、程式碼、URL、Markdown 與原始換行意圖。只返回譯文。";
+"AI translation model is not configured." = "尚未設定 AI 翻譯模型。";
+"Invalid AI translation base URL." = "AI 翻譯 Base URL 無效。";
+"Could not encode AI translation request." = "無法編碼 AI 翻譯請求。";
+"AI translation failed (%d): %@" = "AI 翻譯失敗（%d）：%@";
+"AI translation returned %d result(s), expected %d." = "AI 翻譯返回了 %d 筆結果，應為 %d 筆。";
+"Local Model" = "本機模型";
+"Local Model:" = "本機模型：";
+"Download Local Model" = "下載本機模型";
+"Downloading…" = "正在下載…";
+"Start Local Model" = "啟動本機模型";
+"Downloading local model assets…" = "正在下載本機模型資源…";
+"Local model running: %@" = "本機模型正在執行：%@";
+"Local model ready: %@" = "本機模型已就緒：%@";
+"Local model runtime installed. Model download required." = "本機模型執行器已安裝，還需要下載模型。";
+"Local model not installed. Download size: about %@." = "本機模型未安裝。下載大小約 %@。";
+"Local model is not installed. Click Download Local Model first." = "本機模型尚未安裝。請先點擊「下載本機模型」。";
+"Could not extract local model runtime." = "無法解壓縮本機模型執行器。";
+"Local model server timed out while starting." = "本機模型服務啟動逾時。";
+"Local model server exited with code %d." = "本機模型服務已結束，結束碼 %d。";
+"No local model log was captured." = "沒有擷取到本機模型日誌。";
+"Could not read local model log." = "無法讀取本機模型日誌。";
+"Local Model Failed" = "本機模型失敗";
+"HDR capture applies to this screenshot on supported Macs." = "HDR 僅套用於本次截圖（需要支援的 Mac）。";
+"HDR output enabled - confirm to save HEIC" = "HDR 輸出已開啟 - 確認後儲存 HEIC";

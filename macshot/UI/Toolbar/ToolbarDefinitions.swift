@@ -1,4 +1,5 @@
 import Cocoa
+import SwiftUI
 
 extension Notification.Name {
     static let toolbarColorsDidChange = Notification.Name("toolbarColorsDidChange")
@@ -10,6 +11,7 @@ extension Notification.Name {
 enum ToolbarButtonAction {
     case tool(AnnotationTool)
     case color
+    case more
     case sizeDisplay
     case undo
     case redo
@@ -21,6 +23,7 @@ enum ToolbarButtonAction {
     case beautify
     case beautifyStyle
     case cancel
+    case hdrToggle
     case moveSelection
     case delayCapture
     case upload
@@ -44,14 +47,23 @@ enum ToolbarButtonAction {
     case effects  // image effects (CIFilter adjustments + presets)
 }
 
+enum ToolbarButtonRole {
+    case normal
+    case auxiliary
+    case primary
+    case destructive
+}
+
 struct ToolbarButton {
     let action: ToolbarButtonAction
     let sfSymbol: String?
     let tooltip: String
+    var textTitle: String? = nil
     var isSelected: Bool = false
     var tintColor: NSColor = ToolbarLayout.iconColor
     var bgColor: NSColor? = nil  // for color swatches
     var hasContextMenu: Bool = false  // draw small corner triangle to indicate right-click options
+    var role: ToolbarButtonRole = .normal
 }
 
 class ToolbarLayout {
@@ -84,7 +96,47 @@ class ToolbarLayout {
         return defaultBgColor
     }
     static var handleColor: NSColor { accentColor }
-    static let cornerRadius: CGFloat = 6
+    static let toolbarPadding: CGFloat = 5
+    static let buttonCornerRadius: CGFloat = 12
+    static let toolbarCornerRadius: CGFloat = outerCornerRadius(
+        aroundInnerRadius: buttonCornerRadius,
+        inset: toolbarPadding)
+    static let optionsRowCornerRadius: CGFloat = 16
+    static let popoverContentCornerRadius: CGFloat = 12
+    static let popoverSelectionCornerRadius: CGFloat = 7
+    static let swatchCornerRadius: CGFloat = 5
+    static let cornerRadius: CGFloat = toolbarCornerRadius
+
+    static func outerCornerRadius(aroundInnerRadius innerRadius: CGFloat, inset: CGFloat) -> CGFloat {
+        max(0, innerRadius + inset)
+    }
+
+    static func insetCornerRadius(_ radius: CGFloat, by inset: CGFloat) -> CGFloat {
+        max(0, radius - inset)
+    }
+
+    static func continuousRoundedPath(in rect: NSRect, radius: CGFloat) -> NSBezierPath {
+        let clampedRadius = max(0, min(radius, min(rect.width, rect.height) / 2))
+        let cgRect = CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height)
+        let path = Path(roundedRect: cgRect, cornerRadius: clampedRadius, style: .continuous)
+        return NSBezierPath.toolbarPath(from: path.cgPath)
+    }
+
+    static func continuousRoundedPath(in rect: NSRect, radius: CGFloat, inset: CGFloat) -> NSBezierPath {
+        continuousRoundedPath(
+            in: rect.insetBy(dx: inset, dy: inset),
+            radius: insetCornerRadius(radius, by: inset))
+    }
+
+    static func circlePath(in rect: NSRect) -> NSBezierPath {
+        NSBezierPath(ovalIn: rect)
+    }
+
+    static func applyContinuousCornerCurve(to layer: CALayer?) {
+        if #available(macOS 10.15, *) {
+            layer?.cornerCurve = .continuous
+        }
+    }
 
     /// Save accent color to UserDefaults.
     static func saveAccentColor(_ color: NSColor) {
@@ -123,41 +175,17 @@ class ToolbarLayout {
         UserDefaults.standard.removeObject(forKey: "toolbarBgColor")
     }
 
-    // Bottom toolbar items (drawing tools + colors + undo/redo + processing actions)
-    static func bottomButtons(
-        selectedTool: AnnotationTool, selectedColor: NSColor, beautifyEnabled: Bool = false,
-        beautifyStyleIndex: Int = 0, hasAnnotations: Bool = false, isRecording: Bool = false,
-        effectsActive: Bool = false
-    ) -> [ToolbarButton] {
-        // Hide the bottom bar entirely while recording
-        if isRecording { return [] }
+    private static let allKnownActionTags: [Int] = [
+        1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013,
+    ]
 
-        var buttons: [ToolbarButton] = []
+    private static let primaryTools: [AnnotationTool] = [
+        .select, .rectangle, .ellipse, .stamp, .arrow, .pencil, .pixelate, .text,
+    ]
 
-        // Get enabled tools from UserDefaults — migrate: only add tools that are brand-new.
-        // Track introduced tools in `knownToolRawValues` so user-disabled tools are never re-enabled.
-        let allKnownToolRawValues = AnnotationTool.allCases
-            .filter { $0 != .select && $0 != .translateOverlay }
-            .map { $0.rawValue }
-        var enabledRawValues = UserDefaults.standard.array(forKey: "enabledTools") as? [Int]
-        let knownToolRawValues = UserDefaults.standard.array(forKey: "knownToolRawValues") as? [Int]
-        let newToolRaws = allKnownToolRawValues.filter { !(knownToolRawValues ?? []).contains($0) }
-        if !newToolRaws.isEmpty {
-            if enabledRawValues == nil {
-                // Fresh install: enable everything.
-                enabledRawValues = allKnownToolRawValues
-            } else if knownToolRawValues == nil {
-                // Upgrading from a version before knownToolRawValues tracking was added.
-                // Respect the existing enabledTools as-is; just mark all current tools as known.
-            } else {
-                // Normal upgrade: new tools introduced — add them enabled by default.
-                enabledRawValues = (enabledRawValues! + newToolRaws)
-            }
-            UserDefaults.standard.set(enabledRawValues, forKey: "enabledTools")
-            UserDefaults.standard.set(allKnownToolRawValues, forKey: "knownToolRawValues")
-        }
-
-        let tools: [(AnnotationTool, String, String)] = [
+    private static var drawingTools: [(AnnotationTool, String, String)] {
+        [
+            (.select, "arrow.up.and.down.and.arrow.left.and.right", L("Move Selection")),
             (.pencil, "scribble", L("Pencil (Draw)")),
             (.line, "line.diagonal", L("Line")),
             (.arrow, "arrow.up.right", L("Arrow")),
@@ -167,7 +195,7 @@ class ToolbarLayout {
                 if #available(macOS 14.0, *) { return "highlighter" }
                 return "paintbrush.pointed.fill"
             }(), L("Marker")),
-            (.text, "textformat", L("Text")),
+            (.text, "_custom.textbox", L("Text")),
             (.number, "1.circle.fill", L("Number")),
             (.pixelate, "_custom.checkerboard", L("Censor (Pixelate / Blur / Solid)")),
             (.loupe, "magnifyingglass", L("Magnify (Loupe)")),
@@ -175,27 +203,116 @@ class ToolbarLayout {
             (.colorSampler, "eyedropper", L("Color Picker")),
             (.measure, "ruler", L("Measure (px)")),
         ]
+    }
 
-        for (tool, symbol, tip) in tools {
-            // Skip if disabled
-            if let enabledRawValues = enabledRawValues, !enabledRawValues.contains(tool.rawValue) {
+    private static func enabledToolRawValues() -> [Int]? {
+        let allKnownToolRawValues = AnnotationTool.allCases
+            .filter { $0 != .select && $0 != .translateOverlay }
+            .map { $0.rawValue }
+        var enabledRawValues = UserDefaults.standard.array(forKey: "enabledTools") as? [Int]
+        let knownToolRawValues = UserDefaults.standard.array(forKey: "knownToolRawValues") as? [Int]
+        let newToolRaws = allKnownToolRawValues.filter { !(knownToolRawValues ?? []).contains($0) }
+        if !newToolRaws.isEmpty {
+            if enabledRawValues == nil {
+                enabledRawValues = allKnownToolRawValues
+            } else if knownToolRawValues == nil {
+                // Respect the existing enabledTools as-is; just mark all current tools as known.
+            } else {
+                enabledRawValues = (enabledRawValues! + newToolRaws)
+            }
+            UserDefaults.standard.set(enabledRawValues, forKey: "enabledTools")
+            UserDefaults.standard.set(allKnownToolRawValues, forKey: "knownToolRawValues")
+        }
+        return enabledRawValues
+    }
+
+    private static func enabledActionTags() -> [Int]? {
+        var enabledActions = UserDefaults.standard.array(forKey: "enabledActions") as? [Int]
+        let knownActionTags = UserDefaults.standard.array(forKey: "knownActionTags") as? [Int]
+        let newTags = allKnownActionTags.filter { !(knownActionTags ?? []).contains($0) }
+        if !newTags.isEmpty {
+            if enabledActions == nil {
+                enabledActions = allKnownActionTags
+            } else if knownActionTags == nil {
+                // Respect existing enabledActions as-is; just mark all current action tags as known.
+            } else {
+                enabledActions = (enabledActions! + newTags)
+            }
+            UserDefaults.standard.set(enabledActions, forKey: "enabledActions")
+            UserDefaults.standard.set(allKnownActionTags, forKey: "knownActionTags")
+        }
+        return enabledActions
+    }
+
+    private static func actionEnabled(_ tag: Int, enabledActions: [Int]?) -> Bool {
+        enabledActions == nil || enabledActions!.contains(tag)
+    }
+
+    private static func buttonForTool(
+        _ tool: AnnotationTool,
+        symbol: String,
+        tooltip: String,
+        selectedTool: AnnotationTool
+    ) -> ToolbarButton {
+        var btn = ToolbarButton(action: .tool(tool), sfSymbol: symbol, tooltip: tooltip)
+        btn.isSelected = (tool == selectedTool)
+        return btn
+    }
+
+    // Bottom toolbar items (single primary strip: common tools + key output actions)
+    static func bottomButtons(
+        selectedTool: AnnotationTool, selectedColor: NSColor, beautifyEnabled: Bool = false,
+        beautifyStyleIndex: Int = 0, hasAnnotations: Bool = false, isRecording: Bool = false,
+        effectsActive: Bool = false, translateEnabled: Bool = false, isEditorMode: Bool = false,
+        hdrEnabled: Bool = false
+    ) -> [ToolbarButton] {
+        // Hide the bottom bar entirely while recording
+        if isRecording { return [] }
+
+        var buttons: [ToolbarButton] = []
+
+        let enabledRawValues = enabledToolRawValues()
+        let enabledActions = enabledActionTags()
+
+        for tool in primaryTools {
+            guard let entry = drawingTools.first(where: { $0.0 == tool }) else { continue }
+            if tool != .select, let enabledRawValues, !enabledRawValues.contains(tool.rawValue) {
                 continue
             }
-            var btn = ToolbarButton(action: .tool(tool), sfSymbol: symbol, tooltip: tip)
-            btn.isSelected = (tool == selectedTool)
-            switch tool {
-            case .pencil, .line, .arrow, .rectangle, .ellipse, .marker, .number, .loupe:
-                break  // options shown in the tool options row, not via right-click
-            default:
-                break
-            }
-            buttons.append(btn)
+            buttons.append(buttonForTool(entry.0, symbol: entry.1, tooltip: entry.2, selectedTool: selectedTool))
         }
 
-        // Color button
+        // Color is still first-class, but kept visually quiet as a swatch.
         var colorBtn = ToolbarButton(action: .color, sfSymbol: nil, tooltip: L("Color"))
         colorBtn.bgColor = selectedColor
         buttons.append(colorBtn)
+
+        if actionEnabled(1008, enabledActions: enabledActions) {
+            var translateBtn = ToolbarButton(
+                action: .translate, sfSymbol: "translate", tooltip: L("Translate"))
+            translateBtn.isSelected = translateEnabled
+            translateBtn.hasContextMenu = true
+            buttons.append(translateBtn)
+        }
+
+        if !overflowButtons(
+            selectedTool: selectedTool, beautifyEnabled: beautifyEnabled,
+            beautifyStyleIndex: beautifyStyleIndex, hasAnnotations: hasAnnotations,
+            translateEnabled: translateEnabled, isEditorMode: isEditorMode,
+            effectsActive: effectsActive
+        ).isEmpty {
+            buttons.append(ToolbarButton(action: .more, sfSymbol: "ellipsis", tooltip: L("More")))
+        }
+
+        if !isEditorMode {
+            var hdrBtn = ToolbarButton(
+                action: .hdrToggle, sfSymbol: nil,
+                tooltip: L("HDR capture applies to this screenshot on supported Macs."))
+            hdrBtn.textTitle = L("HDR")
+            hdrBtn.tintColor = .white
+            hdrBtn.isSelected = hdrEnabled
+            buttons.append(hdrBtn)
+        }
 
         // Undo / Redo
         buttons.append(
@@ -205,47 +322,124 @@ class ToolbarLayout {
             ToolbarButton(
                 action: .redo, sfSymbol: "arrow.uturn.forward", tooltip: L("Redo")))
 
-        // Processing actions (moved from right bar) — respect enabledActions toggles
-        let enabledActions = UserDefaults.standard.array(forKey: "enabledActions") as? [Int]
-        func actionEnabled(_ tag: Int) -> Bool {
-            return enabledActions == nil || enabledActions!.contains(tag)
+        var saveBtn = ToolbarButton(
+            action: .save, sfSymbol: "square.and.arrow.down",
+            tooltip: L("Save to...")
+        )
+        saveBtn.hasContextMenu = true
+        buttons.append(saveBtn)
+
+        if actionEnabled(1002, enabledActions: enabledActions) {
+            buttons.append(ToolbarButton(action: .pin, sfSymbol: "pin", tooltip: L("Pin")))
         }
 
-        // Auto-redact moved to blur/pixelate options row
+        if actionEnabled(1012, enabledActions: enabledActions) {
+            buttons.append(
+                ToolbarButton(
+                    action: .share, sfSymbol: "arrowshape.turn.up.right", tooltip: L("Share")))
+        }
 
-        // Invert colors (tag 1011)
-        if !isRecording && actionEnabled(1011) {
+        if !isEditorMode {
+            var cancelBtn = ToolbarButton(action: .cancel, sfSymbol: "xmark", tooltip: L("Cancel"))
+            cancelBtn.role = .destructive
+            cancelBtn.tintColor = .systemRed
+            buttons.append(cancelBtn)
+        }
+
+        var doneBtn = ToolbarButton(action: .copy, sfSymbol: "checkmark", tooltip: L("Done"))
+        doneBtn.role = .primary
+        doneBtn.tintColor = .systemGreen
+        buttons.append(doneBtn)
+
+        return buttons
+    }
+
+    static func overflowButtons(
+        selectedTool: AnnotationTool, beautifyEnabled: Bool = false,
+        beautifyStyleIndex: Int = 0, hasAnnotations: Bool = false,
+        translateEnabled: Bool = false, isEditorMode: Bool = false,
+        effectsActive: Bool = false
+    ) -> [ToolbarButton] {
+        var buttons: [ToolbarButton] = []
+        let enabledRawValues = enabledToolRawValues()
+        let enabledActions = enabledActionTags()
+
+        for (tool, symbol, tip) in drawingTools where !primaryTools.contains(tool) {
+            if let enabledRawValues, !enabledRawValues.contains(tool.rawValue) {
+                continue
+            }
+            buttons.append(buttonForTool(tool, symbol: symbol, tooltip: tip, selectedTool: selectedTool))
+        }
+
+        if actionEnabled(1011, enabledActions: enabledActions) {
             buttons.append(
                 ToolbarButton(
                     action: .invertColors, sfSymbol: "circle.righthalf.filled.inverse",
                     tooltip: L("Invert Colors")))
         }
 
-        if !isRecording && actionEnabled(1013) {
+        if actionEnabled(1013, enabledActions: enabledActions) {
             var effectsBtn = ToolbarButton(
                 action: .effects, sfSymbol: "slider.horizontal.3", tooltip: L("Adjust"))
             if effectsActive {
-                effectsBtn.tintColor = NSColor(
-                    calibratedRed: 1.0, green: 0.8, blue: 0.2, alpha: 1.0)
+                effectsBtn.tintColor = NSColor(calibratedRed: 1.0, green: 0.8, blue: 0.2, alpha: 1.0)
             }
             buttons.append(effectsBtn)
         }
 
-        if !isRecording && actionEnabled(1004) {
+        if actionEnabled(1004, enabledActions: enabledActions) {
             var beautifyBtn = ToolbarButton(
                 action: .beautify, sfSymbol: "sparkles", tooltip: L("Beautify"))
             if beautifyEnabled {
-                beautifyBtn.tintColor = NSColor(
-                    calibratedRed: 1.0, green: 0.8, blue: 0.2, alpha: 1.0)
+                beautifyBtn.tintColor = NSColor(calibratedRed: 1.0, green: 0.8, blue: 0.2, alpha: 1.0)
             }
             buttons.append(beautifyBtn)
         }
 
-        if !isRecording, #available(macOS 14.0, *), actionEnabled(1005) {
+        if #available(macOS 14.0, *), actionEnabled(1005, enabledActions: enabledActions) {
             buttons.append(
                 ToolbarButton(
                     action: .removeBackground, sfSymbol: "person.crop.circle.dashed",
                     tooltip: L("Remove Background")))
+        }
+
+        if actionEnabled(1006, enabledActions: enabledActions) {
+            buttons.append(
+                ToolbarButton(
+                    action: .autoRedact, sfSymbol: "eye.slash",
+                    tooltip: L("Auto-Redact sensitive data")))
+        }
+
+        if !isEditorMode {
+            buttons.append(
+                ToolbarButton(
+                    action: .detach, sfSymbol: "arrow.up.forward.app",
+                    tooltip: L("Open in Editor Window")))
+        }
+
+        if actionEnabled(1001, enabledActions: enabledActions) {
+            var uploadBtn = ToolbarButton(
+                action: .upload, sfSymbol: "icloud.and.arrow.up", tooltip: L("Upload"))
+            uploadBtn.hasContextMenu = true
+            buttons.append(uploadBtn)
+        }
+
+        if actionEnabled(1003, enabledActions: enabledActions) {
+            buttons.append(
+                ToolbarButton(
+                    action: .ocr, sfSymbol: "doc.text.viewfinder", tooltip: L("OCR Text")))
+        }
+
+        if !isEditorMode && actionEnabled(1010, enabledActions: enabledActions) {
+            buttons.append(
+                ToolbarButton(
+                    action: .scrollCapture, sfSymbol: "scroll",
+                    tooltip: L("Scroll Capture")))
+        }
+
+        if !isEditorMode && actionEnabled(1009, enabledActions: enabledActions) {
+            buttons.append(
+                ToolbarButton(action: .record, sfSymbol: "video", tooltip: L("Record")))
         }
 
         return buttons
@@ -325,110 +519,42 @@ class ToolbarLayout {
             return buttons
         }
 
-        let allKnownActionTags: [Int] = [
-            1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013,
-        ]
-        // Migrate: only add action tags that are brand-new (never seen before).
-        // knownActionTags tracks which tags have been introduced so user-disabled tags are
-        // never silently re-enabled when future versions add new action tags.
-        var enabledActions = UserDefaults.standard.array(forKey: "enabledActions") as? [Int]
-        let knownActionTags = UserDefaults.standard.array(forKey: "knownActionTags") as? [Int]
-        let newTags = allKnownActionTags.filter { !(knownActionTags ?? []).contains($0) }
-        if !newTags.isEmpty {
-            if enabledActions == nil {
-                // Fresh install: enable everything.
-                enabledActions = allKnownActionTags
-            } else if knownActionTags == nil {
-                // Upgrading from a version before knownActionTags tracking was added.
-                // Respect existing enabledActions as-is; just mark all current tags as known.
-            } else {
-                // Normal upgrade path: newly added tags — enable by default.
-                enabledActions = (enabledActions! + newTags)
+        _ = enabledActionTags()
+        return []
+    }
+}
+
+private extension NSBezierPath {
+    static func toolbarPath(from cgPath: CGPath) -> NSBezierPath {
+        let path = NSBezierPath()
+        cgPath.applyWithBlock { elementPointer in
+            let element = elementPointer.pointee
+            let points = element.points
+
+            switch element.type {
+            case .moveToPoint:
+                path.move(to: points[0])
+            case .addLineToPoint:
+                path.line(to: points[0])
+            case .addQuadCurveToPoint:
+                let current = path.currentPoint
+                let control = points[0]
+                let end = points[1]
+                let controlPoint1 = NSPoint(
+                    x: current.x + (control.x - current.x) * 2 / 3,
+                    y: current.y + (control.y - current.y) * 2 / 3)
+                let controlPoint2 = NSPoint(
+                    x: end.x + (control.x - end.x) * 2 / 3,
+                    y: end.y + (control.y - end.y) * 2 / 3)
+                path.curve(to: end, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+            case .addCurveToPoint:
+                path.curve(to: points[2], controlPoint1: points[0], controlPoint2: points[1])
+            case .closeSubpath:
+                path.close()
+            @unknown default:
+                break
             }
-            UserDefaults.standard.set(enabledActions, forKey: "enabledActions")
-            UserDefaults.standard.set(allKnownActionTags, forKey: "knownActionTags")
         }
-        func actionEnabled(_ tag: Int) -> Bool {
-            return enabledActions == nil || enabledActions!.contains(tag)
-        }
-
-        // Cancel, move-selection, editor — not shown in editor window
-        if !isEditorMode {
-            buttons.append(
-                ToolbarButton(action: .cancel, sfSymbol: "xmark", tooltip: L("Cancel")))
-            buttons.append(
-                ToolbarButton(
-                    action: .moveSelection, sfSymbol: "arrow.up.and.down.and.arrow.left.and.right",
-                    tooltip: L("Move Selection")))
-            buttons.append(
-                ToolbarButton(
-                    action: .detach, sfSymbol: "arrow.up.forward.app",
-                    tooltip: L("Open in Editor Window")))
-        }
-        // Copy and save are always present
-        buttons.append(
-            ToolbarButton(action: .copy, sfSymbol: "doc.on.doc", tooltip: L("Copy")))
-        var saveBtn = ToolbarButton(
-            action: .save, sfSymbol: "square.and.arrow.down.fill",
-            tooltip:
-                "\(L("Save to")) \(URL(fileURLWithPath: SaveDirectoryAccess.displayPath).lastPathComponent)"
-        )
-        saveBtn.hasContextMenu = true
-        buttons.append(saveBtn)
-
-        // Share (tag 1012)
-        if actionEnabled(1012) {
-            buttons.append(
-                ToolbarButton(
-                    action: .share, sfSymbol: "square.and.arrow.up", tooltip: L("Share")))
-        }
-
-        // Upload (tag 1001)
-        if actionEnabled(1001) {
-            var uploadBtn = ToolbarButton(
-                action: .upload, sfSymbol: "icloud.and.arrow.up", tooltip: L("Upload"))
-            uploadBtn.hasContextMenu = true
-            buttons.append(uploadBtn)
-        }
-
-        // Pin (tag 1002)
-        if actionEnabled(1002) {
-            buttons.append(
-                ToolbarButton(action: .pin, sfSymbol: "pin.fill", tooltip: L("Pin")))
-        }
-
-        // OCR (tag 1003)
-        if actionEnabled(1003) {
-            buttons.append(
-                ToolbarButton(
-                    action: .ocr, sfSymbol: "doc.text.viewfinder", tooltip: L("OCR Text")))
-        }
-
-        // Translate (tag 1008)
-        if actionEnabled(1008) {
-            var translateBtn = ToolbarButton(
-                action: .translate, sfSymbol: "translate", tooltip: L("Translate"))
-            translateBtn.isSelected = translateEnabled
-            translateBtn.hasContextMenu = true
-            buttons.append(translateBtn)
-        }
-
-        // Scroll Capture (tag 1010) — hidden when recording or in editor mode
-        if !isRecording && !isEditorMode && actionEnabled(1010) {
-            buttons.append(
-                ToolbarButton(
-                    action: .scrollCapture, sfSymbol: "scroll",
-                    tooltip: L("Scroll Capture")))
-        }
-
-        // Record (tag 1009) — hidden in editor mode. Right-click for options.
-        if !isEditorMode && actionEnabled(1009) {
-            var recordBtn = ToolbarButton(
-                action: .record, sfSymbol: "video.fill", tooltip: L("Record"))
-            recordBtn.tintColor = ToolbarLayout.iconColor
-            buttons.append(recordBtn)
-        }
-
-        return buttons
+        return path
     }
 }

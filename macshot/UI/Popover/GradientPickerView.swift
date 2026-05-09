@@ -46,7 +46,7 @@ class GradientPickerView: NSView {
         // Draw gradient swatches
         for (i, style) in styles.enumerated() {
             let sr = rectForIndex(idx)
-            let path = NSBezierPath(roundedRect: sr, xRadius: 6, yRadius: 6)
+            let path = ToolbarLayout.continuousRoundedPath(in: sr, radius: 6)
             if #available(macOS 15.0, *), let mesh = style.meshDef,
                let img = BeautifyRenderer.renderMeshSwatch(mesh, size: swSize) {
                 NSGraphicsContext.saveGraphicsState()
@@ -58,7 +58,7 @@ class GradientPickerView: NSView {
             }
             if i == selectedIndex {
                 ToolbarLayout.accentColor.setStroke()
-                let ring = NSBezierPath(roundedRect: sr.insetBy(dx: -2, dy: -2), xRadius: 7, yRadius: 7)
+                let ring = ToolbarLayout.continuousRoundedPath(in: sr.insetBy(dx: -2, dy: -2), radius: 8)
                 ring.lineWidth = 2
                 ring.stroke()
             }
@@ -68,14 +68,14 @@ class GradientPickerView: NSView {
         // Custom image thumbnail swatch (only if a custom image is stored)
         if let thumb = customBackgroundThumbnail() {
             let sr = rectForIndex(idx)
-            let path = NSBezierPath(roundedRect: sr, xRadius: 6, yRadius: 6)
+            let path = ToolbarLayout.continuousRoundedPath(in: sr, radius: 6)
             NSGraphicsContext.saveGraphicsState()
             path.addClip()
             thumb.draw(in: sr, from: .zero, operation: .sourceOver, fraction: 1.0)
             NSGraphicsContext.restoreGraphicsState()
             if selectedIndex == -1 {
                 ToolbarLayout.accentColor.setStroke()
-                let ring = NSBezierPath(roundedRect: sr.insetBy(dx: -2, dy: -2), xRadius: 7, yRadius: 7)
+                let ring = ToolbarLayout.continuousRoundedPath(in: sr.insetBy(dx: -2, dy: -2), radius: 8)
                 ring.lineWidth = 2
                 ring.stroke()
             }
@@ -84,7 +84,7 @@ class GradientPickerView: NSView {
 
         // "+" button — always present, always opens file picker
         let pr = rectForIndex(idx)
-        let plusPath = NSBezierPath(roundedRect: pr, xRadius: 6, yRadius: 6)
+        let plusPath = ToolbarLayout.continuousRoundedPath(in: pr, radius: 6)
         ToolbarLayout.iconColor.withAlphaComponent(0.15).setFill()
         plusPath.fill()
         let symbolConfig = NSImage.SymbolConfiguration(pointSize: 14, weight: .medium)

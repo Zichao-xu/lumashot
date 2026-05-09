@@ -10,10 +10,16 @@ class ToolOptionsRowView: NSView {
     private(set) var editingAnnotation: Annotation?
     /// Snapshot taken before the first property edit, for undo.
     private var editingSnapshot: Annotation?
-    private let rowHeight: CGFloat = 34
+    private let rowHeight: CGFloat = 38
     private let padding: CGFloat = 8
+    private let controlHeight: CGFloat = 24
+    private let labelFontSize: CGFloat = 11
+    private let controlFontSize: CGFloat = 12
+    private let valueFontSize: CGFloat = 12
+    private var glassBackgroundView: NSView?
+    private var toolbarVisibilityTarget = false
     /// The natural content width calculated during rebuild, before any external resizing.
-    private(set) var contentWidth: CGFloat = 200
+    private(set) var contentWidth: CGFloat = 0
     // Consume clicks on gaps between controls so they don't fall through to OverlayView.
     // In editor mode, let gap clicks pass through so drawing works over the options area.
     override func hitTest(_ point: NSPoint) -> NSView? {
@@ -43,14 +49,58 @@ class ToolOptionsRowView: NSView {
     override init(frame: NSRect) {
         super.init(frame: frame)
         wantsLayer = true
-        layer?.cornerRadius = 6
-        layer?.backgroundColor = ToolbarLayout.bgColor.cgColor
+        layer?.cornerRadius = ToolbarLayout.optionsRowCornerRadius
+        ToolbarLayout.applyContinuousCornerCurve(to: layer)
+        layer?.backgroundColor = NSColor.clear.cgColor
+        configureGlassBackgroundViewIfAvailable()
         // Match appearance to toolbar background brightness so system controls
         // (NSSegmentedControl labels, NSTextField, NSButton titles) stay readable.
         appearance = ToolbarLayout.appearance
     }
 
     required init?(coder: NSCoder) { fatalError() }
+
+    func setToolbarVisible(_ visible: Bool, animated: Bool) {
+        if visible {
+            let finalOrigin = frame.origin
+            let shouldAnimate = animated && (!toolbarVisibilityTarget || isHidden || alphaValue < 0.99)
+            toolbarVisibilityTarget = true
+            isHidden = false
+
+            if shouldAnimate {
+                alphaValue = 0
+                frame.origin = NSPoint(x: finalOrigin.x, y: finalOrigin.y + 5)
+                NSAnimationContext.runAnimationGroup { context in
+                    context.duration = 0.16
+                    context.timingFunction = CAMediaTimingFunction(controlPoints: 0.22, 0.08, 0.18, 1.0)
+                    animator().alphaValue = 1
+                    animator().setFrameOrigin(finalOrigin)
+                }
+            } else {
+                alphaValue = 1
+                frame.origin = finalOrigin
+            }
+        } else {
+            guard toolbarVisibilityTarget || !isHidden else { return }
+            toolbarVisibilityTarget = false
+
+            guard animated && !isHidden else {
+                alphaValue = 0
+                isHidden = true
+                return
+            }
+
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.12
+                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.22, 0.08, 0.18, 1.0)
+                animator().alphaValue = 0
+            } completionHandler: { [weak self] in
+                guard let self, !self.toolbarVisibilityTarget else { return }
+                self.isHidden = true
+                self.alphaValue = 0
+            }
+        }
+    }
 
     /// Rebuild the options row for a selected annotation's tool, reading values from the annotation.
     func rebuild(forAnnotation ann: Annotation) {
@@ -104,7 +154,10 @@ class ToolOptionsRowView: NSView {
     /// Rebuild the options row for the given tool. Call when tool or state changes.
     func rebuild(for tool: AnnotationTool) {
         // Remove old subviews
-        subviews.forEach { $0.removeFromSuperview() }
+        subviews
+            .filter { $0 !== glassBackgroundView }
+            .forEach { $0.removeFromSuperview() }
+        ensureGlassBackgroundViewAttached()
         guard let ov = overlayView else { return }
 
         currentTool = tool
@@ -113,9 +166,7 @@ class ToolOptionsRowView: NSView {
         // ── Beautify options (overrides tool options when active) ──
         if ov.showBeautifyInOptionsRow {
             curX = addBeautifyOptions(at: curX, ov: ov)
-            let totalW = max(curX + padding, 200)
-            contentWidth = totalW
-            frame.size = NSSize(width: totalW, height: rowHeight)
+            finishRowLayout(contentRightX: curX)
             return
         }
 
@@ -173,10 +224,10 @@ class ToolOptionsRowView: NSView {
                                           trackingMode: .selectOne,
                                           target: self, action: #selector(pencilSmoothModeChanged(_:)))
             seg.selectedSegment = ov.pencilSmoothMode
-            seg.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+            seg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
             (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
             seg.sizeToFit()
-            seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: seg.frame.width, height: 22)
+            seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: seg.frame.width, height: controlHeight)
             addSubview(seg)
             curX += seg.frame.width + 4
 
@@ -254,21 +305,81 @@ class ToolOptionsRowView: NSView {
             curX = addOutlineControls(at: curX, ov: ov)
         }
 
-        // Size the row
-        let totalW = max(curX + padding, 200)
-        contentWidth = totalW
-        frame.size = NSSize(width: totalW, height: rowHeight)
+        finishRowLayout(contentRightX: curX)
+    }
 
-        // Right-align cancel/confirm buttons for text tool
-        if let confirmBtn = viewWithTag(991) {
-            confirmBtn.frame.origin.x = totalW - padding - 28
+    override func layout() {
+        super.layout()
+        updateGlassBackgroundView()
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        let radius = ToolbarLayout.optionsRowCornerRadius
+        let path = ToolbarLayout.continuousRoundedPath(in: bounds, radius: radius)
+        if glassBackgroundView == nil {
+            ToolbarLayout.bgColor.withAlphaComponent(0.72).setFill()
+        } else {
+            ToolbarLayout.bgColor.withAlphaComponent(0.26).setFill()
         }
-        if let cancelBtn = viewWithTag(990) {
-            cancelBtn.frame.origin.x = totalW - padding - 28 - 4 - 28
-        }
+        path.fill()
+
+        NSColor.white.withAlphaComponent(glassBackgroundView == nil ? 0.08 : 0.18).setStroke()
+        let inner = ToolbarLayout.continuousRoundedPath(in: bounds, radius: radius, inset: 0.75)
+        inner.lineWidth = 1
+        inner.stroke()
+
+        NSColor.black.withAlphaComponent(glassBackgroundView == nil ? 0.25 : 0.28).setStroke()
+        path.lineWidth = 1
+        path.stroke()
     }
 
     // MARK: - Section builders
+
+    private func finishRowLayout(contentRightX: CGFloat) {
+        let totalW = ceil(max(contentRightX + padding, padding * 2))
+        contentWidth = totalW
+        frame.size = NSSize(width: totalW, height: rowHeight)
+
+        // Text editing buttons reserve a slot near the trailing edge.
+        let textActionRightEdge = totalW - padding
+        if let confirmBtn = viewWithTag(991) {
+            confirmBtn.frame.origin.x = textActionRightEdge - 30
+        }
+        if let cancelBtn = viewWithTag(990) {
+            cancelBtn.frame.origin.x = textActionRightEdge - 30 - 4 - 30
+        }
+
+        updateGlassBackgroundView()
+    }
+
+    private func configureGlassBackgroundViewIfAvailable() {
+        if #available(macOS 26.0, *) {
+            let glass = NSGlassEffectView()
+            glass.style = .regular
+            glass.cornerRadius = ToolbarLayout.optionsRowCornerRadius
+            glass.tintColor = ToolbarLayout.bgColor.withAlphaComponent(0.16)
+            glassBackgroundView = glass
+            addSubview(glass, positioned: .below, relativeTo: nil)
+        }
+    }
+
+    private func ensureGlassBackgroundViewAttached() {
+        guard let glassBackgroundView else { return }
+        glassBackgroundView.removeFromSuperview()
+        addSubview(glassBackgroundView, positioned: .below, relativeTo: nil)
+    }
+
+    private func updateGlassBackgroundView() {
+        guard let glassBackgroundView else { return }
+        glassBackgroundView.frame = bounds
+        glassBackgroundView.isHidden = bounds.width <= 0 || bounds.height <= 0
+        if #available(macOS 26.0, *), let glass = glassBackgroundView as? NSGlassEffectView {
+            glass.style = .regular
+            glass.cornerRadius = ToolbarLayout.optionsRowCornerRadius
+            glass.tintColor = ToolbarLayout.bgColor.withAlphaComponent(0.16)
+        }
+        needsDisplay = true
+    }
 
     private func addSeparator(at x: CGFloat) -> CGFloat {
         let sep = NSView(frame: NSRect(x: x + 6, y: 8, width: 1, height: rowHeight - 16))
@@ -282,32 +393,32 @@ class ToolOptionsRowView: NSView {
         var curX = x
 
         let nameLabel = NSTextField(labelWithString: tool == .loupe ? L("Size") : L("Stroke"))
-        nameLabel.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
-        nameLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.4)
+        nameLabel.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        nameLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.52)
         nameLabel.sizeToFit()
         nameLabel.frame.origin = NSPoint(x: curX, y: (rowHeight - nameLabel.frame.height) / 2)
         addSubview(nameLabel)
-        curX += nameLabel.frame.width + 4
+        curX += nameLabel.frame.width + 5
 
         let currentVal = editingAnnotation?.strokeWidth ?? ov.activeStrokeWidthForTool(tool)
         let sliderW: CGFloat = 100
         let slider = NSSlider(value: Double(currentVal),
                               minValue: tool == .loupe ? 40 : 1, maxValue: tool == .loupe ? 320 : 30,
                               target: self, action: #selector(strokeSliderChanged(_:)))
-        slider.frame = NSRect(x: curX, y: (rowHeight - 20) / 2, width: sliderW, height: 20)
+        slider.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: sliderW, height: controlHeight)
         slider.isContinuous = true
         slider.tag = tool.rawValue
         addSubview(slider)
-        curX += sliderW + 4
+        curX += sliderW + 5
 
         let val = Int(currentVal)
         let valStr = tool == .loupe ? "\(val)" : "\(val)px"
-        let labelW: CGFloat = tool == .loupe ? 32 : 28
+        let labelW: CGFloat = tool == .loupe ? 38 : 34
         let label = NSTextField(labelWithString: valStr)
-        label.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .medium)
-        label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.6)
+        label.font = NSFont.monospacedDigitSystemFont(ofSize: valueFontSize, weight: .medium)
+        label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.72)
         label.alignment = .right
-        label.frame = NSRect(x: curX, y: (rowHeight - 14) / 2, width: labelW, height: 14)
+        label.frame = NSRect(x: curX, y: (rowHeight - 17) / 2, width: labelW, height: 17)
         label.tag = 997  // stroke value label
         addSubview(label)
         curX += labelW
@@ -330,7 +441,7 @@ class ToolOptionsRowView: NSView {
         let currentStyle = editingAnnotation?.lineStyle ?? ov.currentLineStyle
         seg.selectedSegment = currentStyle.rawValue
         let segW = CGFloat(LineStyle.allCases.count) * 36
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: segW, height: 22)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: segW, height: controlHeight)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
 
         // Disable dashed/dotted for rect/ellipse when outline is enabled
@@ -372,7 +483,7 @@ class ToolOptionsRowView: NSView {
         }
         seg.selectedSegment = (editingAnnotation?.arrowStyle ?? ov.currentArrowStyle).rawValue
         let segW = CGFloat(ArrowStyle.allCases.count) * 30
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: segW, height: 22)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: segW, height: controlHeight)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         addSubview(seg)
         curX += segW
@@ -393,7 +504,7 @@ class ToolOptionsRowView: NSView {
         }
         seg.selectedSegment = (editingAnnotation?.rectFillStyle ?? ov.currentRectFillStyle).rawValue
         let segW = CGFloat(RectFillStyle.allCases.count) * 30
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: segW, height: 22)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: segW, height: controlHeight)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         addSubview(seg)
         curX += segW
@@ -407,7 +518,7 @@ class ToolOptionsRowView: NSView {
         seg.trackingMode = .selectOne
         seg.target = self
         seg.action = #selector(censorModeChanged(_:))
-        seg.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        seg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         for (i, mode) in CensorMode.allCases.enumerated() {
             seg.setLabel(mode.label, forSegment: i)
@@ -421,7 +532,7 @@ class ToolOptionsRowView: NSView {
         }
         seg.selectedSegment = currentMode.rawValue
         seg.sizeToFit()
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: seg.frame.width, height: 22)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: seg.frame.width, height: controlHeight)
         addSubview(seg)
         curX += seg.frame.width
         return curX
@@ -577,7 +688,7 @@ class ToolOptionsRowView: NSView {
         let size = NSSize(width: 22, height: 16)
         return NSImage(size: size, flipped: false) { _ in
             let r = NSRect(x: 3, y: 2, width: size.width - 6, height: size.height - 4)
-            let path = oval ? NSBezierPath(ovalIn: r) : NSBezierPath(roundedRect: r, xRadius: 2, yRadius: 2)
+            let path = oval ? NSBezierPath(ovalIn: r) : ToolbarLayout.continuousRoundedPath(in: r, radius: 2)
             path.lineWidth = 1.5
             switch style {
             case .stroke:
@@ -603,7 +714,7 @@ class ToolOptionsRowView: NSView {
                let img = NSImage(data: data) {
                 return NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
                     let r = NSRect(x: 0, y: 0, width: size, height: size)
-                    let path = NSBezierPath(roundedRect: r, xRadius: 4, yRadius: 4)
+                    let path = ToolbarLayout.continuousRoundedPath(in: r, radius: ToolbarLayout.swatchCornerRadius)
                     NSGraphicsContext.saveGraphicsState()
                     path.addClip()
                     img.draw(in: r, from: .zero, operation: .sourceOver, fraction: 1.0)
@@ -626,7 +737,7 @@ class ToolOptionsRowView: NSView {
            let meshImg = BeautifyRenderer.renderMeshSwatch(mesh, size: size) {
             return NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
                 let r = NSRect(x: 0, y: 0, width: size, height: size)
-                let path = NSBezierPath(roundedRect: r, xRadius: 4, yRadius: 4)
+                let path = ToolbarLayout.continuousRoundedPath(in: r, radius: ToolbarLayout.swatchCornerRadius)
                 NSGraphicsContext.saveGraphicsState()
                 path.addClip()
                 meshImg.draw(in: r, from: .zero, operation: .sourceOver, fraction: 1.0)
@@ -639,7 +750,7 @@ class ToolOptionsRowView: NSView {
         }
         return NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
             let r = NSRect(x: 0, y: 0, width: size, height: size)
-            let path = NSBezierPath(roundedRect: r, xRadius: 4, yRadius: 4)
+            let path = ToolbarLayout.continuousRoundedPath(in: r, radius: ToolbarLayout.swatchCornerRadius)
             if let grad = NSGradient(
                 colors: style.stops.map { $0.0 },
                 atLocations: style.stops.map { $0.1 },
@@ -657,7 +768,7 @@ class ToolOptionsRowView: NSView {
     private func addCornerRadiusSlider(at x: CGFloat, ov: OverlayView) -> CGFloat {
         var curX = x
         let label = NSTextField(labelWithString: L("Radius"))
-        label.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
+        label.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
         label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.4)
         label.sizeToFit()
         label.frame.origin = NSPoint(x: curX, y: (rowHeight - label.frame.height) / 2)
@@ -668,45 +779,42 @@ class ToolOptionsRowView: NSView {
         let slider = NSSlider(value: Double(radiusVal),
                               minValue: 0, maxValue: 30,
                               target: self, action: #selector(cornerRadiusChanged(_:)))
-        slider.frame = NSRect(x: curX, y: (rowHeight - 20) / 2, width: 80, height: 20)
+        slider.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 84, height: controlHeight)
         slider.isContinuous = true
         addSubview(slider)
-        curX += 80 + 4
+        curX += 84 + 5
 
         let valLabel = NSTextField(labelWithString: "\(Int(radiusVal))px")
-        valLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .medium)
-        valLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.6)
+        valLabel.font = NSFont.monospacedDigitSystemFont(ofSize: valueFontSize, weight: .medium)
+        valLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.72)
         valLabel.alignment = .right
-        valLabel.frame = NSRect(x: curX, y: (rowHeight - 14) / 2, width: 28, height: 14)
+        valLabel.frame = NSRect(x: curX, y: (rowHeight - 17) / 2, width: 34, height: 17)
         valLabel.tag = 996  // corner radius value label
         addSubview(valLabel)
-        curX += 28
+        curX += 34
 
         return curX
     }
 
     private func addToggle(at x: CGFloat, title: String, isOn: Bool, action: @escaping (Bool) -> Void) -> CGFloat {
         var curX = x
-        let btn = NSButton(checkboxWithTitle: title, target: nil, action: nil)
-        btn.state = isOn ? .on : .off
-        btn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
-        btn.contentTintColor = ToolbarLayout.iconColor.withAlphaComponent(0.7)
-        // Force white text regardless of system appearance (toolbar is always dark)
-        if let cell = btn.cell as? NSButtonCell {
-            let attrTitle = NSAttributedString(string: title, attributes: [
-                .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(0.7),
-                .font: NSFont.systemFont(ofSize: 10, weight: .medium)
-            ])
-            cell.attributedTitle = attrTitle
-        }
-        btn.sizeToFit()
-        btn.frame.origin = NSPoint(x: curX, y: (rowHeight - btn.frame.height) / 2)
+
+        let label = NSTextField(labelWithString: title)
+        label.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
+        label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.78)
+        label.sizeToFit()
+        label.frame.origin = NSPoint(x: curX, y: (rowHeight - label.frame.height) / 2)
+        addSubview(label)
+        curX += label.frame.width + 6
+
+        let toggle = ToolbarSwitchControl(isOn: isOn)
+        toggle.frame.origin = NSPoint(x: curX, y: (rowHeight - toggle.frame.height) / 2)
         let handler = ToggleHandler(action: action)
-        btn.target = handler
-        btn.action = #selector(ToggleHandler.toggled(_:))
-        objc_setAssociatedObject(btn, "handler", handler, .OBJC_ASSOCIATION_RETAIN)
-        addSubview(btn)
-        curX += btn.frame.width + 8
+        toggle.target = handler
+        toggle.action = #selector(ToggleHandler.toggled(_:))
+        objc_setAssociatedObject(toggle, "handler", handler, .OBJC_ASSOCIATION_RETAIN)
+        addSubview(toggle)
+        curX += toggle.frame.width + 8
         return curX
     }
 
@@ -716,16 +824,17 @@ class ToolOptionsRowView: NSView {
         let seg = NSSegmentedControl(labels: formats, trackingMode: .selectOne,
                                      target: self, action: #selector(numberFormatChanged(_:)))
         seg.selectedSegment = ov.currentNumberFormat.rawValue
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 100, height: 22)
+        seg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 108, height: controlHeight)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         addSubview(seg)
-        curX += 100
+        curX += 108
 
         curX = addSeparator(at: curX)
 
         let startLabel = NSTextField(labelWithString: L("Start:"))
-        startLabel.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
-        startLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.4)
+        startLabel.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        startLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.52)
         startLabel.sizeToFit()
         startLabel.frame.origin = NSPoint(x: curX, y: (rowHeight - startLabel.frame.height) / 2)
         addSubview(startLabel)
@@ -737,12 +846,12 @@ class ToolOptionsRowView: NSView {
         stepper.integerValue = ov.numberStartAt
         stepper.target = self
         stepper.action = #selector(numberStartChanged(_:))
-        stepper.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 19, height: 22)
+        stepper.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 19, height: controlHeight)
         addSubview(stepper)
 
         let valLabel = NSTextField(labelWithString: ov.currentNumberFormat.format(ov.numberStartAt))
-        valLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .medium)
-        valLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.85)
+        valLabel.font = NSFont.monospacedDigitSystemFont(ofSize: valueFontSize, weight: .medium)
+        valLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.88)
         valLabel.tag = 999  // tag for finding later
         valLabel.sizeToFit()
         valLabel.frame.origin = NSPoint(x: curX + 22, y: (rowHeight - valLabel.frame.height) / 2)
@@ -759,13 +868,13 @@ class ToolOptionsRowView: NSView {
         let displayName = ov.textEditor.fontFamily == "System" ? "System" : ov.textEditor.fontFamily
         let fontBtn = NSButton(title: "\(displayName) ▾", target: self, action: #selector(fontFamilyClicked(_:)))
         fontBtn.bezelStyle = .recessed
-        fontBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        fontBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         fontBtn.attributedTitle = NSAttributedString(string: "\(displayName) ▾", attributes: [
-            .font: NSFont.systemFont(ofSize: 10, weight: .medium),
+            .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium),
             .baselineOffset: 0.5,
         ])
         fontBtn.sizeToFit()
-        fontBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: max(65, fontBtn.frame.width + 8), height: 22)
+        fontBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: max(74, fontBtn.frame.width + 10), height: controlHeight)
         addSubview(fontBtn)
         curX += fontBtn.frame.width + 6
 
@@ -783,15 +892,16 @@ class ToolOptionsRowView: NSView {
             btn.wantsLayer = true
             btn.tag = tag
             btn.layer?.cornerRadius = 4
+            ToolbarLayout.applyContinuousCornerCurve(to: btn.layer)
             btn.layer?.backgroundColor = isOn ? ToolbarLayout.accentColor.withAlphaComponent(0.85).cgColor : nil
-            btn.font = NSFont.systemFont(ofSize: 12, weight: .semibold)
+            btn.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
             btn.attributedTitle = NSAttributedString(string: label, attributes: [
                 .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(isOn ? 1.0 : 0.6),
-                .font: NSFont.systemFont(ofSize: 12, weight: .semibold),
+                .font: NSFont.systemFont(ofSize: 13, weight: .semibold),
             ])
-            btn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 26, height: 22)
+            btn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 28, height: controlHeight)
             addSubview(btn)
-            curX += 28
+            curX += 30
         }
 
         curX = addSeparator(at: curX)
@@ -811,9 +921,9 @@ class ToolOptionsRowView: NSView {
             btn.tag = alignment.rawValue
             btn.target = self
             btn.action = #selector(alignmentChanged(_:))
-            btn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 26, height: 22)
+            btn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 28, height: controlHeight)
             addSubview(btn)
-            curX += 28
+            curX += 30
         }
 
         curX = addSeparator(at: curX)
@@ -824,43 +934,43 @@ class ToolOptionsRowView: NSView {
         minusBtn.font = NSFont.systemFont(ofSize: 14, weight: .medium)
         minusBtn.isContinuous = true
         (minusBtn.cell as? NSButtonCell)?.setPeriodicDelay(0.3, interval: 0.05)
-        minusBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 20, height: 22)
+        minusBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 22, height: controlHeight)
         addSubview(minusBtn)
-        curX += 20
+        curX += 22
 
         let sizeLabel = NSTextField(labelWithString: "\(Int(ov.textEditor.fontSize))")
-        sizeLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .medium)
-        sizeLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.7)
+        sizeLabel.font = NSFont.monospacedDigitSystemFont(ofSize: valueFontSize, weight: .medium)
+        sizeLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.78)
         sizeLabel.alignment = .center
         sizeLabel.tag = 998
-        sizeLabel.frame = NSRect(x: curX, y: (rowHeight - 14) / 2, width: 26, height: 14)
+        sizeLabel.frame = NSRect(x: curX, y: (rowHeight - 17) / 2, width: 30, height: 17)
         addSubview(sizeLabel)
-        curX += 26
+        curX += 30
 
         let plusBtn = NSButton(title: "+", target: self, action: #selector(fontSizeIncreased))
         plusBtn.bezelStyle = .recessed
         plusBtn.font = NSFont.systemFont(ofSize: 14, weight: .medium)
         plusBtn.isContinuous = true
         (plusBtn.cell as? NSButtonCell)?.setPeriodicDelay(0.3, interval: 0.05)
-        plusBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 20, height: 22)
+        plusBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 22, height: controlHeight)
         addSubview(plusBtn)
-        curX += 24
+        curX += 26
 
         curX = addSeparator(at: curX)
 
         // Fill: clickable label (toggles on/off) + color swatch (opens color picker)
-        let fillSwatchSize: CGFloat = 18
+        let fillSwatchSize: CGFloat = 20
         let fillLabelBtn = NSButton(title: L("Fill"), target: self, action: #selector(textBgToggled(_:)))
         fillLabelBtn.bezelStyle = .recessed
         fillLabelBtn.setButtonType(.toggle)
         fillLabelBtn.state = ov.textEditor.bgEnabled ? .on : .off
-        fillLabelBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        fillLabelBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         fillLabelBtn.attributedTitle = NSAttributedString(string: L("Fill"), attributes: [
-            .font: NSFont.systemFont(ofSize: 10, weight: .medium),
+            .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium),
             .baselineOffset: 0.5,
         ])
         fillLabelBtn.sizeToFit()
-        fillLabelBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: max(30, fillLabelBtn.frame.width), height: 22)
+        fillLabelBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: max(34, fillLabelBtn.frame.width + 2), height: controlHeight)
         addSubview(fillLabelBtn)
         curX += fillLabelBtn.frame.width + 2
 
@@ -870,6 +980,7 @@ class ToolOptionsRowView: NSView {
         fillSwatch.wantsLayer = true
         fillSwatch.layer?.backgroundColor = ov.textEditor.bgColor.cgColor
         fillSwatch.layer?.cornerRadius = 3
+        ToolbarLayout.applyContinuousCornerCurve(to: fillSwatch.layer)
         fillSwatch.layer?.borderWidth = 1.5
         fillSwatch.layer?.borderColor = ToolbarLayout.iconColor.withAlphaComponent(0.4).cgColor
         fillSwatch.layer?.opacity = ov.textEditor.bgEnabled ? 1.0 : 0.3
@@ -884,13 +995,13 @@ class ToolOptionsRowView: NSView {
         outlineLabelBtn.bezelStyle = .recessed
         outlineLabelBtn.setButtonType(.toggle)
         outlineLabelBtn.state = ov.textEditor.outlineEnabled ? .on : .off
-        outlineLabelBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        outlineLabelBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         outlineLabelBtn.attributedTitle = NSAttributedString(string: L("Outline"), attributes: [
-            .font: NSFont.systemFont(ofSize: 10, weight: .medium),
+            .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium),
             .baselineOffset: 0.5,
         ])
         outlineLabelBtn.sizeToFit()
-        outlineLabelBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: max(50, outlineLabelBtn.frame.width), height: 22)
+        outlineLabelBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: max(58, outlineLabelBtn.frame.width + 2), height: controlHeight)
         addSubview(outlineLabelBtn)
         curX += outlineLabelBtn.frame.width + 2
 
@@ -900,6 +1011,7 @@ class ToolOptionsRowView: NSView {
         outlineSwatch.wantsLayer = true
         outlineSwatch.layer?.backgroundColor = ov.textEditor.outlineColor.cgColor
         outlineSwatch.layer?.cornerRadius = 3
+        ToolbarLayout.applyContinuousCornerCurve(to: outlineSwatch.layer)
         outlineSwatch.layer?.borderWidth = 1.5
         outlineSwatch.layer?.borderColor = ToolbarLayout.iconColor.withAlphaComponent(0.4).cgColor
         outlineSwatch.layer?.opacity = ov.textEditor.outlineEnabled ? 1.0 : 0.3
@@ -914,13 +1026,13 @@ class ToolOptionsRowView: NSView {
         strokeLabelBtn.bezelStyle = .recessed
         strokeLabelBtn.setButtonType(.toggle)
         strokeLabelBtn.state = ov.textEditor.glyphStrokeEnabled ? .on : .off
-        strokeLabelBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        strokeLabelBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         strokeLabelBtn.attributedTitle = NSAttributedString(string: L("Stroke"), attributes: [
-            .font: NSFont.systemFont(ofSize: 10, weight: .medium),
+            .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium),
             .baselineOffset: 0.5,
         ])
         strokeLabelBtn.sizeToFit()
-        strokeLabelBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: max(46, strokeLabelBtn.frame.width), height: 22)
+        strokeLabelBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: max(54, strokeLabelBtn.frame.width + 2), height: controlHeight)
         addSubview(strokeLabelBtn)
         curX += strokeLabelBtn.frame.width + 2
 
@@ -930,6 +1042,7 @@ class ToolOptionsRowView: NSView {
         strokeSwatch.wantsLayer = true
         strokeSwatch.layer?.backgroundColor = ov.textEditor.glyphStrokeColor.cgColor
         strokeSwatch.layer?.cornerRadius = 3
+        ToolbarLayout.applyContinuousCornerCurve(to: strokeSwatch.layer)
         strokeSwatch.layer?.borderWidth = 1.5
         strokeSwatch.layer?.borderColor = ToolbarLayout.iconColor.withAlphaComponent(0.4).cgColor
         strokeSwatch.layer?.opacity = ov.textEditor.glyphStrokeEnabled ? 1.0 : 0.3
@@ -948,10 +1061,11 @@ class ToolOptionsRowView: NSView {
             cancelBtn.wantsLayer = true
             cancelBtn.layer?.backgroundColor = NSColor.systemRed.withAlphaComponent(0.8).cgColor
             cancelBtn.layer?.cornerRadius = 4
-            cancelBtn.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+            ToolbarLayout.applyContinuousCornerCurve(to: cancelBtn.layer)
+            cancelBtn.font = NSFont.systemFont(ofSize: valueFontSize, weight: .bold)
             cancelBtn.attributedTitle = NSAttributedString(string: "✕", attributes: [
-                .foregroundColor: NSColor.white, .font: NSFont.systemFont(ofSize: 11, weight: .bold)])
-            cancelBtn.frame = NSRect(x: 0, y: (rowHeight - 22) / 2, width: 28, height: 22)
+                .foregroundColor: NSColor.white, .font: NSFont.systemFont(ofSize: valueFontSize, weight: .bold)])
+            cancelBtn.frame = NSRect(x: 0, y: (rowHeight - controlHeight) / 2, width: 30, height: controlHeight)
             cancelBtn.tag = 990
             addSubview(cancelBtn)
 
@@ -961,10 +1075,11 @@ class ToolOptionsRowView: NSView {
             confirmBtn.wantsLayer = true
             confirmBtn.layer?.backgroundColor = NSColor.systemGreen.withAlphaComponent(0.8).cgColor
             confirmBtn.layer?.cornerRadius = 4
-            confirmBtn.font = NSFont.systemFont(ofSize: 12, weight: .bold)
+            ToolbarLayout.applyContinuousCornerCurve(to: confirmBtn.layer)
+            confirmBtn.font = NSFont.systemFont(ofSize: 13, weight: .bold)
             confirmBtn.attributedTitle = NSAttributedString(string: "✓", attributes: [
-                .foregroundColor: NSColor.white, .font: NSFont.systemFont(ofSize: 12, weight: .bold)])
-            confirmBtn.frame = NSRect(x: 0, y: (rowHeight - 22) / 2, width: 28, height: 22)
+                .foregroundColor: NSColor.white, .font: NSFont.systemFont(ofSize: 13, weight: .bold)])
+            confirmBtn.frame = NSRect(x: 0, y: (rowHeight - controlHeight) / 2, width: 30, height: controlHeight)
             confirmBtn.tag = 991
             addSubview(confirmBtn)
 
@@ -978,10 +1093,11 @@ class ToolOptionsRowView: NSView {
         let seg = NSSegmentedControl(labels: ["px", "pt"], trackingMode: .selectOne,
                                      target: self, action: #selector(measureUnitChanged(_:)))
         seg.selectedSegment = ov.currentMeasureInPoints ? 1 : 0
-        seg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 60, height: 22)
+        seg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
+        seg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 66, height: controlHeight)
         (seg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         addSubview(seg)
-        curX += 72
+        curX += 78
 
         // Hint
         curX = addHintLabel(at: curX, text: L("Hold 1 auto-vertical  ·  Hold 2 auto-horizontal"))
@@ -1038,8 +1154,8 @@ class ToolOptionsRowView: NSView {
 
         // — Draw mode: All / Text Only segmented control —
         let drawLabel = NSTextField(labelWithString: L("Draw:"))
-        drawLabel.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
-        drawLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.4)
+        drawLabel.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        drawLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.52)
         drawLabel.sizeToFit()
         drawLabel.frame.origin = NSPoint(x: curX, y: (rowHeight - drawLabel.frame.height) / 2)
         addSubview(drawLabel)
@@ -1049,10 +1165,10 @@ class ToolOptionsRowView: NSView {
         let drawSeg = NSSegmentedControl(labels: [L("All"), L("Text Only")], trackingMode: .selectOne,
                                           target: self, action: #selector(drawModeChanged(_:)))
         drawSeg.selectedSegment = textOnly ? 1 : 0
-        drawSeg.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        drawSeg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         (drawSeg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
         drawSeg.sizeToFit()
-        drawSeg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: drawSeg.frame.width, height: 22)
+        drawSeg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: drawSeg.frame.width, height: controlHeight)
         addSubview(drawSeg)
         curX += drawSeg.frame.width + 4
 
@@ -1060,15 +1176,15 @@ class ToolOptionsRowView: NSView {
 
         // — Auto-detect buttons —
         let autoLabel = NSTextField(labelWithString: L("Auto:"))
-        autoLabel.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
-        autoLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.4)
+        autoLabel.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        autoLabel.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.52)
         autoLabel.sizeToFit()
         autoLabel.frame.origin = NSPoint(x: curX, y: (rowHeight - autoLabel.frame.height) / 2)
         addSubview(autoLabel)
         curX += autoLabel.frame.width + 4
 
-        let btnH: CGFloat = 22
-        let btnFont = NSFont.systemFont(ofSize: 10, weight: .medium)
+        let btnH: CGFloat = controlHeight
+        let btnFont = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         let btnY = (rowHeight - btnH) / 2
 
         curX = addRedactButton(at: curX, title: L("All Text"), action: #selector(redactAllTextClicked),
@@ -1097,10 +1213,11 @@ class ToolOptionsRowView: NSView {
             let modeSeg = NSSegmentedControl(labels: ["W", "R"], trackingMode: .selectOne,
                                              target: self, action: #selector(beautifyModeChanged(_:)))
             modeSeg.selectedSegment = ov.beautifyMode == .window ? 0 : 1
-            modeSeg.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 56, height: 22)
+            modeSeg.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
+            modeSeg.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: 62, height: controlHeight)
             (modeSeg.cell as? NSSegmentedCell)?.segmentStyle = .roundRect
             addSubview(modeSeg)
-            curX += 56
+            curX += 62
 
             curX = addSeparator(at: curX)
         }
@@ -1154,11 +1271,11 @@ class ToolOptionsRowView: NSView {
         // On/off toggle
         let toggleBtn = NSButton(checkboxWithTitle: L("On"), target: self, action: #selector(beautifyToggleChanged(_:)))
         toggleBtn.state = ov.beautifyEnabled ? .on : .off
-        toggleBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        toggleBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         if let cell = toggleBtn.cell as? NSButtonCell {
             cell.attributedTitle = NSAttributedString(string: L("On"), attributes: [
-                .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(0.7),
-                .font: NSFont.systemFont(ofSize: 10, weight: .medium)
+                .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(0.78),
+                .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
             ])
         }
         toggleBtn.sizeToFit()
@@ -1172,19 +1289,19 @@ class ToolOptionsRowView: NSView {
     private func addBeautifySlider(at x: CGFloat, label: String, value: CGFloat, min: CGFloat, max: CGFloat, action: Selector) -> CGFloat {
         var curX = x
         let lbl = NSTextField(labelWithString: label)
-        lbl.font = NSFont.systemFont(ofSize: 9, weight: .medium)
-        lbl.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.5)
+        lbl.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        lbl.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.62)
         lbl.sizeToFit()
         lbl.frame.origin = NSPoint(x: curX, y: (rowHeight - lbl.frame.height) / 2)
         addSubview(lbl)
-        curX += lbl.frame.width + 3
+        curX += lbl.frame.width + 4
 
         let slider = NSSlider(value: Double(value), minValue: Double(min), maxValue: Double(max),
                               target: self, action: action)
-        slider.frame = NSRect(x: curX, y: (rowHeight - 18) / 2, width: 60, height: 18)
+        slider.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: 66, height: 22)
         slider.isContinuous = true
         addSubview(slider)
-        curX += 64
+        curX += 70
 
         return curX
     }
@@ -1248,8 +1365,8 @@ class ToolOptionsRowView: NSView {
 
     private func addHintLabel(at x: CGFloat, text: String) -> CGFloat {
         let label = NSTextField(labelWithString: text)
-        label.font = NSFont.systemFont(ofSize: 9.5, weight: .medium)
-        label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.3)
+        label.font = NSFont.systemFont(ofSize: labelFontSize, weight: .medium)
+        label.textColor = ToolbarLayout.iconColor.withAlphaComponent(0.42)
         label.sizeToFit()
         label.frame.origin = NSPoint(x: x, y: (rowHeight - label.frame.height) / 2)
         addSubview(label)
@@ -1568,24 +1685,25 @@ class ToolOptionsRowView: NSView {
         outlineBtn.bezelStyle = .recessed
         outlineBtn.setButtonType(.toggle)
         outlineBtn.state = outlineEnabled ? .on : .off
-        outlineBtn.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        outlineBtn.font = NSFont.systemFont(ofSize: controlFontSize, weight: .medium)
         outlineBtn.attributedTitle = NSAttributedString(string: L("Outline"), attributes: [
-            .font: NSFont.systemFont(ofSize: 10, weight: .medium),
+            .font: NSFont.systemFont(ofSize: controlFontSize, weight: .medium),
             .baselineOffset: 0.5,
         ])
         outlineBtn.sizeToFit()
         let rowHeight: CGFloat = frame.height > 0 ? frame.height : 30
-        outlineBtn.frame = NSRect(x: curX, y: (rowHeight - 22) / 2, width: max(50, outlineBtn.frame.width), height: 22)
+        outlineBtn.frame = NSRect(x: curX, y: (rowHeight - controlHeight) / 2, width: max(58, outlineBtn.frame.width + 2), height: controlHeight)
         addSubview(outlineBtn)
         curX += outlineBtn.frame.width + 2
 
-        let swatchSize: CGFloat = 18
+        let swatchSize: CGFloat = 20
         let swatch = NSButton(frame: NSRect(x: curX, y: (rowHeight - swatchSize) / 2, width: swatchSize, height: swatchSize))
         swatch.title = ""
         swatch.isBordered = false
         swatch.wantsLayer = true
         swatch.layer?.backgroundColor = outlineCol.cgColor
         swatch.layer?.cornerRadius = 3
+        ToolbarLayout.applyContinuousCornerCurve(to: swatch.layer)
         swatch.layer?.borderWidth = 1.5
         swatch.layer?.borderColor = ToolbarLayout.iconColor.withAlphaComponent(0.4).cgColor
         swatch.layer?.opacity = outlineEnabled ? 1.0 : 0.3
@@ -1640,9 +1758,154 @@ class ToolOptionsRowView: NSView {
     }
 }
 
+private final class ToolbarSwitchControl: NSControl {
+    private let trackLayer = CALayer()
+    private let knobLayer = CALayer()
+    private let checkLayer = CAShapeLayer()
+    private(set) var isOn: Bool
+    @objc dynamic var progress: CGFloat = 0 {
+        didSet { updateLayers() }
+    }
+
+    init(isOn: Bool) {
+        self.isOn = isOn
+        super.init(frame: NSRect(x: 0, y: 0, width: 34, height: 20))
+        wantsLayer = true
+        layer?.masksToBounds = false
+        animations = [
+            NSAnimatablePropertyKey("progress"): ToolbarOptionsMotion.progressAnimation
+        ]
+
+        trackLayer.cornerRadius = 10
+        trackLayer.masksToBounds = true
+        layer?.addSublayer(trackLayer)
+
+        knobLayer.backgroundColor = ToolbarLayout.iconColor.withAlphaComponent(0.96).cgColor
+        knobLayer.cornerRadius = 8
+        knobLayer.shadowColor = NSColor.black.cgColor
+        knobLayer.shadowOpacity = 0.20
+        knobLayer.shadowRadius = 2
+        knobLayer.shadowOffset = CGSize(width: 0, height: -1)
+        layer?.addSublayer(knobLayer)
+
+        checkLayer.fillColor = nil
+        checkLayer.strokeColor = ToolbarLayout.accentColor.cgColor
+        checkLayer.lineWidth = 1.5
+        checkLayer.lineCap = .round
+        checkLayer.lineJoin = .round
+        knobLayer.addSublayer(checkLayer)
+
+        progress = isOn ? 1 : 0
+        updateLayers()
+    }
+
+    required init?(coder: NSCoder) { fatalError() }
+
+    override func layout() {
+        super.layout()
+        updateLayers()
+    }
+
+    override func resetCursorRects() {
+        addCursorRect(bounds, cursor: .pointingHand)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        guard isEnabled else { return }
+        setOn(!isOn, animated: true)
+        sendAction(action, to: target)
+    }
+
+    func setOn(_ newValue: Bool, animated: Bool) {
+        guard newValue != isOn else { return }
+        isOn = newValue
+        let targetProgress: CGFloat = newValue ? 1 : 0
+        guard animated && window != nil else {
+            progress = targetProgress
+            return
+        }
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.14
+            context.timingFunction = ToolbarOptionsMotion.timingFunction
+            animator().setValue(targetProgress, forKey: "progress")
+        }
+    }
+
+    private func updateLayers() {
+        let t = max(0, min(1, progress))
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
+        trackLayer.frame = bounds
+        trackLayer.cornerRadius = bounds.height / 2
+        trackLayer.backgroundColor = Self.blend(
+            ToolbarLayout.iconColor.withAlphaComponent(0.16),
+            ToolbarLayout.accentColor.withAlphaComponent(0.88),
+            progress: t
+        ).cgColor
+
+        let knobSize = bounds.height - 4
+        let knobX = 2 + (bounds.width - knobSize - 4) * t
+        knobLayer.frame = CGRect(x: knobX, y: 2, width: knobSize, height: knobSize)
+        knobLayer.cornerRadius = knobSize / 2
+        knobLayer.opacity = Float(0.90 + 0.10 * t)
+
+        checkLayer.frame = knobLayer.bounds
+        checkLayer.opacity = Float(t)
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: knobSize * 0.30, y: knobSize * 0.50))
+        path.addLine(to: CGPoint(x: knobSize * 0.45, y: knobSize * 0.34))
+        path.addLine(to: CGPoint(x: knobSize * 0.72, y: knobSize * 0.66))
+        checkLayer.path = path
+
+        CATransaction.commit()
+    }
+
+    private static func blend(_ from: NSColor, _ to: NSColor, progress: CGFloat) -> NSColor {
+        let t = max(0, min(1, progress))
+        let a = from.usingColorSpace(.sRGB) ?? from
+        let b = to.usingColorSpace(.sRGB) ?? to
+        var ar: CGFloat = 0
+        var ag: CGFloat = 0
+        var ab: CGFloat = 0
+        var aa: CGFloat = 0
+        var br: CGFloat = 0
+        var bg: CGFloat = 0
+        var bb: CGFloat = 0
+        var ba: CGFloat = 0
+        a.getRed(&ar, green: &ag, blue: &ab, alpha: &aa)
+        b.getRed(&br, green: &bg, blue: &bb, alpha: &ba)
+        let red = ar + (br - ar) * t
+        let green = ag + (bg - ag) * t
+        let blue = ab + (bb - ab) * t
+        let alpha = aa + (ba - aa) * t
+        return NSColor(
+            srgbRed: red,
+            green: green,
+            blue: blue,
+            alpha: alpha)
+    }
+}
+
+private enum ToolbarOptionsMotion {
+    static let timingFunction = CAMediaTimingFunction(controlPoints: 0.22, 0.08, 0.18, 1.0)
+
+    static var progressAnimation: CABasicAnimation {
+        let animation = CABasicAnimation()
+        animation.timingFunction = timingFunction
+        return animation
+    }
+}
+
 // Helper for toggle closures
 private class ToggleHandler: NSObject {
     let action: (Bool) -> Void
     init(action: @escaping (Bool) -> Void) { self.action = action }
-    @objc func toggled(_ sender: NSButton) { action(sender.state == .on) }
+    @objc func toggled(_ sender: Any) {
+        if let toggle = sender as? ToolbarSwitchControl {
+            action(toggle.isOn)
+        } else if let button = sender as? NSButton {
+            action(button.state == .on)
+        }
+    }
 }

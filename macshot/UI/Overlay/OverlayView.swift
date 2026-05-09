@@ -201,6 +201,11 @@ class OverlayView: NSView {
             }
         }
     }
+
+    private func useMoveSelectionToolForNewOverlaySelection() {
+        guard !isEditorMode else { return }
+        currentTool = .select
+    }
     var currentColor: NSColor = {
         if let data = UserDefaults.standard.data(forKey: "lastUsedColor"),
            let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSColor.self, from: data) {
@@ -595,6 +600,14 @@ class OverlayView: NSView {
     var autoQuickSaveMode: Bool = false  // set by "Quick Capture" menu — quick-saves immediately after selection
     var autoScrollCaptureMode: Bool = false  // set by "Scroll Capture" menu — triggers scroll capture immediately after selection
     var autoConfirmMode: Bool = false  // set by "Add Capture" — auto-confirms selection (no toolbars, no save)
+    var isHDRCaptureMode: Bool = UserDefaults.standard.object(forKey: "captureHDREnabled") as? Bool ?? false {
+        didSet {
+            if bottomStripView != nil {
+                rebuildToolbarLayout()
+            }
+            needsDisplay = true
+        }
+    }
 
     // Recording session overrides (popover settings — nil means use UserDefaults default)
     var sessionRecordingFPS: Int?
@@ -1093,6 +1106,17 @@ class OverlayView: NSView {
             return
         }
 
+        if currentTool == .select && !isEditorMode && pointIsInSelection(point) {
+            let canvasPoint = viewToCanvas(point)
+            let hitsAnnotation = annotations.reversed().contains {
+                $0.isMovable && $0.hitTest(point: canvasPoint)
+            }
+            if !hitsAnnotation {
+                NSCursor.openHand.set()
+                return
+            }
+        }
+
         // Annotation control cursors (resize handles, rotation, delete, body)
         if state == .selected && !isDraggingAnnotation && !isResizingAnnotation && !isRotatingAnnotation {
             // Check selected annotation's handles first
@@ -1210,10 +1234,10 @@ class OverlayView: NSView {
         // here would compare coordinates in different spaces and cause false matches.
         if !isEditorMode {
             let localPoint = convert(point, from: superview)
-            if let strip = bottomStripView, !strip.isHidden, strip.frame.contains(localPoint) {
+            if let strip = bottomStripView, !strip.isHidden, strip.containsPointInSuperview(localPoint) {
                 return strip.hitTest(convert(point, to: strip.superview))
             }
-            if let strip = rightStripView, !strip.isHidden, strip.frame.contains(localPoint) {
+            if let strip = rightStripView, !strip.isHidden, strip.containsPointInSuperview(localPoint) {
                 return strip.hitTest(convert(point, to: strip.superview))
             }
             if let row = toolOptionsRowView, !row.isHidden, row.frame.contains(localPoint) {
@@ -1228,10 +1252,10 @@ class OverlayView: NSView {
         // In editor mode, strips are in chromeParentView — different coordinate space.
         // Don't check them here; they handle their own hit testing as container subviews.
         if showToolbars && !isEditorMode {
-            if let strip = bottomStripView, !strip.isHidden, strip.frame.contains(point) {
+            if let strip = bottomStripView, !strip.isHidden, strip.containsPointInSuperview(point) {
                 return true
             }
-            if let strip = rightStripView, !strip.isHidden, strip.frame.contains(point) {
+            if let strip = rightStripView, !strip.isHidden, strip.containsPointInSuperview(point) {
                 return true
             }
             if let row = toolOptionsRowView, !row.isHidden, row.frame.contains(point) {
@@ -1384,6 +1408,11 @@ class OverlayView: NSView {
             }
         } else if state == .selecting {
             drawSelectingHelperText()
+        }
+
+        // HDR output mode: draw HUD banner at the top
+        if isHDRCaptureMode {
+            drawHDRCaptureModeHUD(context: context)
         }
 
         // Draw remote selection region (cross-screen drag from another overlay)
@@ -1981,6 +2010,28 @@ class OverlayView: NSView {
         (text as NSString).draw(
             at: NSPoint(x: bgRect.minX + padding, y: bgRect.minY + padding / 2),
             withAttributes: attrs)
+    }
+
+    // MARK: - HDR Capture Mode HUD
+
+    private func drawHDRCaptureModeHUD(context: NSGraphicsContext) {
+        let hudHeight: CGFloat = 36
+        let hudRect = NSRect(x: 0, y: bounds.height - hudHeight, width: bounds.width, height: hudHeight)
+
+        // Draw semi-transparent background
+        NSColor.black.withAlphaComponent(0.75).setFill()
+        NSBezierPath(rect: hudRect).fill()
+
+        // Draw text
+        let text = L("HDR output enabled - confirm to save HEIC")
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 13, weight: .medium),
+            .foregroundColor: NSColor.white
+        ]
+        let size = (text as NSString).size(withAttributes: attrs)
+        let textX = (bounds.width - size.width) / 2
+        let textY = hudRect.minY + (hudHeight - size.height) / 2
+        (text as NSString).draw(at: NSPoint(x: textX, y: textY), withAttributes: attrs)
     }
 
     private static let sizeLabelFont = NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .medium)
@@ -4086,7 +4137,8 @@ class OverlayView: NSView {
             selectedTool: currentTool, selectedColor: currentColor,
             beautifyEnabled: beautifyEnabled, beautifyStyleIndex: beautifyStyleIndex,
             hasAnnotations: movableAnnotations, isRecording: isRecording,
-            effectsActive: effectsActive
+            effectsActive: effectsActive, translateEnabled: translateEnabled,
+            isEditorMode: isEditorMode, hdrEnabled: isHDRCaptureMode
         )
         if showBeautifyInOptionsRow {
             for i in bottomButtons.indices {
@@ -4115,7 +4167,6 @@ class OverlayView: NSView {
             parent.addSubview(strip)
             rightStripView = strip
         }
-
         // Update existing buttons if count matches, rebuild only if structure changed
         if bottomStripView?.buttonViews.count == bottomButtons.count && bottomStripView?.buttonViews.count ?? 0 > 0 {
             bottomStripView?.updateState(from: bottomButtons)
@@ -4181,7 +4232,10 @@ class OverlayView: NSView {
         bottomStrip.isHidden = !visible || !bottomHasButtons
         let rightHasButtons = rightStrip.buttonViews.count > 0
         rightStrip.isHidden = !visible || !rightHasButtons
-        toolOptionsRowView?.isHidden = !visible || !toolHasOptionsRow || !bottomHasButtons
+        let optionsShouldBeVisible = visible && toolHasOptionsRow && bottomHasButtons
+        if !optionsShouldBeVisible {
+            toolOptionsRowView?.setToolbarVisible(false, animated: toolOptionsRowView?.window != nil)
+        }
         guard visible else { return }
 
         // Anchor rect: beautify-expanded when active, selection otherwise
@@ -4336,24 +4390,26 @@ class OverlayView: NSView {
         rightBarRect = rightStrip.frame
 
         // Position options row — above bottom bar in editor, below in overlay
-        if let row = toolOptionsRowView, !row.isHidden {
-            // Use the wider of the bottom bar and the row's natural content width
-            let rowW = max(bottomBarRect.width, row.contentWidth)
+        if let row = toolOptionsRowView, optionsShouldBeVisible {
+            // Keep the secondary row left-aligned, but let it shrink to its real controls.
+            let availableW = (isEditorMode ? (chromeParentView?.bounds.width ?? bounds.width) : bounds.width) - 8
+            let rowW = min(row.contentWidth, max(0, availableW))
             row.frame.size.width = rowW
             let rowY: CGFloat
             if isEditorMode {
-                // In editor mode, center the options row the same way as the bottom bar
+                // In editor mode, keep the options row pinned to the toolbar's left edge.
                 let cb = chromeParentView?.bounds ?? bounds
-                let rowX = max(4, cb.midX - rowW / 2)
+                let rowX = max(4, min(bottomBarRect.minX, cb.maxX - rowW - 4))
                 row.frame.origin = NSPoint(x: rowX, y: bottomBarRect.maxY + 2)
                 row.autoresizingMask = [.minXMargin, .maxXMargin, .maxYMargin]
             } else {
-                // Center the options row relative to the bottom bar, clamped to view bounds
-                var rowX = bottomBarRect.midX - rowW / 2
+                // Align the options row to the toolbar's left edge, clamped to view bounds.
+                var rowX = bottomBarRect.minX
                 rowX = max(4, min(rowX, bounds.maxX - rowW - 4))
                 rowY = bottomBarRect.minY - row.frame.height - 2
                 row.frame.origin = NSPoint(x: rowX, y: rowY)
             }
+            row.setToolbarVisible(true, animated: row.window != nil)
         }
 
     }
@@ -4718,6 +4774,25 @@ class OverlayView: NSView {
                 let canvasPoint = viewToCanvas(point)
                 startAnnotation(at: canvasPoint)
                 return
+            }
+
+            if currentTool == .select && !isEditorMode && pointIsInSelection(point) {
+                let canvasPoint = viewToCanvas(point)
+                let hitsAnnotation = annotations.reversed().contains {
+                    $0.isMovable && $0.hitTest(point: canvasPoint)
+                }
+                if !hitsAnnotation {
+                    isDraggingSelection = true
+                    selectionIsWindowSnap = false
+                    snappedWindowID = nil
+                    snappedWindowImage = nil
+                    dragOffset = NSPoint(
+                        x: point.x - selectionRect.origin.x,
+                        y: point.y - selectionRect.origin.y
+                    )
+                    NSCursor.closedHand.set()
+                    return
+                }
             }
 
             // Start annotation (convert to canvas space for zoom).
@@ -5098,6 +5173,7 @@ class OverlayView: NSView {
                 needsDisplay = true
             } else if isDraggingSelection {
                 selectionRect.origin = NSPoint(x: point.x - dragOffset.x, y: point.y - dragOffset.y)
+                overlayDelegate?.overlayViewSelectionDidChange(selectionRect)
                 needsDisplay = true
             } else if isResizingSelection {
                 resizeSelection(to: point)
@@ -5197,6 +5273,7 @@ class OverlayView: NSView {
             if selectionRect.width > 5 || selectionRect.height > 5 {
                 // Real drag — use drawn rect as-is
                 state = .selected
+                useMoveSelectionToolForNewOverlaySelection()
                 if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode { showToolbars = true }
                 overlayDelegate?.overlayViewDidFinishSelection(selectionRect)
             } else if windowSnapEnabled, let snapRect = hoveredWindowRect, !snapRect.isEmpty {
@@ -5216,12 +5293,14 @@ class OverlayView: NSView {
                     }
                 }
                 state = .selected
+                useMoveSelectionToolForNewOverlaySelection()
                 if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode { showToolbars = true }
                 overlayDelegate?.overlayViewDidFinishSelection(selectionRect)
             } else {
                 // Click (no drag), snap off — expand to full screen
                 selectionRect = bounds
                 state = .selected
+                useMoveSelectionToolForNewOverlaySelection()
                 if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode { showToolbars = true }
                 overlayDelegate?.overlayViewDidFinishSelection(selectionRect)
             }
@@ -5356,6 +5435,7 @@ class OverlayView: NSView {
         isAnchoredSelecting = false
         if selectionRect.width > 5 || selectionRect.height > 5 {
             state = .selected
+            useMoveSelectionToolForNewOverlaySelection()
             if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode {
                 showToolbars = true
             }
@@ -5377,6 +5457,7 @@ class OverlayView: NSView {
                 }
             }
             state = .selected
+            useMoveSelectionToolForNewOverlaySelection()
             if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode {
                 showToolbars = true
             }
@@ -5384,6 +5465,7 @@ class OverlayView: NSView {
         } else {
             selectionRect = bounds
             state = .selected
+            useMoveSelectionToolForNewOverlaySelection()
             if !autoOCRMode && !autoQuickSaveMode && !autoScrollCaptureMode && !autoConfirmMode {
                 showToolbars = true
             }
@@ -6153,6 +6235,9 @@ class OverlayView: NSView {
             if PopoverHelper.isVisible { PopoverHelper.dismiss(); break }
             let colorBtn = bottomStripView?.buttonViews.first { if case .color = $0.action { return true }; return false }
             showColorPickerPopover(target: .drawColor, anchorView: colorBtn)
+        case .more:
+            let moreBtn = bottomStripView?.buttonViews.first { if case .more = $0.action { return true }; return false }
+            showMoreActionsPopover(anchorView: moreBtn)
         case .sizeDisplay:
             break
         case .moveSelection:
@@ -6196,7 +6281,7 @@ class OverlayView: NSView {
         case .copy:
             overlayDelegate?.overlayViewDidConfirm()
         case .save:
-            overlayDelegate?.overlayViewDidRequestFileSave()
+            overlayDelegate?.overlayViewDidRequestSave()
         case .upload:
             let confirmEnabled = UserDefaults.standard.bool(forKey: "uploadConfirmEnabled")
             if confirmEnabled {
@@ -6226,8 +6311,12 @@ class OverlayView: NSView {
             }
         case .share:
             // Show share picker anchored to the share button, then dismiss on selection
-            let shareBtn = rightStripView?.buttonViews.first { if case .share = $0.action { return true }; return false }
+            let shareBtn = toolbarButtonView(for: .share)
             overlayDelegate?.overlayViewDidRequestShare(anchorView: shareBtn)
+        case .hdrToggle:
+            isHDRCaptureMode.toggle()
+            UserDefaults.standard.set(isHDRCaptureMode, forKey: "captureHDREnabled")
+            needsDisplay = true
         case .pin:
             overlayDelegate?.overlayViewDidRequestPin()
         case .ocr:
@@ -6311,6 +6400,33 @@ class OverlayView: NSView {
 
         // Rebuild toolbars to reflect new state (selected tool, color, etc.)
         rebuildToolbarLayout()
+    }
+
+    private func toolbarButtonView(for action: ToolbarButtonAction) -> ToolbarButtonView? {
+        let views = (bottomStripView?.buttonViews ?? []) + (rightStripView?.buttonViews ?? [])
+        return views.first { view in
+            switch (view.action, action) {
+            case (.color, .color), (.more, .more), (.undo, .undo), (.redo, .redo),
+                 (.copy, .copy), (.save, .save), (.pin, .pin), (.ocr, .ocr),
+                 (.autoRedact, .autoRedact), (.beautify, .beautify),
+                 (.beautifyStyle, .beautifyStyle), (.cancel, .cancel),
+                 (.moveSelection, .moveSelection), (.delayCapture, .delayCapture),
+                 (.upload, .upload), (.share, .share),
+                 (.removeBackground, .removeBackground), (.invertColors, .invertColors),
+                 (.loupe, .loupe), (.translate, .translate), (.record, .record),
+                 (.startRecord, .startRecord), (.stopRecord, .stopRecord),
+                 (.mouseHighlight, .mouseHighlight), (.systemAudio, .systemAudio),
+                 (.micAudio, .micAudio), (.detach, .detach), (.scrollCapture, .scrollCapture),
+                 (.addCapture, .addCapture), (.showKeystrokes, .showKeystrokes),
+                 (.webcam, .webcam), (.recordSettings, .recordSettings),
+                 (.effects, .effects), (.sizeDisplay, .sizeDisplay), (.hdrToggle, .hdrToggle):
+                return true
+            case (.tool(let lhs), .tool(let rhs)):
+                return lhs == rhs
+            default:
+                return false
+            }
+        }
     }
 
     /// Returns a color if a preset swatch was clicked, toggles the inline HSB picker
@@ -7141,9 +7257,9 @@ class OverlayView: NSView {
                     needsDisplay = true
                 }
             }
-        case 36:  // Return/Enter — quick capture (respects quickCaptureMode setting)
+        case 36:  // Return/Enter — same as Done
             if textEditView == nil, state == .selected {
-                overlayDelegate?.overlayViewDidRequestQuickSave()
+                overlayDelegate?.overlayViewDidConfirm()
             }
         case 51:  // Backspace/Delete — remove selected annotation(s)
             guard textEditView == nil, state == .selected, !selectedAnnotations.isEmpty else { break }
@@ -7682,6 +7798,7 @@ class OverlayView: NSView {
         selectionRect = rect
         selectionStart = rect.origin
         state = .selected
+        useMoveSelectionToolForNewOverlaySelection()
         showToolbars = true
         needsDisplay = true
     }
@@ -7690,6 +7807,7 @@ class OverlayView: NSView {
         selectionRect = bounds
         selectionStart = bounds.origin
         state = .selected
+        useMoveSelectionToolForNewOverlaySelection()
         showToolbars = true
         scheduleBarcodeDetection()
         overlayDelegate?.overlayViewDidFinishSelection(selectionRect)
@@ -8000,4 +8118,3 @@ private class TooltipBackgroundView: NSView {
         (text as NSString).draw(at: NSPoint(x: pad, y: pad / 2), withAttributes: attrs)
     }
 }
-

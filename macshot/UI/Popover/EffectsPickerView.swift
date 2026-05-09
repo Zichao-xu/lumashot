@@ -157,7 +157,7 @@ class EffectsPickerView: NSView {
             let sy = swatchGridOriginY + gridH - swatchSize - CGFloat(row) * (swatchSize + swatchGap)
             let sr = NSRect(x: sx, y: sy, width: swatchSize, height: swatchSize)
 
-            let path = NSBezierPath(roundedRect: sr, xRadius: 6, yRadius: 6)
+            let path = ToolbarLayout.continuousRoundedPath(in: sr, radius: 6)
             NSGraphicsContext.saveGraphicsState()
             path.addClip()
             if i < swatchImages.count {
@@ -184,7 +184,7 @@ class EffectsPickerView: NSView {
             // Selection ring
             if preset == config.preset {
                 ToolbarLayout.accentColor.setStroke()
-                let ring = NSBezierPath(roundedRect: sr.insetBy(dx: -2, dy: -2), xRadius: 7, yRadius: 7)
+                let ring = ToolbarLayout.continuousRoundedPath(in: sr.insetBy(dx: -2, dy: -2), radius: 8)
                 ring.lineWidth = 2
                 ring.stroke()
             }

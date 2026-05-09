@@ -15,7 +15,7 @@ class ListPickerView: NSView {
     var items: [Item] = [] { didSet { rebuildRows() } }
     var onSelect: ((Int) -> Void)?
 
-    private let rowHeight: CGFloat = 28
+    private let rowHeight: CGFloat = 34
     private let padding: CGFloat = 6
     private var rowViews: [ListPickerRowView] = []
 
@@ -29,7 +29,7 @@ class ListPickerView: NSView {
         for rv in rowViews { rv.removeFromSuperview() }
         rowViews.removeAll()
 
-        let width: CGFloat = max(frame.width, 140)
+        let width: CGFloat = max(frame.width, 88)
         var y = CGFloat(items.count) * rowHeight + padding  // start from top
 
         for (i, item) in items.enumerated() {
@@ -52,15 +52,16 @@ class ListPickerView: NSView {
 
     /// Preferred size for the popover, computed from content.
     var preferredSize: NSSize {
-        let font = NSFont.systemFont(ofSize: 13, weight: .regular)
+        let font = NSFont.systemFont(ofSize: 13, weight: .medium)
         let checkW: CGFloat = 24  // space for checkmark + padding
+        let iconW: CGFloat = items.contains { $0.icon != nil } ? 24 : 0
         let hPad: CGFloat = 20   // horizontal padding
-        var maxTextW: CGFloat = 100
+        var maxTextW: CGFloat = 0
         for item in items {
             let textW = (item.title as NSString).size(withAttributes: [.font: font]).width
             maxTextW = max(maxTextW, textW)
         }
-        let w = ceil(maxTextW + checkW + hPad)
+        let w = max(88, ceil(maxTextW + checkW + iconW + hPad))
         let h = CGFloat(items.count) * rowHeight + padding * 2
         return NSSize(width: w, height: h)
     }
@@ -126,22 +127,37 @@ private class ListPickerRowView: NSView {
 
         if isHovered && isEnabled {
             ToolbarLayout.iconColor.withAlphaComponent(0.1).setFill()
-            NSBezierPath(roundedRect: bounds.insetBy(dx: 3, dy: 1), xRadius: 4, yRadius: 4).fill()
+            ToolbarLayout.continuousRoundedPath(
+                in: bounds.insetBy(dx: 3, dy: 1),
+                radius: ToolbarLayout.popoverSelectionCornerRadius).fill()
         }
 
         // Checkmark for selected items
         let checkX: CGFloat = 8
         if isItemSelected {
             let checkAttrs: [NSAttributedString.Key: Any] = [
-                .font: NSFont.systemFont(ofSize: 12, weight: .semibold),
+                .font: NSFont.systemFont(ofSize: 14, weight: .semibold),
                 .foregroundColor: ToolbarLayout.accentColor.withAlphaComponent(alpha),
             ]
-            ("✓" as NSString).draw(at: NSPoint(x: checkX, y: bounds.midY - 7), withAttributes: checkAttrs)
+            ("✓" as NSString).draw(at: NSPoint(x: checkX, y: bounds.midY - 8), withAttributes: checkAttrs)
+        }
+
+        let iconX: CGFloat = 25
+        var textX: CGFloat = 24
+        if let icon {
+            let iconSize: CGFloat = 17
+            let iconRect = NSRect(
+                x: iconX,
+                y: bounds.midY - iconSize / 2,
+                width: iconSize,
+                height: iconSize)
+            icon.draw(in: iconRect, from: .zero, operation: .sourceOver, fraction: alpha)
+            textX = 48
         }
 
         let titleAlpha: CGFloat = (isItemSelected ? 1.0 : 0.7) * alpha
         let attrs: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 11, weight: .medium),
+            .font: NSFont.systemFont(ofSize: 13, weight: .medium),
             .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(titleAlpha),
         ]
         let str = title as NSString
@@ -149,15 +165,15 @@ private class ListPickerRowView: NSView {
 
         if let subtitle = subtitle {
             // Title + subtitle side by side
-            str.draw(at: NSPoint(x: 24, y: bounds.midY - strSize.height / 2), withAttributes: attrs)
+            str.draw(at: NSPoint(x: textX, y: bounds.midY - strSize.height / 2), withAttributes: attrs)
             let subAttrs: [NSAttributedString.Key: Any] = [
-                .font: NSFont.systemFont(ofSize: 9),
+                .font: NSFont.systemFont(ofSize: 11),
                 .foregroundColor: ToolbarLayout.iconColor.withAlphaComponent(0.35 * alpha),
             ]
             let subStr = subtitle as NSString
-            subStr.draw(at: NSPoint(x: 24 + strSize.width + 4, y: bounds.midY - strSize.height / 2 + 1), withAttributes: subAttrs)
+            subStr.draw(at: NSPoint(x: textX + strSize.width + 4, y: bounds.midY - strSize.height / 2 + 1), withAttributes: subAttrs)
         } else {
-            str.draw(at: NSPoint(x: 24, y: bounds.midY - strSize.height / 2), withAttributes: attrs)
+            str.draw(at: NSPoint(x: textX, y: bounds.midY - strSize.height / 2), withAttributes: attrs)
         }
     }
 
