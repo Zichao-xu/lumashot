@@ -8,7 +8,7 @@ Lumashot is a fork of [sw33tLie/macshot](https://github.com/sw33tLie/macshot) fo
 
 ---
 
-## Features / 功能特性
+## Features
 
 - **Native macOS screenshot experience** — global hotkey, clean toolbar, macOS-like motion, AppKit-native without Electron
 - **HDR screenshot export with HEIC gain map** — ScreenCaptureKit-based capture, genuine HDR output for HDR displays
