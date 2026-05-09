@@ -2065,8 +2065,12 @@ extension AppDelegate: OverlayWindowControllerDelegate {
 
     func overlayDidRequestAccessibilityPermission(_ controller: OverlayWindowController) {
         dismissOverlays()
-        let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
-        AXIsProcessTrustedWithOptions(opts)
+        // Only trigger the system dialog if not already granted — avoids
+        // repeatedly forcing the auth prompt when Accessibility is already authorized.
+        if !AXIsProcessTrusted() {
+            let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
+            AXIsProcessTrustedWithOptions(opts)
+        }
         let alert = NSAlert()
         alert.messageText = L("Accessibility Access Required")
         alert.informativeText = L("Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again.")

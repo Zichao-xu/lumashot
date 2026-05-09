@@ -728,7 +728,7 @@ extension OverlayWindowController: OverlayViewDelegate {
             do {
                 try handler.perform([request])
                 guard let result = request.results?.first else {
-                    throw NSError(domain: "Macshot", code: 1)
+                    throw NSError(domain: "Lumashot", code: 1)
                 }
 
                 let maskPixelBuffer = try result.generateScaledMaskForImage(
@@ -739,7 +739,7 @@ extension OverlayWindowController: OverlayViewDelegate {
 
                 // Blend original with mask
                 guard let filter = CIFilter(name: "CIBlendWithMask") else {
-                    throw NSError(domain: "Macshot", code: 2)
+                    throw NSError(domain: "Lumashot", code: 2)
                 }
                 filter.setValue(originalCIImage, forKey: kCIInputImageKey)
                 filter.setValue(maskCIImage, forKey: kCIInputMaskImageKey)
@@ -748,14 +748,14 @@ extension OverlayWindowController: OverlayViewDelegate {
                     forKey: kCIInputBackgroundImageKey)
 
                 guard let outputCIImage = filter.outputImage else {
-                    throw NSError(domain: "Macshot", code: 3)
+                    throw NSError(domain: "Lumashot", code: 3)
                 }
 
                 let context = CIContext()
                 guard
                     let finalCGImage = context.createCGImage(
                         outputCIImage, from: outputCIImage.extent)
-                else { throw NSError(domain: "Macshot", code: 4) }
+                else { throw NSError(domain: "Lumashot", code: 4) }
 
                 let finalNSImage = NSImage(cgImage: finalCGImage, size: image.size)
 
