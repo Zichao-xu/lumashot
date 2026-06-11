@@ -884,7 +884,7 @@ final class LocalModelService {
     }
 
     var isInstalling: Bool { installing }
-    var isEngineInstalled: Bool { FileManager.default.isExecutableFile(atPath: serverBinaryURL.path) }
+    var isEngineInstalled: Bool { FileManager.default.fileExists(atPath: serverBinaryURL.path) }
     var isModelInstalled: Bool { FileManager.default.fileExists(atPath: modelURL.path) }
     var isReady: Bool { isEngineInstalled && isModelInstalled }
 
@@ -1063,8 +1063,13 @@ final class LocalModelService {
         baseDirectory.appendingPathComponent("llama-\(Constants.engineVersion)-macos-arm64.tar.gz")
     }
 
+    /// The llama engine ships INSIDE the app bundle (Contents/Resources/llama-engine)
+    /// and is signed together with the app, so the App Sandbox permits executing it.
+    /// A downloaded engine sitting in the container cannot be executed under the
+    /// sandbox (access(X_OK) is denied), which is why it must be bundled.
     private var engineDirectory: URL {
-        baseDirectory.appendingPathComponent("llama-\(Constants.engineVersion)", isDirectory: true)
+        (Bundle.main.resourceURL ?? Bundle.main.bundleURL)
+            .appendingPathComponent("llama-engine", isDirectory: true)
     }
 
     private var serverBinaryURL: URL {
@@ -1085,6 +1090,17 @@ final class LocalModelService {
     }
 
     private func installEngineIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
+        // The engine is bundled inside the app and signed with it — there is
+        // nothing to download or extract. (Running a downloaded engine from the
+        // container is blocked by the App Sandbox.) Just verify it's present.
+        if isEngineInstalled {
+            completion(.success(()))
+        } else {
+            completion(.failure(TranslationError.aiTranslation(L("Bundled translation engine is missing — reinstall the app."))))
+        }
+    }
+
+    private func legacyInstallEngineIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
         guard !isEngineInstalled else {
             completion(.success(()))
             return

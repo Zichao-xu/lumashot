@@ -74,11 +74,14 @@ class OverlayWindowController {
     }
 
     private var shouldCaptureHDR: Bool {
-        let savedPreference = UserDefaults.standard.object(forKey: "captureHDREnabled") as? Bool ?? false
+        // Honor exactly what the live HDR toggle shows for THIS capture. Do not OR
+        // in the persisted preference: that value lags the current session and
+        // could override the user's in-session toggle, making a fresh toggle only
+        // "take effect next time".
         if let overlayView {
-            return overlayView.isHDRCaptureMode || savedPreference
+            return overlayView.isHDRCaptureMode
         }
-        return isHDRCaptureMode || savedPreference
+        return isHDRCaptureMode
     }
 
     private static var defaultHDRCaptureMode: Bool {
@@ -369,7 +372,10 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidConfirm() {
-        // HDR capture mode: save directly to HDR HEIC file, bypass annotation workflow
+        // HDR capture mode: save to an HDR HEIC file. The HDR pixels are re-grabbed
+        // via ScreenCaptureKit (which can't see overlay-drawn annotations), so we
+        // snapshot the annotations here — while the view is still alive — and burn
+        // them into the HDR image inside HDRCaptureManager.
         if shouldCaptureHDR {
             let selectionRect = overlayView?.selectionRect ?? .zero
             let globalRect = NSRect(
@@ -378,6 +384,7 @@ extension OverlayWindowController: OverlayViewDelegate {
                 width: selectionRect.width,
                 height: selectionRect.height
             )
+            let annotationOverlay = overlayView?.renderAnnotationOverlayForHDR()
 
             NSPasteboard.general.clearContents()
             dismiss()
@@ -385,7 +392,8 @@ extension OverlayWindowController: OverlayViewDelegate {
             HDRCaptureManager.saveHDRScreenshot(
                 screen: screen,
                 rect: globalRect,
-                showsCursor: UserDefaults.standard.bool(forKey: "captureCursor")
+                showsCursor: UserDefaults.standard.bool(forKey: "captureCursor"),
+                annotationOverlay: annotationOverlay
             ) { [weak self] resultURL in
                 DispatchQueue.main.async {
                     guard let self else { return }
@@ -943,6 +951,9 @@ extension OverlayWindowController: OverlayViewDelegate {
             width: selectionRect.width,
             height: selectionRect.height
         )
+        // Snapshot annotations now, while the overlay view is alive (the save
+        // panel runs async and the view is torn down before the HDR capture).
+        let annotationOverlay = overlayView?.renderAnnotationOverlayForHDR()
 
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.heic]
@@ -969,6 +980,7 @@ extension OverlayWindowController: OverlayViewDelegate {
                 screen: self.screen,
                 rect: globalRect,
                 showsCursor: UserDefaults.standard.bool(forKey: "captureCursor"),
+                annotationOverlay: annotationOverlay,
                 outputURL: url
             ) { [weak self] resultURL in
                 DispatchQueue.main.async {

@@ -12,6 +12,7 @@ enum HDRCaptureManager {
         screen: NSScreen,
         rect: NSRect,
         showsCursor: Bool,
+        annotationOverlay: CGImage? = nil,
         outputURL requestedOutputURL: URL? = nil,
         completion: @escaping SaveCompletion
     ) {
@@ -27,10 +28,17 @@ enum HDRCaptureManager {
                     return
                 }
 
-                let hdrImage = try await captureHDRImage(
+                let hdrCGImage = try await captureHDRImage(
                     screen: screen,
                     rect: rect,
                     showsCursor: showsCursor
+                )
+                // Burn the user's annotations into the freshly captured HDR
+                // pixels. ScreenCaptureKit re-grabs the screen and never sees the
+                // overlay-drawn marks, so without this they'd be lost in HDR mode.
+                let hdrImage = compositeAnnotationOverlay(
+                    annotationOverlay,
+                    onto: CIImage(cgImage: hdrCGImage)
                 )
                 let outputURL = try writeAppleGainMapHEIC(
                     from: hdrImage,
@@ -90,12 +98,73 @@ enum HDRCaptureManager {
         )
     }
 
+    /// Burn the annotation overlay (a transparent SDR layer rendered by the
+    /// overlay view at the selection's native pixels) into the HDR image using
+    /// linear-light source-over compositing. Where the overlay's alpha is 0 the
+    /// base HDR pixels pass through untouched, so HDR highlights (values > 1.0)
+    /// are preserved; annotation marks sit on top as opaque SDR-range pixels.
+    /// Returns the base unchanged when there is no overlay.
+    private static func compositeAnnotationOverlay(
+        _ overlay: CGImage?,
+        onto base: CIImage
+    ) -> CIImage {
+        guard let overlay else { return base }
+        var layer = CIImage(cgImage: overlay)
+        // Match the overlay to the HDR image's pixel extent (absorbs ±1px
+        // rounding between the SCK capture size and the rendered overlay size).
+        if layer.extent.width > 0, layer.extent.height > 0,
+            layer.extent.width != base.extent.width
+                || layer.extent.height != base.extent.height
+        {
+            layer = layer.transformed(by: CGAffineTransform(
+                scaleX: base.extent.width / layer.extent.width,
+                y: base.extent.height / layer.extent.height
+            ))
+        }
+        // Align origins so the overlay sits exactly over the base.
+        layer = layer.transformed(by: CGAffineTransform(
+            translationX: base.extent.minX - layer.extent.minX,
+            y: base.extent.minY - layer.extent.minY
+        ))
+        // HDR "ink": make annotation marks vivid and bright enough to glow on an
+        // HDR display instead of reading as dull SDR next to bright HDR content.
+        // Saturation is boosted first, then luminance is multiplied in Core
+        // Image's linear working space (annotationHDRGain is a true brightness
+        // factor; ~6x sits near the Apple gain-map headroom ceiling). The
+        // transparent background (alpha 0) is untouched — only the marks change.
+        if annotationHDRSaturation != 1.0 {
+            layer = layer.applyingFilter("CIColorControls", parameters: [
+                kCIInputSaturationKey: annotationHDRSaturation
+            ])
+        }
+        if annotationHDRGain != 1.0 {
+            let g = CGFloat(annotationHDRGain)
+            layer = layer.applyingFilter("CIColorMatrix", parameters: [
+                "inputRVector": CIVector(x: g, y: 0, z: 0, w: 0),
+                "inputGVector": CIVector(x: 0, y: g, z: 0, w: 0),
+                "inputBVector": CIVector(x: 0, y: 0, z: g, w: 0),
+                "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 1)
+            ])
+        }
+        return layer.composited(over: base)
+            .cropped(to: base.extent)
+            .settingProperties(base.properties)
+    }
+
+    /// Linear-light brightness multiplier applied to annotation marks in HDR
+    /// output so they glow rather than read as dull SDR ink. 6.0 ≈ +2.6 stops,
+    /// near the Apple gain-map headroom ceiling (`maxAppleHeadroom`).
+    private static let annotationHDRGain: Float = 6.0
+
+    /// Saturation multiplier for annotation marks in HDR output, so the colors
+    /// read as vivid rather than washed out once brightened. 1.0 = unchanged.
+    private static let annotationHDRSaturation: Float = 1.4
+
     @available(macOS 15.0, *)
     private static func writeAppleGainMapHEIC(
-        from hdrCGImage: CGImage,
+        from hdrImage: CIImage,
         outputURL requestedOutputURL: URL? = nil
     ) throws -> URL {
-        let hdrImage = CIImage(cgImage: hdrCGImage)
         let products = try makeToGainMapHDRProducts(from: hdrImage)
         let imageWithProperties = applyMakerAppleProperties(
             to: products.sdrImage,

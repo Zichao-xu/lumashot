@@ -667,6 +667,21 @@ extension OverlayView {
 
     func performTranslate(targetLang: String) {
         guard state == .selected, let screenshot = screenshotImage else { return }
+
+        // Speculative pre-warm hit: if we already translated this exact selection
+        // in the background, show it instantly instead of OCR+translating again.
+        if let cached = prewarmedTranslateAnnotations, !cached.isEmpty,
+            prewarmedTranslateRect == selectionRect
+        {
+            annotations.removeAll { $0.tool == .translateOverlay }
+            annotations.append(contentsOf: cached)
+            undoStack.append(contentsOf: cached.map { .added($0) })
+            redoStack.removeAll()
+            isTranslating = false
+            needsDisplay = true
+            return
+        }
+
         annotations.removeAll { $0.tool == .translateOverlay }
         isTranslating = true
         needsDisplay = true
@@ -687,6 +702,50 @@ extension OverlayView {
                 self.undoStack.append(contentsOf: anns.map { .added($0) })
                 self.redoStack.removeAll()
                 self.needsDisplay = true
+            }
+        )
+    }
+
+    // MARK: - Speculative translate pre-warm
+
+    /// Called whenever the selection rect changes. Debounces, and once the box has
+    /// been still briefly, OCR+translates it in the BACKGROUND (no display) so the
+    /// result is ready instantly when the user actually hits Translate. Re-runs on
+    /// every change. Limited to the on-device model so it costs no network/API.
+    func scheduleTranslatePrewarmIfNeeded() {
+        // Selection moved → any previous pre-warm is stale.
+        prewarmedTranslateAnnotations = nil
+        translatePrewarmTimer?.invalidate()
+
+        guard TranslationService.provider == .local else { return }
+        guard !isEditorMode, !isRecording, !isScrollCapturing else { return }
+        guard selectionRect.width > 8, selectionRect.height > 8 else { return }
+
+        translatePrewarmTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: false) { [weak self] _ in
+            self?.runTranslatePrewarm()
+        }
+    }
+
+    private func runTranslatePrewarm() {
+        guard let screenshot = screenshotImage else { return }
+        let rect = selectionRect
+        guard rect.width > 8, rect.height > 8 else { return }
+
+        translatePrewarmToken += 1
+        let token = translatePrewarmToken
+
+        TranslateOverlay.translate(
+            screenshot: screenshot, selectionRect: rect, captureDrawRect: captureDrawRect,
+            targetLang: TranslationService.targetLanguage,
+            onError: { _ in },   // silent — speculative
+            completion: { [weak self] anns in
+                guard let self = self,
+                    token == self.translatePrewarmToken,   // not superseded by a newer box
+                    self.selectionRect == rect,            // selection unchanged since
+                    !anns.isEmpty
+                else { return }
+                self.prewarmedTranslateRect = rect
+                self.prewarmedTranslateAnnotations = anns
             }
         )
     }

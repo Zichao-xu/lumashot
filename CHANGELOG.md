@@ -2,11 +2,22 @@
 
 ## [Unreleased]
 
-### Fixed
-- **HDR toggle button now has correct size (36px) and position (below the Done/checkmark button).** Changed HDR button role from `.auxiliary` to `.normal` so its height matches the toolbar height (36px instead of 52px). Repositioned HDR button to appear below the checkmark (Done) button with right edges aligned, instead of overlapping vertically. `OverlayView.swift`: `createOrUpdateToolbar()`, `updateHDRButtonState()`, `repositionToolbars()`. Closes WorkBuddy session 2026-05-07.
+## [0.1.7-alpha] - 2026-06-12
 
 ### Added
-- **Local model download now shows progress bar and supports mirror sources.** Added `NSProgressIndicator` in the Settings UI to show download progress. Download implementation refactored to use `URLSessionDownloadDelegate` for real progress tracking. Added mirror sources for China mainland users: `hf-mirror.com` for HuggingFace models, `mirror.ghproxy.com` and `ghproxy.com` for GitHub llama.cpp binaries. Improved error messages with specific failure reasons (download failed, file too small, extraction failed, etc.). `TranslationService.swift`: `LocalModelService`, `DownloadTaskDelegate`. `SettingsWindowController.swift`: `localModelProgressIndicator`. Closes WorkBuddy session 2026-05-07.
+- **HDR screenshots now keep your annotations.** In HDR mode the screenshot is re-grabbed via ScreenCaptureKit, which cannot see overlay-drawn marks, so annotations used to be dropped. The overlay now snapshots the annotations before dismissing and composites them onto the captured HDR image in an extended-linear context, so the marks are burned in **and** HDR highlights are preserved (no SDR clamping). `OverlayView.renderAnnotationOverlayForHDR()`, `HDRCaptureManager.compositeAnnotationOverlay(_:onto:)`, `OverlayWindowController.overlayViewDidConfirm()` / `requestHDRFileSave()`.
+- **HDR "ink": annotation colors glow on HDR output.** Marks are boosted in linear light (~+2.6 stops) and slightly more saturated when burned into an HDR image, so they read as vivid instead of dull next to bright HDR content. `HDRCaptureManager.annotationHDRGain` / `annotationHDRSaturation`.
+- **Offline AI (local model) translation now works under the App Sandbox.** A downloaded engine in the container cannot be executed by a sandboxed app (`access(X_OK)` is denied — this was the "Engine extraction failed – binary not found" error). The llama.cpp engine (`llama-server` + dylibs) now ships INSIDE the signed app bundle and runs as a sandbox-inheriting helper; only the model is downloaded. Added `com.apple.security.network.server` and a `Bundle llama engine` build phase that copies + signs the engine. `Vendor/llama-engine/`, `scripts/bundle-llama-engine.sh`, `llama-engine.entitlements`, `TranslationService.swift` (`LocalModelService` engine paths).
+- **Translation overlay: speculative pre-warm.** When the selection box is held still (~0.4 s) the region is OCR'd and translated in the background (local model), so pressing Translate shows the result instantly; it re-runs whenever the box moves or resizes. `OverlayView+Popovers.swift` (`scheduleTranslatePrewarmIfNeeded` / `runTranslatePrewarm`).
+- **Local model download now shows progress bar and supports mirror sources.** `NSProgressIndicator` in Settings via `URLSessionDownloadDelegate`; mirrors for China mainland (`hf-mirror.com`, `ghproxy.com`); clearer failure messages. `TranslationService.swift`, `SettingsWindowController.swift`.
+
+### Changed
+- **Translation overlay layout is now readable.** Translated text is no longer crammed/shrunk into the source line's tiny box: it uses a readable minimum font size and the overlay box grows to fit the (denser) translated text. `TranslationOverlay.swift`, `Annotation.drawTranslateOverlay()`.
+
+### Fixed
+- **HDR output toggle now applies to the current screenshot, not the next one.** `shouldCaptureHDR` no longer ORs in the persisted preference, which could override the live in-session toggle. `OverlayWindowController.shouldCaptureHDR`.
+- **Right-click cancels the capture before any selection exists**, instead of starting a right-click "anchored" selection that users hit by accident when trying to dismiss. `OverlayView.rightMouseDown(with:)`.
+- **HDR toggle button now has correct size (36px) and position (below the Done/checkmark button).** Changed HDR button role from `.auxiliary` to `.normal` so its height matches the toolbar height (36px instead of 52px), and repositioned it below the checkmark (Done) button with right edges aligned. `OverlayView.swift`: `createOrUpdateToolbar()`, `updateHDRButtonState()`, `repositionToolbars()`.
 
 ## [0.1.2-alpha] - 2026-05-09
 

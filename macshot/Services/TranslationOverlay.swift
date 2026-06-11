@@ -69,14 +69,28 @@ enum TranslateOverlay {
                             height: box.height * CGFloat(cgImage.height)
                         ))
 
+                        // Smart layout: pick a READABLE font size instead of tying it
+                        // to the (often tiny) source line height, then grow the box
+                        // downward so the translation fits at that size rather than
+                        // being shrunk/crammed into the original line's box.
+                        let fontSize = max(16, viewH * 0.78)
+                        let font = NSFont.systemFont(ofSize: fontSize, weight: .medium)
+                        let neededH = ceil(NSAttributedString(string: translated, attributes: [.font: font])
+                            .boundingRect(
+                                with: NSSize(width: max(40, viewW - 8), height: .greatestFiniteMagnitude),
+                                options: [.usesLineFragmentOrigin, .usesFontLeading]
+                            ).height) + 8
+                        let boxH = max(viewH, neededH)
+                        let topY = viewY + viewH   // anchor top edge to the source line; grow down
+
                         let ann = Annotation(
                             tool: .translateOverlay,
-                            startPoint: NSPoint(x: viewX, y: viewY),
-                            endPoint: NSPoint(x: viewX + viewW, y: viewY + viewH),
+                            startPoint: NSPoint(x: viewX, y: topY - boxH),
+                            endPoint: NSPoint(x: viewX + viewW, y: topY),
                             color: bgColor, strokeWidth: 0
                         )
                         ann.text = translated
-                        ann.fontSize = max(8, viewH * 0.65)
+                        ann.fontSize = fontSize
                         ann.groupID = groupID
                         annotations.append(ann)
                     }

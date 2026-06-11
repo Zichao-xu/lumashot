@@ -73,6 +73,7 @@
 				2F4EB11E2F61B60100B71643 /* Sources */,
 				2F4EB11F2F61B60100B71643 /* Frameworks */,
 				2F4EB1202F61B60100B71643 /* Resources */,
+				AAEE00000000000000EE0001 /* Bundle llama engine */,
 			);
 			buildRules = (
 			);
@@ -174,6 +175,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AAEE00000000000000EE0001 /* Bundle llama engine */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle llama engine";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/bundle-llama-engine.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2F4EB11E2F61B60100B71643 /* Sources */ = {
@@ -312,7 +331,7 @@
 				CODE_SIGN_ENTITLEMENTS = macshot/macshot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 107;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -324,7 +343,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = "0.1.6-alpha";
+				MARKETING_VERSION = "0.1.7-alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sw33tlie.macshot.macshot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -345,7 +364,7 @@
 				CODE_SIGN_ENTITLEMENTS = macshot/macshot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 107;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -357,7 +376,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = "0.1.6-alpha";
+				MARKETING_VERSION = "0.1.7-alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sw33tlie.macshot.macshot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

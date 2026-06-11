@@ -124,9 +124,19 @@ class OverlayView: NSView {
     private let zoomMax: CGFloat = 8.0
 
     // Selection
-    private(set) var selectionRect: NSRect = .zero
+    private(set) var selectionRect: NSRect = .zero {
+        didSet {
+            if selectionRect != oldValue { scheduleTranslatePrewarmIfNeeded() }
+        }
+    }
     /// Selection rect from another overlay (in this view's local coords), drawn during cross-screen drag.
     var remoteSelectionRect: NSRect = .zero
+
+    // MARK: - Speculative translate pre-warm (translate-ahead while selecting)
+    var translatePrewarmTimer: Timer?
+    var translatePrewarmToken: Int = 0
+    var prewarmedTranslateRect: NSRect = .zero
+    var prewarmedTranslateAnnotations: [Annotation]?
     /// The full (unclipped) remote selection in this view's local coords — used for resize anchor calculation.
     var remoteSelectionFullRect: NSRect = .zero
     private var isResizingRemoteSelection: Bool = false
@@ -5507,12 +5517,13 @@ class OverlayView: NSView {
             return
         }
         if state == .idle && shouldAllowNewSelection() {
-            selectionStart = point
-            selectionRect = NSRect(origin: point, size: .zero)
-            state = .selecting
-            isAnchoredSelecting = true
-            overlayDelegate?.overlayViewDidBeginSelection()
-            needsDisplay = true
+            // Before any selection exists, right-click cancels the capture
+            // (matches common screenshot-tool behavior; ESC also cancels).
+            // Previously this started a right-click "anchored" selection, which
+            // users hit by accident when trying to dismiss. Same gating as before
+            // (so recording / editor modes are unaffected) — only the action
+            // changed from "begin selection" to "cancel".
+            overlayDelegate?.overlayViewDidCancel()
             return
         }
 
@@ -7743,6 +7754,72 @@ class OverlayView: NSView {
 
         guard let cgImage = cgCtx.makeImage() else { return nil }
         return NSImage(cgImage: cgImage, size: snappedRect.size)
+    }
+
+    /// Render ONLY the annotations for the current selection onto a transparent
+    /// background, at native pixel scale and the same upright orientation as
+    /// `renderSelectedRegion`. Used to burn annotations into the separately
+    /// captured HDR image (which the HDR path grabs via ScreenCaptureKit and
+    /// therefore never sees the overlay-drawn annotations).
+    ///
+    /// MUST be called while the overlay view is still alive — loupe / pixelate /
+    /// censor annotations sample the live `screenshotImage`. Returns nil when
+    /// there is nothing to draw, so the HDR path can skip compositing entirely.
+    func renderAnnotationOverlayForHDR() -> CGImage? {
+        guard selectionRect.width > 0, selectionRect.height > 0 else { return nil }
+        guard !annotations.isEmpty else { return nil }
+
+        // Mirror renderSelectedRegion's pixel-scale + snapping so the overlay
+        // lines up 1:1 with the HDR capture of the same region.
+        let scale: CGFloat
+        if let screenshot = screenshotImage,
+            let cg = screenshot.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        {
+            scale = CGFloat(cg.width) / screenshot.size.width
+        } else {
+            scale = window?.backingScaleFactor ?? 2.0
+        }
+
+        let snappedRect = NSRect(
+            x: round(selectionRect.origin.x * scale) / scale,
+            y: round(selectionRect.origin.y * scale) / scale,
+            width: round(selectionRect.width * scale) / scale,
+            height: round(selectionRect.height * scale) / scale
+        )
+
+        let pixelW = Int(snappedRect.width * scale)
+        let pixelH = Int(snappedRect.height * scale)
+        guard pixelW > 0, pixelH > 0 else { return nil }
+
+        // Annotations are SDR-range marks; an sRGB 8-bit transparent layer is
+        // plenty. The HDR highlights live in the base image and are preserved by
+        // source-over compositing where this layer's alpha is 0.
+        let cs = CGColorSpace(name: CGColorSpace.sRGB)!
+        let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue
+        guard
+            let cgCtx = CGContext(
+                data: nil,
+                width: pixelW, height: pixelH,
+                bitsPerComponent: 8,
+                bytesPerRow: pixelW * 4,
+                space: cs,
+                bitmapInfo: bitmapInfo
+            )
+        else { return nil }
+
+        cgCtx.interpolationQuality = .none
+        cgCtx.scaleBy(x: scale, y: scale)
+        cgCtx.translateBy(x: -snappedRect.origin.x, y: -snappedRect.origin.y)
+
+        let nsContext = NSGraphicsContext(cgContext: cgCtx, flipped: false)
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = nsContext
+        for annotation in annotations {
+            annotation.draw(in: nsContext)
+        }
+        NSGraphicsContext.restoreGraphicsState()
+
+        return cgCtx.makeImage()
     }
 
     // MARK: - Cleanup

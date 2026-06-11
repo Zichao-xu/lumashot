@@ -2058,7 +2058,11 @@ class Annotation {
         let availW = rect.width - hPad * 2
         let availH = rect.height - vPad * 2
 
-        var fs = max(8, fontSize)
+        // Keep translated text readable: never shrink below ~14pt. The overlay
+        // box is grown to fit at creation time, so heavy shrinking shouldn't be
+        // needed; this floor just guards against cramming.
+        let minFontSize: CGFloat = 14
+        var fs = max(minFontSize, fontSize)
         var attrStr: NSAttributedString
         repeat {
             let font = NSFont.systemFont(ofSize: fs, weight: .medium)
@@ -2070,9 +2074,9 @@ class Annotation {
                 with: NSSize(width: availW, height: .greatestFiniteMagnitude),
                 options: [.usesLineFragmentOrigin, .usesFontLeading]
             )
-            if needed.height <= availH || fs <= 8 { break }
+            if needed.height <= availH || fs <= minFontSize { break }
             fs -= 1
-        } while fs > 8
+        } while fs > minFontSize
 
         // Draw text top-aligned within the block
         let textRect = NSRect(
