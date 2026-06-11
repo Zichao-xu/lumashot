@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.1.8-alpha] - 2026-06-12
+
+### Changed
+- **New app icon and menu bar icon** — a camera-frame "viewfinder" with a sparkle. App icon (`Assets.xcassets/AppIcon.appiconset`) and the menu bar status item (`StatusBarIcon.imageset`, rendered as a template so it adapts to light/dark menu bars).
+
 ## [0.1.7-alpha] - 2026-06-12
 
 ### Added

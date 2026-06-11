@@ -1,9 +1,14 @@
 {
   "images" : [
     {
-      "filename" : "statusbar.svg",
+      "filename" : "statusbar.png",
       "idiom" : "mac",
       "scale" : "1x"
+    },
+    {
+      "filename" : "statusbar@2x.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {
@@ -11,7 +16,6 @@
     "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true,
     "template-rendering-intent" : "template"
   }
 }
