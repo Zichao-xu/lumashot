@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.1.9-alpha] - 2026-06-12
+
+### Changed
+- **Internal refactor — split the 8,197-line `OverlayView` god-object into 16 focused `extension OverlayView` files** (mouse events, toolbar layout/actions, drawing/HDR HUD, annotation creation/controls, output, keyboard, AV devices, zoom, color, previews, etc.), leaving ~2,140 lines of stored state + core setup in `OverlayView.swift`. Pure behaviour-preserving code motion — class-member `private`/`private(set)` declarations were widened to `internal` so the extensions (now in separate files) can reach the view's shared state; no logic and no user-facing behaviour changed. Purely a maintainability improvement.
+
 ## [0.1.8-alpha] - 2026-06-12
 
 ### Changed
