@@ -726,7 +726,7 @@ extension OverlayView {
         }
     }
 
-    private func runTranslatePrewarm() {
+    func runTranslatePrewarm() {
         guard let screenshot = screenshotImage else { return }
         let rect = selectionRect
         guard rect.width > 8, rect.height > 8 else { return }
