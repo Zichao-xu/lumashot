@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [0.1.10-alpha] - 2026-06-12
+
+### Changed
+- **Internal refactor (continued) — decomposed six more god-object files** on top of v0.1.9's `OverlayView` split. Behaviour-preserving code motion only (member `private`/`private(set)` widened to `internal`, stored properties kept on their class; no logic changed). Each file's method set verified unchanged:
+  - `SettingsWindowController` 2,892 → ~390 lines, split per Settings tab (12 files).
+  - `AppDelegate` 2,329 → ~300 lines (8 files: protocol conformances + status bar / hotkey / capture / upload / menus).
+  - `Annotation` 2,090 → ~580 lines (drawing / pixelate / loupe / translate-overlay extracted).
+  - `TranslationService` 1,610 → ~400 lines (`LocalModelService` + `TranslationBridge` to own files; Google/AI/Apple providers split).
+  - `ToolOptionsRowView` 1,911 → ~490 lines (4 files).
+  - `EffectsBandView` 1,498 → ~140 lines (5 files).
+
 ## [0.1.9-alpha] - 2026-06-12
 
 ### Changed
