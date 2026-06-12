@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-12
+
+First stable release of **Lumashot** — a native macOS (AppKit, no Electron) screenshot, annotation, recording, OCR and translation tool. Graduates the `0.1.x-alpha` line.
+
+Highlights accumulated through the alphas:
+- **Screenshot + annotation:** area/window/full-screen capture, a full annotation toolbar (pencil, marker, shapes, arrows, text, numbers, measure, loupe, stamps, pixelate/blur), beautify frames, auto-redact (PII), barcode/QR detection.
+- **Real HDR capture:** HDR screenshots export as Apple gain-map HEIC; annotations are composited into the HDR output (and can glow as HDR "ink"); the HDR toggle applies to the current capture.
+- **Translation:** on-screen OCR → translate overlay with readable layout and speculative pre-warm; engines are Apple on-device, Google, OpenAI-compatible AI, and a **bundled on-device llama.cpp + Qwen local model** (sandbox-compatible, mirror-friendly for China).
+- **Recording:** screen video (MP4) / GIF, scroll capture, webcam + mic, a standalone video editor.
+- **Output:** PNG/JPEG/HEIC/WebP, clipboard, history, pin-to-screen, imgbb / Google Drive / S3 upload.
+- **New app + menu-bar icon** (camera-frame + sparkle).
+- **Internal:** the seven largest god-object source files were decomposed into ~54 focused `extension` files (behaviour-preserving) for maintainability.
+
 ## [0.1.10-alpha] - 2026-06-12
 
 ### Changed
