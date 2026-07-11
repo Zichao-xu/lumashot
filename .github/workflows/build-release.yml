@@ -67,10 +67,10 @@ jobs:
             MARKETING_VERSION="$VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 
-          test -d "build/Build/Products/Release/Lumashot.app"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleName" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist"
-          if /usr/libexec/PlistBuddy -c "Print :SUFeedURL" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist" >/dev/null 2>&1; then
+          test -d "build/Build/Products/Release/macshot.app"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleName" "build/Build/Products/Release/macshot.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "build/Build/Products/Release/macshot.app/Contents/Info.plist"
+          if /usr/libexec/PlistBuddy -c "Print :SUFeedURL" "build/Build/Products/Release/macshot.app/Contents/Info.plist" >/dev/null 2>&1; then
             echo "Unexpected Sparkle SUFeedURL in built app"
             exit 1
           fi
@@ -80,17 +80,17 @@ jobs:
           brew install create-dmg
           rm -rf /tmp/dmg-staging
           mkdir -p /tmp/dmg-staging
-          cp -R "build/Build/Products/Release/Lumashot.app" /tmp/dmg-staging/
+          cp -R "build/Build/Products/Release/macshot.app" /tmp/dmg-staging/
           create-dmg \
             --volname "Lumashot" \
             --background "assets/dmg-background.png" \
             --window-pos 200 120 \
             --window-size 600 400 \
             --icon-size 100 \
-            --icon "Lumashot.app" 150 185 \
+            --icon "macshot.app" 150 185 \
             --app-drop-link 450 185 \
             --no-internet-enable \
-            --hide-extension "Lumashot.app" \
+            --hide-extension "macshot.app" \
             "$DMG_NAME" \
             /tmp/dmg-staging \
             || [ $? -eq 2 ]
