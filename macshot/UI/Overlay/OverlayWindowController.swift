@@ -282,6 +282,7 @@ class OverlayWindowController {
     }
 
     private func captureRegion() -> NSImage? {
+        overlayView?.commitTextFieldIfNeeded()
         return overlayDelegate?.overlayCrossScreenImage(self)
             ?? overlayView?.captureSelectedRegion()
     }
@@ -384,6 +385,7 @@ extension OverlayWindowController: OverlayViewDelegate {
                 width: selectionRect.width,
                 height: selectionRect.height
             )
+            overlayView?.commitTextFieldIfNeeded()
             let annotationOverlay = overlayView?.renderAnnotationOverlayForHDR()
 
             NSPasteboard.general.clearContents()
@@ -666,6 +668,7 @@ extension OverlayWindowController: OverlayViewDelegate {
     }
 
     func overlayViewDidRequestDetach() {
+        overlayView?.commitTextFieldIfNeeded()
         guard let view = overlayView else { return }
         let sel = view.selectionRect
 
@@ -953,6 +956,7 @@ extension OverlayWindowController: OverlayViewDelegate {
         )
         // Snapshot annotations now, while the overlay view is alive (the save
         // panel runs async and the view is torn down before the HDR capture).
+        overlayView?.commitTextFieldIfNeeded()
         let annotationOverlay = overlayView?.renderAnnotationOverlayForHDR()
 
         let savePanel = NSSavePanel()
