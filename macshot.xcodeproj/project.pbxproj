@@ -184,9 +184,13 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/scripts/bundle-llama-engine.sh",
+				"$(SRCROOT)/Vendor/llama-engine",
+				"$(SRCROOT)/llama-engine.entitlements",
 			);
 			name = "Bundle llama engine";
 			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/llama-engine",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
