@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-10-11
+
 ### Changed
 - **Renamed to Lumashot everywhere.** The app is now `Lumashot.app` with Bundle ID `com.zichao.lumashot` (was `macshot.app` / `com.sw33tlie.macshot.macshot`). Settings, capture history and the downloaded local translation model are copied over automatically on first launch. After installing, delete the old `macshot.app` from Applications and grant Screen Recording once more; the save folder may need to be picked again.
 - **Releases are now signed with a stable certificate**, so the Screen Recording permission survives future updates. Previously each version was unsigned and macOS treated it as a new app: System Settings showed the permission ON while Lumashot kept asking for it.
