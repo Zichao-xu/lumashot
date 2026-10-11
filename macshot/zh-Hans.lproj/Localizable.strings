@@ -422,8 +422,8 @@
 
 /* Recording — Input Monitoring Permission */
 "Input Monitoring Required" = "需要输入监控权限";
-"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要输入监控权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
-"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要辅助功能权限才能在录制时显示按键。请在 System Settings 中授予权限，然后重试。";
+"Lumashot needs Input Monitoring permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要输入监控权限才能在录制时显示按键。请在系统设置中授予权限，然后重试。";
+"Lumashot needs Accessibility permission to show keystrokes during recording. Please grant access in System Settings, then try again." = "Lumashot 需要辅助功能权限才能在录制时显示按键。请在系统设置中授予权限，然后重试。";
 
 /* Recording — Keystroke Overlay */
 "Show Keystrokes" = "显示按键";
@@ -607,3 +607,14 @@
 "Local Model Failed" = "本地模型失败";
 "HDR capture applies to this screenshot on supported Macs." = "HDR 仅应用于本次截图（需要支持的 Mac）。";
 "HDR output enabled - confirm to save HEIC" = "HDR 输出已开启 - 确认后保存 HEIC";
+
+/* Onboarding & local translation model */
+"1. Click \"Open Screen Recording Settings\" below.\n2. In System Settings, find Lumashot in the list.\n3. Turn Lumashot on.\n4. Close System Settings and return here." = "1. 点按下方的“打开屏幕录制设置”。\n2. 在系统设置的列表中找到 Lumashot。\n3. 打开 Lumashot 的开关。\n4. 关闭系统设置并回到这里。";
+"All download sources failed" = "所有下载源均失败";
+"Bundled translation engine is missing — reinstall the app." = "内置翻译引擎缺失，请重新安装应用。";
+"Downloading %@: %.0f%%" = "正在下载 %1$@：%2$.0f%%";
+"Engine download failed:" = "引擎下载失败：";
+"Engine extraction failed - binary not found" = "引擎解压失败：找不到可执行文件";
+"Model download failed:" = "模型下载失败：";
+"Model file not found after download" = "下载完成后找不到模型文件";
+"Model file too small (%lld bytes) - download may be corrupted" = "模型文件过小（%lld 字节），下载可能已损坏";

@@ -320,7 +320,7 @@ final class LocalModelService {
                 // Check file size is at least 1MB (model should be ~300MB)
                 if let attrs = try? FileManager.default.attributesOfItem(atPath: self.modelURL.path),
                    let size = attrs[.size] as? Int64, size < 1_000_000 {
-                    completion(.failure(TranslationError.aiTranslation(L("Model file too small (\(size) bytes) - download may be corrupted"))))
+                    completion(.failure(TranslationError.aiTranslation(String(format: L("Model file too small (%lld bytes) - download may be corrupted"), size))))
                     return
                 }
                 completion(.success(()))
