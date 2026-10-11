@@ -75,6 +75,30 @@ jobs:
             exit 1
           fi
 
+      - name: Sign app with stable self-signed identity
+        # A fixed certificate keeps the designated requirement stable across
+        # versions, so the Screen Recording grant survives updates (an unsigned
+        # build is treated by TCC as a new app every release). See scripts/sign-app.sh.
+        env:
+          SIGN_P12: ${{ secrets.LUMASHOT_SIGN_P12 }}
+          SIGN_P12_PASSWORD: ${{ secrets.LUMASHOT_SIGN_P12_PASSWORD }}
+        run: |
+          if [ -z "$SIGN_P12" ]; then
+            echo "::error::LUMASHOT_SIGN_P12 secret is missing; refusing to ship an unsigned build"
+            exit 1
+          fi
+          KC="$RUNNER_TEMP/lumashot-sign.keychain-db"
+          KC_PW="$(openssl rand -hex 16)"
+          security create-keychain -p "$KC_PW" "$KC"
+          security set-keychain-settings "$KC"
+          security unlock-keychain -p "$KC_PW" "$KC"
+          echo "$SIGN_P12" | base64 --decode > "$RUNNER_TEMP/sign.p12"
+          security import "$RUNNER_TEMP/sign.p12" -k "$KC" -P "$SIGN_P12_PASSWORD" -T /usr/bin/codesign
+          rm -f "$RUNNER_TEMP/sign.p12"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KC_PW" "$KC" >/dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          LUMASHOT_SIGN_KEYCHAIN="$KC" scripts/sign-app.sh "build/Build/Products/Release/macshot.app"
+
       - name: Package DMG
         run: |
           brew install create-dmg

@@ -302,6 +302,10 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 
 CI triggers on tag push (`v*.*.*` or `v*.*.*-*`) or manual `workflow_dispatch`. The workflow builds an unsigned alpha DMG and creates a GitHub Release. Lumashot itself checks GitHub Releases and opens the matching DMG asset; it does not use Sparkle hot updates or appcast signing.
 
+### Code signing (stable self-signed identity)
+
+CI signs the app with the self-signed certificate "Lumashot Self-Signed" (secrets `LUMASHOT_SIGN_P12` + `LUMASHOT_SIGN_P12_PASSWORD`) via `scripts/sign-app.sh`. This keeps the designated requirement at `identifier + certificate root` so the Screen Recording grant survives updates. **Never ship ad-hoc/unsigned builds** — their requirement is a per-build cdhash, so TCC shows the toggle ON but the new version is unauthorized. Local builds: build with `CODE_SIGN_IDENTITY="-"`, then run `scripts/sign-app.sh path/to/macshot.app`. Rotating the certificate forces every user to re-grant once.
+
 ### Stable release
 
 1. **Add a CHANGELOG.md entry** for the new version — CI extracts it for GitHub Release notes.
