@@ -90,7 +90,7 @@ extension AppDelegate {
         let imageExtensions: Set<String> = ["png", "jpg", "jpeg", "tiff", "tif", "bmp", "gif", "heic", "heif", "webp", "icns"]
         let videoExtensions: Set<String> = ["mp4", "mov", "m4v"]
         for url in urls {
-            if url.scheme == "lumashot" {
+            if url.scheme == "lumashot" || url.scheme == "macshot" {  // macshot:// kept for pre-rename automations
                 let urlSchemeEnabled = UserDefaults.standard.object(forKey: "urlSchemeEnabled") as? Bool ?? true
                 guard urlSchemeEnabled else { continue }
                 handleURLSchemeAction(url)

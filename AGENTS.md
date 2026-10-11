@@ -15,25 +15,14 @@ This repository is Lumashot. Any AI agent, automation, or contributor touching t
 
 To maintain Screen Recording / TCC permission stability, the app uses a **dual identity**:
 
-| Layer | Name | Reason |
-|---|---|---|
-| **Internal / TCC identity** | `com.sw33tlie.macshot.macshot` / `macshot.app` | Must match upstream so TCC recognizes the app consistently |
-| **User-visible branding** | Lumashot | README, GitHub repo, Release titles, DMG filenames, About text, menu strings |
+| Layer | Name |
+|---|---|
+| **App identity** (since v1.0.2) | Bundle ID `com.zichao.lumashot`, `Lumashot.app`, target/scheme `Lumashot`, `Lumashot.xcodeproj`, source dir `Lumashot/` |
+| **Legacy internal identifiers** (kept on purpose) | Data dirs `com.sw33tlie.macshot/`, keychain service `com.sw33tlie.macshot.translation`, notification/pasteboard names — invisible to users, renaming them would need another migration |
 
-**Do NOT change the internal identity fields** (Bundle ID, PRODUCT_NAME, .app bundle name) unless the user explicitly requests it. Changing them breaks TCC permission grants.
+TCC stability comes from the **stable self-signed signing identity** (see CLAUDE.md → Code signing), not from the bundle ID. Never ship ad-hoc/unsigned builds.
 
-Fields that use `macshot` (internal identity, do not change):
-- `PRODUCT_BUNDLE_IDENTIFIER` in pbxproj
-- `PRODUCT_NAME` / target name in pbxproj
-- `CFBundleURLSchemes` in Info.plist
-- Notification names, pasteboard types, keychain service names, data directory paths
-
-Fields that use `Lumashot` (user-visible branding):
-- README, GitHub repo name, Release titles
-- DMG filename (e.g. `Lumashot-darwin-arm64-0.1.6-alpha.dmg`)
-- `NSScreenCaptureUsageDescription` and other usage descriptions in Info.plist
-- About window, Settings window text
-- GitHub release checker URL (`Zichao-xu/lumashot`)
+Data from the pre-rename bundle ID `com.sw33tlie.macshot.macshot` is copied on first launch by `LegacyDataMigrator` (needs the read-only home-relative temporary-exception entitlement). URL scheme: `lumashot://`, with `macshot://` still accepted for old automations.
 
 ## Hard Release Rule
 
@@ -82,11 +71,10 @@ Current update behavior:
 ## Product Identity Rules
 
 - Current user-visible product name: Lumashot.
-- Internal identity (Bundle ID, .app name, target name): matches upstream `macshot` for TCC stability.
 - GPLv3 must be preserved.
 - Upstream attribution to `sw33tLie/macshot` must be preserved where appropriate.
 - User-visible app names, menus, prompts, release titles, and new distribution assets should use Lumashot.
-- The `macshot` name in internal identity fields (Bundle ID, target name, notification names, data paths) is intentional and must not be "cleaned up" to Lumashot.
+- Legacy internal identifiers listed above stay as-is; do not "clean them up".
 
 ## Baseline
 
@@ -94,7 +82,7 @@ As of `v0.1.6-alpha`, the release asset is:
 
 `Lumashot-darwin-arm64-0.1.6-alpha.dmg`
 
-The app inside is `macshot.app` with Bundle ID `com.sw33tlie.macshot.macshot`.
+The app inside is `macshot.app` with Bundle ID `com.sw33tlie.macshot.macshot`. From v1.0.2 it is `Lumashot.app` with Bundle ID `com.zichao.lumashot`.
 
 Any later distributed change must use a later version.
 
@@ -104,8 +92,8 @@ Any later distributed change must use a later version.
 2. **Read `CLAUDE.md`** for architecture, coding conventions, and the full file structure.
 3. **Read `CONTRIBUTING.md`** for how to build, test, and release.
 4. **Check git tags** (`git tag -l`) before creating a new version — never reuse a tag.
-5. **Do not change internal identity fields** (Bundle ID, PRODUCT_NAME, .app name) — it breaks TCC permission grants.
+5. **Do not change the Bundle ID or signing certificate** — either change resets every user's permission grants.
 6. **Test entitlement changes** by building and checking Screen Recording permission detection.
-7. **Never rename the Xcode project** (`macshot.xcodeproj`) or the main source directory (`macshot/`) unless the user explicitly asks — it breaks Xcode references.
+7. **Xcode project** is `Lumashot.xcodeproj`, source dir `Lumashot/` (renamed from `macshot` in v1.0.2).
 8. **The `PermissionsGuide.imageset` no longer contains an image** (removed in v0.1.4-alpha). `PermissionOnboardingController.swift` uses text-based instructions now. Do not add screenshots of system UI back.
-9. **The entitlements file** is `macshot/macshot.entitlements`. It includes `com.apple.security.device.screen-capture` which upstream does not have — this is intentional and must be kept.
+9. **The entitlements file** is `Lumashot/Lumashot.entitlements`. It includes `com.apple.security.device.screen-capture` which upstream does not have — this is intentional and must be kept.

@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Changed
+- **Renamed to Lumashot everywhere.** The app is now `Lumashot.app` with Bundle ID `com.zichao.lumashot` (was `macshot.app` / `com.sw33tlie.macshot.macshot`). Settings, capture history and the downloaded local translation model are copied over automatically on first launch. After installing, delete the old `macshot.app` from Applications and grant Screen Recording once more; the save folder may need to be picked again.
+- **Releases are now signed with a stable certificate**, so the Screen Recording permission survives future updates. Previously each version was unsigned and macOS treated it as a new app: System Settings showed the permission ON while Lumashot kept asking for it.
+
+### Fixed
+- `lumashot://` URL scheme actions did nothing (the app registered `macshot://` but only handled `lumashot://`). Both now work.
+- Missing Simplified Chinese strings in the permission onboarding and local-model download errors.
+
 ## [1.0.0] - 2026-06-12
 
 First stable release of **Lumashot** — a native macOS (AppKit, no Electron) screenshot, annotation, recording, OCR and translation tool. Graduates the `0.1.x-alpha` line.

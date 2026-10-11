@@ -38,7 +38,7 @@
 ```bash
 git clone https://github.com/Zichao-xu/lumashot.git
 cd lumashot
-xcodebuild -scheme macshot -configuration Release
+xcodebuild -scheme Lumashot -configuration Release
 # Result: Lumashot.app → copy to /Applications
 ```
 

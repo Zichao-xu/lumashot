@@ -15,7 +15,7 @@ Thanks for your interest in contributing! Lumashot is open to bug fixes, improve
 ```
 git clone https://github.com/Zichao-xu/lumashot.git
 cd lumashot
-open macshot.xcodeproj          # Opens in Xcode
+open Lumashot.xcodeproj          # Opens in Xcode
 ```
 
 ### 2. Read these files (in order)
@@ -28,8 +28,8 @@ open macshot.xcodeproj          # Opens in Xcode
 
 ### 3. Build & Run
 
-- Open `macshot.xcodeproj` in Xcode
-- Select scheme `macshot` (Release or Debug)
+- Open `Lumashot.xcodeproj` in Xcode
+- Select scheme `Lumashot` (Release or Debug)
 - **Build & Run** (Cmd+R)
 - Grant **Screen Recording** permission when prompted (System Settings → Privacy & Security → Screen & System Audio Recording)
 - App appears in the **menu bar** (no dock icon by default)
@@ -59,12 +59,12 @@ Lumashot is a **fork** of `sw33tLie/macshot`. Rules:
 - **User-visible text** must say `Lumashot` (not `macshot`)
 - **Bundle ID** is `com.zichao.lumashot`
 - **Upstream attribution** (`sw33tLie/macshot`) must be preserved in LICENSE, comments, and history
-- **Xcode project file** is still named `macshot.xcodeproj` and source lives in `macshot/` — do NOT rename these unless you know what you're doing (it breaks Xcode references)
-- **entitlements** file is `macshot/Lumashot.entitlements` (renamed from `macshot.entitlements` in v0.1.4-alpha)
+- **Xcode project** is `Lumashot.xcodeproj`, source lives in `Lumashot/` (renamed from `macshot` in v1.0.2)
+- **entitlements** file is `Lumashot/Lumashot.entitlements`
 
 ## Entitlements (CRITICAL)
 
-The app is sandboxed. `macshot/Lumashot.entitlements` must contain:
+The app is sandboxed. `Lumashot/Lumashot.entitlements` must contain:
 
 ```xml
 com.apple.security.app-sandbox: true
@@ -84,7 +84,7 @@ If you add new capabilities, update this file AND `AGENTS.md`.
 Menu-bar agent app. No main window. Global hotkey (default: `Cmd+Shift+X`) or menu bar click → fullscreen overlay → selection → annotation → output.
 
 ```
-macshot/
+Lumashot/
 ├── AppDelegate.swift                     # App lifecycle, status bar, hotkey
 ├── Capture/
 │   └── ScreenCaptureManager.swift      # Multi-screen capture via ScreenCaptureKit
@@ -121,7 +121,7 @@ macshot/
 ### Release steps
 
 1. Update `CHANGELOG.md` with your changes
-2. Bump version in `macshot.xcodeproj/project.pbxproj`:
+2. Bump version in `Lumashot.xcodeproj/project.pbxproj`:
    - `MARKETING_VERSION = "0.1.5-alpha"`
    - `CURRENT_PROJECT_VERSION = 105`
 3. Commit: `chore: bump version to v0.1.5-alpha`

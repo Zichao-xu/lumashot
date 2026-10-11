@@ -8,15 +8,15 @@ The repo lives at `/Users/sw33tlie/Documents/GitHub/macshot`.
 ## Plan
 
 1. **Find missing keys per locale** — run a Python one-liner that:
-   - Grabs every `L("…")` key that appears in the Swift sources under `macshot/`.
-   - Reads each `macshot/<lang>.lproj/Localizable.strings`, normalizing `\UXXXX` escapes so they compare equal to literal characters.
+   - Grabs every `L("…")` key that appears in the Swift sources under `Lumashot/`.
+   - Reads each `Lumashot/<lang>.lproj/Localizable.strings`, normalizing `\UXXXX` escapes so they compare equal to literal characters.
    - Emits a JSON-ish table of `{locale: [missing_keys_sorted]}`.
 
    Use this exact script (pipe it through `python3`):
 
    ```python
    import re, os, json
-   d = '/Users/sw33tlie/Documents/GitHub/macshot/macshot'
+   d = '/Users/sw33tlie/Documents/GitHub/macshot/Lumashot'
    code = set()
    for root, _, files in os.walk(d):
        if '.lproj' in root: continue
@@ -41,7 +41,7 @@ The repo lives at `/Users/sw33tlie/Documents/GitHub/macshot`.
 
 2. **If `en` is in the missing map**, handle it specially and FIRST:
    - English is the canonical source — add the missing keys to
-     `macshot/en.lproj/Localizable.strings` directly, using the English
+     `Lumashot/en.lproj/Localizable.strings` directly, using the English
      string as both key and value. Insert near semantically-related
      existing entries (e.g. "Add X" near other "Add …" keys). Do NOT
      dispatch a translator for English.

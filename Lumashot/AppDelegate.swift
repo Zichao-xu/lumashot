@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Prevent multiple instances — if already running, activate the existing one and quit
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.sw33tlie.macshot.macshot"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.zichao.lumashot"
         let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         if running.count > 1 {
             // Tell the existing instance to show its icon and open Settings

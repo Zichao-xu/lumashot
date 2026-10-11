@@ -1,5 +1,5 @@
 #!/bin/sh
-# Re-sign a built macshot.app with a stable signing identity.
+# Re-sign a built Lumashot.app with a stable signing identity.
 #
 # Why: ad-hoc / linker-only signatures give the app a designated requirement of
 # "cdhash H<...>", which changes on every build. macOS TCC stores that
@@ -11,14 +11,14 @@
 # The certificate is self-signed (no Apple Developer account). It does not need
 # to be trusted: codesign signs with it, and TCC only matches the leaf hash.
 #
-# Usage: scripts/sign-app.sh path/to/macshot.app [identity]
+# Usage: scripts/sign-app.sh path/to/Lumashot.app [identity]
 #   identity defaults to $LUMASHOT_SIGN_IDENTITY, then "Lumashot Self-Signed".
 set -e
 
 APP="$1"
 IDENT="${2:-${LUMASHOT_SIGN_IDENTITY:-Lumashot Self-Signed}}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-[ -d "$APP" ] || { echo "usage: $0 path/to/macshot.app [identity]" >&2; exit 1; }
+[ -d "$APP" ] || { echo "usage: $0 path/to/Lumashot.app [identity]" >&2; exit 1; }
 
 # An untrusted self-signed identity can't be looked up by name reliably;
 # resolve it to its SHA-1 hash (also accepts a hash or "-" directly).
@@ -37,7 +37,7 @@ if [ -d "$ENG" ]; then
     find "$ENG" -name '*.dylib' -type f -exec $SIGN {} +
     $SIGN --entitlements "$ROOT/llama-engine.entitlements" "$ENG/llama-server"
 fi
-$SIGN --entitlements "$ROOT/macshot/macshot.entitlements" "$APP"
+$SIGN --entitlements "$ROOT/Lumashot/Lumashot.entitlements" "$APP"
 
 /usr/bin/codesign --verify --deep --strict "$APP"
 echo "Signed $APP"

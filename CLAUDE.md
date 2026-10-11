@@ -11,7 +11,7 @@ Native macOS screenshot & annotation tool inspired by Flameshot. Built with Swif
 - **Sandbox:** Enabled (entitlements: network.client, files.user-selected.read-write, files.bookmarks.app-scope, **device.screen-capture**, device.audio-input, device.camera)
 - **LSUIElement:** YES (menu bar only app, no dock icon — switches to `.regular` when editor windows are open)
 - **Permissions:** Screen Recording (Info.plist has Privacy - Screen Capture Usage Description)
-- **Xcode:** File system synchronized groups — just create .swift files in `macshot/` and Xcode picks them up automatically
+- **Xcode:** File system synchronized groups — just create .swift files in `Lumashot/` and Xcode picks them up automatically
 
 ## Architecture
 
@@ -20,7 +20,7 @@ Menu bar agent app. No main window. Global hotkey (Cmd+Shift+X) or menu bar clic
 ### File Structure
 
 ```
-macshot/
+Lumashot/
 ├── main.swift                          # App entry point
 ├── AppDelegate.swift                   # App lifecycle, status bar, hotkey, capture orchestration
 │
@@ -265,7 +265,7 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 
 - Pure AppKit, no SwiftUI except `BeautifyRenderer` which uses SwiftUI `MeshGradient` + `ImageRenderer` for mesh gradient rendering (macOS 15+ only, guarded with `@available`)
 - **Use proper AppKit components:** NSPopover for popovers, NSView subclasses for toolbar buttons and strips, NSSlider/NSSegmentedControl/NSButton for controls, NSScrollView for editor zoom/pan, NSTextView for text editing. Avoid reimplementing standard UI components with manual `draw()` + coordinate hit-testing.
-- **Strict concurrency:** CI builds with Xcode 16+ and `-Owholemodule` which enforces strict Swift concurrency. Any code using `@MainActor`-isolated SwiftUI APIs (e.g. `ImageRenderer`) must itself be `@MainActor`. Always mark classes/functions that touch SwiftUI rendering with `@MainActor`. Calling `@MainActor`-isolated methods (e.g. on AppDelegate) from non-`@MainActor` classes requires `MainActor.assumeIsolated { }`. **Local Debug builds do NOT catch these errors.** Before tagging a release, always verify with a Release build: `xcodebuild -scheme macshot -configuration Release build 2>&1 | grep "error:"`
+- **Strict concurrency:** CI builds with Xcode 16+ and `-Owholemodule` which enforces strict Swift concurrency. Any code using `@MainActor`-isolated SwiftUI APIs (e.g. `ImageRenderer`) must itself be `@MainActor`. Always mark classes/functions that touch SwiftUI rendering with `@MainActor`. Calling `@MainActor`-isolated methods (e.g. on AppDelegate) from non-`@MainActor` classes requires `MainActor.assumeIsolated { }`. **Local Debug builds do NOT catch these errors.** Before tagging a release, always verify with a Release build: `xcodebuild -scheme Lumashot -configuration Release build 2>&1 | grep "error:"`
 - **Tool handler pattern:** New annotation tools should implement `AnnotationToolHandler` protocol in `UI/Tools/`, not add switch cases to OverlayView. The handler's `start`/`update`/`finish` methods use `AnnotationCanvas` to access shared state.
 - Apple frameworks: ScreenCaptureKit, Vision, CoreImage, AVFoundation + Swift-WebP for WebP encoding
 - SF Symbols for toolbar icons
@@ -290,7 +290,7 @@ Copy to clipboard, Save to file (PNG/JPEG/HEIC/WebP), Pin (floating always-on-to
 
 ## Build & Run
 
-- Open `macshot.xcodeproj` in Xcode
+- Open `Lumashot.xcodeproj` in Xcode
 - Build & Run (Cmd+R)
 - Grant Screen Recording permission when prompted
 - App appears as icon in menu bar (no dock icon)
@@ -304,7 +304,7 @@ CI triggers on tag push (`v*.*.*` or `v*.*.*-*`) or manual `workflow_dispatch`. 
 
 ### Code signing (stable self-signed identity)
 
-CI signs the app with the self-signed certificate "Lumashot Self-Signed" (secrets `LUMASHOT_SIGN_P12` + `LUMASHOT_SIGN_P12_PASSWORD`) via `scripts/sign-app.sh`. This keeps the designated requirement at `identifier + certificate root` so the Screen Recording grant survives updates. **Never ship ad-hoc/unsigned builds** — their requirement is a per-build cdhash, so TCC shows the toggle ON but the new version is unauthorized. Local builds: build with `CODE_SIGN_IDENTITY="-"`, then run `scripts/sign-app.sh path/to/macshot.app`. Rotating the certificate forces every user to re-grant once.
+CI signs the app with the self-signed certificate "Lumashot Self-Signed" (secrets `LUMASHOT_SIGN_P12` + `LUMASHOT_SIGN_P12_PASSWORD`) via `scripts/sign-app.sh`. This keeps the designated requirement at `identifier + certificate root` so the Screen Recording grant survives updates. **Never ship ad-hoc/unsigned builds** — their requirement is a per-build cdhash, so TCC shows the toggle ON but the new version is unauthorized. Local builds: build with `CODE_SIGN_IDENTITY="-"`, then run `scripts/sign-app.sh path/to/Lumashot.app`. Rotating the certificate forces every user to re-grant once.
 
 ### Stable release
 

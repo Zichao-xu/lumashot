@@ -14,9 +14,10 @@
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>macshot Actions</string>
+			<string>Lumashot Actions</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>lumashot</string>
 				<string>macshot</string>
 			</array>
 		</dict>

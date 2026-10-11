@@ -45,8 +45,8 @@ jobs:
       - name: Resolve packages
         run: |
           xcodebuild \
-            -project macshot.xcodeproj \
-            -scheme macshot \
+            -project Lumashot.xcodeproj \
+            -scheme Lumashot \
             -configuration Release \
             -derivedDataPath build \
             CODE_SIGN_IDENTITY="" \
@@ -57,8 +57,8 @@ jobs:
       - name: Build unsigned app
         run: |
           xcodebuild clean build \
-            -project macshot.xcodeproj \
-            -scheme macshot \
+            -project Lumashot.xcodeproj \
+            -scheme Lumashot \
             -configuration Release \
             -derivedDataPath build \
             CODE_SIGN_IDENTITY="" \
@@ -67,10 +67,10 @@ jobs:
             MARKETING_VERSION="$VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 
-          test -d "build/Build/Products/Release/macshot.app"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleName" "build/Build/Products/Release/macshot.app/Contents/Info.plist"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "build/Build/Products/Release/macshot.app/Contents/Info.plist"
-          if /usr/libexec/PlistBuddy -c "Print :SUFeedURL" "build/Build/Products/Release/macshot.app/Contents/Info.plist" >/dev/null 2>&1; then
+          test -d "build/Build/Products/Release/Lumashot.app"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleName" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist"
+          if /usr/libexec/PlistBuddy -c "Print :SUFeedURL" "build/Build/Products/Release/Lumashot.app/Contents/Info.plist" >/dev/null 2>&1; then
             echo "Unexpected Sparkle SUFeedURL in built app"
             exit 1
           fi
@@ -97,24 +97,24 @@ jobs:
           rm -f "$RUNNER_TEMP/sign.p12"
           security set-key-partition-list -S apple-tool:,apple: -s -k "$KC_PW" "$KC" >/dev/null
           security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
-          LUMASHOT_SIGN_KEYCHAIN="$KC" scripts/sign-app.sh "build/Build/Products/Release/macshot.app"
+          LUMASHOT_SIGN_KEYCHAIN="$KC" scripts/sign-app.sh "build/Build/Products/Release/Lumashot.app"
 
       - name: Package DMG
         run: |
           brew install create-dmg
           rm -rf /tmp/dmg-staging
           mkdir -p /tmp/dmg-staging
-          cp -R "build/Build/Products/Release/macshot.app" /tmp/dmg-staging/
+          cp -R "build/Build/Products/Release/Lumashot.app" /tmp/dmg-staging/
           create-dmg \
             --volname "Lumashot" \
             --background "assets/dmg-background.png" \
             --window-pos 200 120 \
             --window-size 600 400 \
             --icon-size 100 \
-            --icon "macshot.app" 150 185 \
+            --icon "Lumashot.app" 150 185 \
             --app-drop-link 450 185 \
             --no-internet-enable \
-            --hide-extension "macshot.app" \
+            --hide-extension "Lumashot.app" \
             "$DMG_NAME" \
             /tmp/dmg-staging \
             || [ $? -eq 2 ]
