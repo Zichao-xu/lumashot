@@ -1,5 +1,6 @@
 import Cocoa
 import ScreenCaptureKit
+import CoreImage
 
 struct ScreenCapture {
     let screen: NSScreen
@@ -79,6 +80,13 @@ class ScreenCaptureManager {
                 ) { group in
                     for (display, screen) in pairs {
                         group.addTask {
+                            if #available(macOS 15.0, *),
+                                let image = await captureDisplayViaHDR(
+                                    display: display, screen: screen,
+                                    excludingWindows: excludedSCWindows)
+                            {
+                                return ScreenCapture(screen: screen, image: image)
+                            }
                             if #available(macOS 14.0, *) {
                                 // SCScreenshotManager: single-shot API, no stream overhead
                                 let filter = SCContentFilter(
@@ -135,6 +143,41 @@ class ScreenCaptureManager {
                 await MainActor.run { completion([]) }
             }
         }
+    }
+
+    // MARK: - SDR output via the HDR capture path
+
+    private static let sdrConversionContext = CIContext()
+
+    /// Captures a display through the HDR preset and renders it down to 8-bit SDR.
+    ///
+    /// On an EDR-capable display the plain SDR capture is a separate composite
+    /// that can differ from what is on screen: dark Liquid Glass windows come
+    /// out lifted/washed out because their tint is lost. The HDR capture is the
+    /// composite actually shown, so rendering it to SDR matches the screen.
+    /// Values above SDR white are clipped, as on an SDR display; tone-mapping
+    /// the headroom instead would darken all the SDR content around it.
+    @available(macOS 15.0, *)
+    private static func captureDisplayViaHDR(
+        display: SCDisplay, screen: NSScreen, excludingWindows: [SCWindow]
+    ) async -> CGImage? {
+        let filter = SCContentFilter(display: display, excludingWindows: excludingWindows)
+        let config = SCStreamConfiguration(preset: .captureHDRScreenshotLocalDisplay)
+        let scale = Int(screen.backingScaleFactor)
+        config.width = display.width * scale
+        config.height = display.height * scale
+        config.showsCursor = UserDefaults.standard.bool(forKey: "captureCursor")
+        config.captureResolution = .best
+
+        guard
+            let hdr = try? await SCScreenshotManager.captureImage(
+                contentFilter: filter, configuration: config),
+            let outputSpace = CGColorSpace(name: CGColorSpace.displayP3)
+        else { return nil }
+
+        let image = CIImage(cgImage: hdr)
+        return sdrConversionContext.createCGImage(
+            image, from: image.extent, format: .RGBA8, colorSpace: outputSpace)
     }
 
     // MARK: - Single window capture (with transparency)

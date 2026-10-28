@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [3] - 2026-10-29
+
+Versions are whole numbers from now on (v3, v4, …); there are no dotted versions after 1.0.2.
+
+### Fixed
+- **Liquid Glass came out frosted in screenshots.** Lumashot took focus before grabbing the screen, so the app you were capturing switched to its inactive (frosted) glass. The screen is now captured before Lumashot activates, the delayed-capture countdown no longer steals focus, and HDR captures hand focus back to the captured app before re-grabbing the pixels.
+- **SDR screenshots looked washed out next to HDR ones** on EDR displays: the system's SDR capture lifts dark Liquid Glass windows. On macOS 15+ SDR screenshots now go through the HDR capture and are rendered down to SDR, matching what is on screen (highlights above SDR white are clipped).
+- **Glass flickered to frosted for a frame** when a capture started or finished. Lumashot now only activates once the frozen screenshot is on screen, and on close keeps the overlay window up showing the plain screenshot until the captured app has redrawn as active.
+- In-app update check now understands whole-number versions (`v3`).
+
 ## [1.0.2] - 2026-10-11
 
 ### Changed

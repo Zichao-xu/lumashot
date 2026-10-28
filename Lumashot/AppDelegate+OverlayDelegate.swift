@@ -52,6 +52,26 @@ extension AppDelegate: OverlayWindowControllerDelegate {
         }
     }
 
+    func overlayWillRecaptureHDR(_ controller: OverlayWindowController, completion: @escaping () -> Void) {
+        // Reactivate the captured app so its windows redraw with active
+        // Liquid Glass before ScreenCaptureKit grabs the HDR pixels.
+        guard let prev = previousApp, !prev.isTerminated,
+              prev.bundleIdentifier != Bundle.main.bundleIdentifier else {
+            completion()
+            return
+        }
+        Self.activateApp(prev)
+        // Activation + the glass state transition take a few frames to land.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: completion)
+    }
+
+    func overlayShouldLeaveFocusCurtain(_ controller: OverlayWindowController, window: NSWindow) -> Bool {
+        guard recordingEngine == nil, let prev = previousApp, !prev.isTerminated,
+              prev.bundleIdentifier != Bundle.main.bundleIdentifier else { return false }
+        holdFocusCurtain(window)
+        return true
+    }
+
     func stitchCrossScreenCapture(primary: OverlayWindowController, others: [OverlayWindowController]) -> NSImage? {
         let primaryOrigin = primary.screen.frame.origin
         let primarySelRect = primary.selectionRect

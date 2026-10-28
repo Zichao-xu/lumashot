@@ -114,7 +114,7 @@ Lumashot/
 **Read `AGENTS.md` before releasing. These are hard rules:**
 
 1. **Published versions are immutable** — no tag moves, no force-push, no overwriting releases
-2. **New fix → new version** (e.g. `v0.1.5-alpha` after `v0.1.4-alpha`)
+2. **New fix → new version, whole numbers only** (`v4` after `v3`; no dotted versions after `v1.0.2`). `git tag -l` first: inherited upstream tags may already hold a number
 3. **No Sparkle / appcast** — app checks GitHub Releases and opens DMG for manual install
 4. **DMG naming:** `Lumashot-darwin-arm64-<version>.dmg`
 
@@ -122,21 +122,21 @@ Lumashot/
 
 1. Update `CHANGELOG.md` with your changes
 2. Bump version in `Lumashot.xcodeproj/project.pbxproj`:
-   - `MARKETING_VERSION = "0.1.5-alpha"`
-   - `CURRENT_PROJECT_VERSION = 105`
-3. Commit: `chore: bump version to v0.1.5-alpha`
-4. Tag: `git tag v0.1.5-alpha && git push origin main --tags`
-5. Create GitHub Release (prerelease if alpha/beta):
+   - `MARKETING_VERSION = 4;`
+   - `CURRENT_PROJECT_VERSION = 40000;` (version × 10000)
+3. Commit: `chore: release v4`
+4. Tag: `git tag v4 && git push origin main --tags`
+5. Create GitHub Release:
    ```
-   gh release create v0.1.5-alpha -R Zichao-xu/lumashot \
-     --title "Lumashot v0.1.5-alpha (Prerelease)" \
-     --notes "..." --prerelease
+   gh release create v4 -R Zichao-xu/lumashot \
+     --title "Lumashot v4" \
+     --notes "..."
    ```
 6. Build signed DMG (Xcode Archive → Export .app → `hdiutil create`)
 7. Upload DMG to the release:
    ```
-   gh release upload v0.1.5-alpha \
-     "Lumashot-darwin-arm64-0.1.5-alpha.dmg" \
+   gh release upload v4 \
+     "Lumashot-darwin-arm64-4.dmg" \
      -R Zichao-xu/lumashot
    ```
 

@@ -31,7 +31,7 @@ jobs:
           VERSION="${TAG#v}"
           BASE_VERSION="${VERSION%%-*}"
           IFS=. read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
-          BUILD_NUMBER=$((10#$MAJOR * 10000 + 10#$MINOR * 100 + 10#$PATCH))
+          BUILD_NUMBER=$((10#$MAJOR * 10000 + 10#${MINOR:-0} * 100 + 10#${PATCH:-0}))
           DMG_NAME="Lumashot-darwin-arm64-${VERSION}.dmg"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"

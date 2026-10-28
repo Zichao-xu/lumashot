@@ -149,8 +149,10 @@ extension AppDelegate {
         let countdownView = CountdownView(frame: NSRect(origin: .zero, size: size))
         countdownView.remaining = seconds
         window.contentView = countdownView
-        NSApp.activate(ignoringOtherApps: true)
-        window.makeKeyAndOrderFront(nil)
+        // Stay inactive during the countdown so the frontmost app keeps its
+        // active Liquid Glass appearance for the capture; Esc is caught by
+        // the global monitor below.
+        window.orderFrontRegardless()
         delayCountdownWindow = window
 
         // Listen for Escape to cancel countdown — use both local and global monitors
@@ -231,7 +233,12 @@ extension AppDelegate {
         }
 
         CATransaction.flush()
-        NSApp.activate(ignoringOtherApps: true)
+        // Don't activate yet: on macOS 26 an inactive app's windows render
+        // their Liquid Glass in the dimmed/frosted inactive style. Activating
+        // before the async capture would deactivate the user's frontmost app
+        // and that degraded glass would end up in the screenshot. The
+        // transparent overlays are already ordered front and ignore input,
+        // so we activate once the capture has landed (see below).
 
         pendingRecordMode = false
         pendingFullScreenRecordAutoStart = false
@@ -244,6 +251,7 @@ extension AppDelegate {
         // Capture screenshots in background — exclude overlay windows + thumbnails.
         let excludeIDs = thumbnailControllers.compactMap { $0.windowNumber }
             + overlayControllers.compactMap { $0.windowNumber }
+            + focusCurtainWindows.map { CGWindowID($0.windowNumber) }
         ScreenCaptureManager.captureAllScreens(excludingWindowNumbers: excludeIDs) { [weak self] captures in
             guard let self = self else { return }
 
@@ -257,6 +265,14 @@ extension AppDelegate {
                 if let controller = self.overlayControllers.first(where: { $0.screen == capture.screen }) {
                     controller.setScreenshot(capture.image)
                 }
+            }
+            // Put the frozen screenshot on screen before activating, so the
+            // frontmost app's glass turning inactive happens behind it.
+            for controller in self.overlayControllers { controller.displayNow() }
+            CATransaction.flush()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) { [weak self] in
+                guard let self, self.isCapturing else { return }
+                NSApp.activate(ignoringOtherApps: true)
             }
 
             // Apply last selection area if "Capture Last Area" was triggered
@@ -327,6 +343,19 @@ extension AppDelegate {
         } else {
             // No focus switch coming — just bring them back immediately.
             restoreBackgroundWindowsNow()
+        }
+    }
+
+    /// While Lumashot is active the previous app's windows show their inactive
+    /// (frosted) Liquid Glass. Closing the overlay would reveal that for a few
+    /// frames until focus returns, so the overlay window stays up showing the
+    /// plain frozen screenshot until the previous app has redrawn as active.
+    func holdFocusCurtain(_ window: NSWindow) {
+        focusCurtainWindows.append(window)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            window.orderOut(nil)
+            window.close()
+            self?.focusCurtainWindows.removeAll { $0 === window }
         }
     }
 

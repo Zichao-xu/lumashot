@@ -191,8 +191,10 @@ private struct ReleaseVersion: Comparable {
             normalized.removeFirst()
         }
         let parts = normalized.split(separator: "-", maxSplits: 1, omittingEmptySubsequences: false)
-        let numericParts = parts[0].split(separator: ".").compactMap { Int($0) }
-        guard numericParts.count >= 3 else { return nil }
+        // Versions are whole numbers from v3 on ("v3", "v4"); older ones are x.y.z.
+        let components = parts[0].split(separator: ".", omittingEmptySubsequences: false)
+        let numericParts = components.compactMap { Int($0) }
+        guard !numericParts.isEmpty, numericParts.count == components.count else { return nil }
 
         rawWithoutLeadingV = normalized
         numbers = numericParts

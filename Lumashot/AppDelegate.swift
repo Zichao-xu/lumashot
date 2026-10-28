@@ -35,6 +35,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /// Titled Lumashot windows hidden during capture so `NSApp.activate` can't pull them
     /// in front of the user's frontmost app; restored (in order) when the overlay dismisses.
     var stashedBackgroundWindows: [NSWindow] = []
+    /// Overlay windows kept on screen briefly after closing; see `holdFocusCurtain`.
+    var focusCurtainWindows: [NSWindow] = []
     var pendingRestoreLastArea: Bool = false
     var delayTimer: Timer?
     var delayEscMonitor: Any?

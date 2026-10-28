@@ -32,6 +32,23 @@ protocol OverlayWindowControllerDelegate: AnyObject {
     func overlayDidFinishRemoteResize(_ controller: OverlayWindowController, globalRect: NSRect)
     func overlayCrossScreenImage(_ controller: OverlayWindowController) -> NSImage?
     func overlayDidChangeWindowSnapState(_ controller: OverlayWindowController)
+    /// Called after the overlay is torn down and before the HDR pixels are
+    /// re-grabbed, so focus can go back to the captured app first.
+    func overlayWillRecaptureHDR(_ controller: OverlayWindowController, completion: @escaping () -> Void)
+    /// Asked on dismiss: return true to take over the overlay window as a
+    /// focus curtain (it then shows the plain screenshot and the delegate
+    /// closes it), false to close it right away.
+    func overlayShouldLeaveFocusCurtain(_ controller: OverlayWindowController, window: NSWindow) -> Bool
+}
+
+extension OverlayWindowControllerDelegate {
+    func overlayShouldLeaveFocusCurtain(_ controller: OverlayWindowController, window: NSWindow) -> Bool {
+        false
+    }
+
+    func overlayWillRecaptureHDR(_ controller: OverlayWindowController, completion: @escaping () -> Void) {
+        completion()
+    }
 }
 
 /// Manages one fullscreen overlay per screen.
@@ -40,6 +57,7 @@ protocol OverlayWindowControllerDelegate: AnyObject {
 class OverlayWindowController {
 
     weak var overlayDelegate: OverlayWindowControllerDelegate?
+    private var skipFocusCurtain = false
     var capturedWindowTitle: String?
 
     private var overlayView: OverlayView?
@@ -159,6 +177,11 @@ class OverlayWindowController {
         }
     }
 
+    /// Draw the frozen screenshot now, before anything changes underneath.
+    func displayNow() {
+        overlayWindow?.displayIfNeeded()
+    }
+
     func makeKey() {
         overlayWindow?.makeKeyAndOrderFront(nil)
         if let view = overlayView {
@@ -254,13 +277,26 @@ class OverlayWindowController {
 
     func dismiss() {
         saveSelectionIfNeeded()
+        let screenshot = overlayView?.screenshotImage
         overlayView?.reset()
         overlayView?.screenshotImage = nil
         overlayView?.overlayDelegate = nil
         overlayWindow?.contentView = nil
         overlayView = nil
-        overlayWindow?.orderOut(nil)
-        overlayWindow?.close()
+        if let window = overlayWindow, let screenshot, !skipFocusCurtain,
+           overlayDelegate?.overlayShouldLeaveFocusCurtain(self, window: window) == true {
+            // Swap in the plain screenshot within the same on-screen window,
+            // so there is no frame where the live (inactive) desktop shows.
+            let curtain = NSView(frame: NSRect(origin: .zero, size: screen.frame.size))
+            curtain.wantsLayer = true
+            curtain.layer?.contents = screenshot
+            curtain.layer?.contentsGravity = .resize
+            window.contentView = curtain
+            window.ignoresMouseEvents = true
+        } else {
+            overlayWindow?.orderOut(nil)
+            overlayWindow?.close()
+        }
         overlayWindow = nil
         NSCursor.arrow.set()
     }
@@ -389,9 +425,8 @@ extension OverlayWindowController: OverlayViewDelegate {
             let annotationOverlay = overlayView?.renderAnnotationOverlayForHDR()
 
             NSPasteboard.general.clearContents()
-            dismiss()
 
-            HDRCaptureManager.saveHDRScreenshot(
+            recaptureHDR { [screen] in HDRCaptureManager.saveHDRScreenshot(
                 screen: screen,
                 rect: globalRect,
                 showsCursor: UserDefaults.standard.bool(forKey: "captureCursor"),
@@ -417,7 +452,7 @@ extension OverlayWindowController: OverlayViewDelegate {
                         self.overlayDelegate?.overlayDidCancel(self)
                     }
                 }
-            }
+            } }
             return
         }
 
@@ -979,9 +1014,8 @@ extension OverlayWindowController: OverlayViewDelegate {
                 return
             }
 
-            self.dismiss()
-            HDRCaptureManager.saveHDRScreenshot(
-                screen: self.screen,
+            self.recaptureHDR { [screen = self.screen] in HDRCaptureManager.saveHDRScreenshot(
+                screen: screen,
                 rect: globalRect,
                 showsCursor: UserDefaults.standard.bool(forKey: "captureCursor"),
                 annotationOverlay: annotationOverlay,
@@ -997,7 +1031,28 @@ extension OverlayWindowController: OverlayViewDelegate {
                     }
                     self.overlayDelegate?.overlayDidCancel(self)
                 }
-            }
+            } }
+        }
+    }
+
+    /// The HDR pixels are grabbed after the overlay is gone. While Lumashot is
+    /// active the captured app renders its inactive (frosted) Liquid Glass, so
+    /// the delegate hands focus back first — while the frozen overlay still
+    /// covers the screen, so the glass switch isn't seen — then the overlay is
+    /// removed and the capture runs once it has left the screen.
+    private func recaptureHDR(_ capture: @escaping () -> Void) {
+        overlayWindow?.ignoresMouseEvents = true
+        let proceed = { [weak self] in
+            // Focus is already back; a curtain would end up in the HDR capture.
+            self?.skipFocusCurtain = true
+            self?.dismiss()
+            CATransaction.flush()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: capture)
+        }
+        if let delegate = overlayDelegate {
+            delegate.overlayWillRecaptureHDR(self, completion: proceed)
+        } else {
+            proceed()
         }
     }
 }
