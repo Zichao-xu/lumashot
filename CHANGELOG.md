@@ -4,7 +4,7 @@
 
 ## [3] - 2026-10-29
 
-Versions are whole numbers from now on (v3, v4, …); there are no dotted versions after 1.0.2.
+Versions are whole numbers from now on (v3, v4, …); there are no dotted versions after 1.0.2. **If you are on 1.0.2 or earlier, the in-app update check can't read `v3` — download this DMG manually once**; later updates are detected as usual.
 
 ### Fixed
 - **Liquid Glass came out frosted in screenshots.** Lumashot took focus before grabbing the screen, so the app you were capturing switched to its inactive (frosted) glass. The screen is now captured before Lumashot activates, the delayed-capture countdown no longer steals focus, and HDR captures hand focus back to the captured app before re-grabbing the pixels.

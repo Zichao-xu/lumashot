@@ -3,6 +3,7 @@ name: Build & Release
 on:
   push:
     tags:
+      - "v[0-9]+"
       - "v*.*.*"
       - "v*.*.*-*"
   workflow_dispatch:
@@ -138,8 +139,6 @@ jobs:
             echo ""
             echo "---"
             echo "SHA256: \`$SHA256\`"
-            echo ""
-            echo "Note: This alpha DMG is built without Sparkle hot-update signing."
           } >> release_notes.md
           cat release_notes.md
 
